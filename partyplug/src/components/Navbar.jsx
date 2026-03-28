@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, PartyPopper } from 'lucide-react'
 
+const BASE = import.meta.env.BASE_URL
+
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const location = useLocation()
@@ -16,7 +18,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <Link to="/" className="flex items-center gap-2 no-underline">
-            <img src={`${import.meta.env.BASE_URL}918-party.png`} alt="918 Party Co." className="h-10 w-auto rounded" />
+            <PartyPopper className="w-6 h-6 text-accent" />
             <span className="text-primary font-bold text-xl">918 Party Co.</span>
           </Link>
 

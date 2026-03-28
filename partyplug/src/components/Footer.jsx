@@ -1,3 +1,4 @@
+import { PartyPopper } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
@@ -7,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2 text-white font-bold text-lg mb-3">
-              <img src={`${import.meta.env.BASE_URL}918-party.png`} alt="918 Party Co." className="h-8 w-auto rounded" />
+              <PartyPopper className="w-5 h-5 text-accent" />
               918 Party Co.
             </div>
             <p className="text-sm leading-relaxed">

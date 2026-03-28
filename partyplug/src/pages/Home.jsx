@@ -17,37 +17,28 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary via-primary-dark to-amber-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="flex items-center justify-center mb-4">
-              <img src={`${import.meta.env.BASE_URL}918-party.png`} alt="918 Party Co." className="h-16 w-auto rounded-lg" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-              Tulsa Area's Party & Event
-              <br />
-              <span className="text-accent-light">Marketplace</span>
-            </h1>
-            <p className="text-lg text-orange-100 mb-8 leading-relaxed">
-              Book the best Tulsa party vendors from one site. Find bounce houses,
-              caterers, DJs, photo booths, and more for your next celebration.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                to="/vendors"
-                className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-light text-gray-900 font-bold px-6 py-3 rounded-xl text-base no-underline transition-colors"
-              >
-                <Search className="w-5 h-5" />
-                Find Vendors
-              </Link>
-              <Link
-                to="/vendors"
-                className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3 rounded-xl text-base no-underline transition-colors backdrop-blur"
-              >
-                List Your Business
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+      <section className="relative overflow-hidden">
+        <img
+          src={`${import.meta.env.BASE_URL}918-party.png`}
+          alt="918 Party Co. - Tulsa Area's Party & Event Marketplace"
+          className="w-full h-auto"
+        />
+        <div className="bg-gradient-to-t from-primary-dark/80 to-transparent px-4 py-8 md:py-12 text-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              to="/vendors"
+              className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-light text-gray-900 font-bold px-6 py-3 rounded-xl text-base no-underline transition-colors"
+            >
+              <Search className="w-5 h-5" />
+              Find Vendors
+            </Link>
+            <Link
+              to="/vendors"
+              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3 rounded-xl text-base no-underline transition-colors backdrop-blur border border-white/20"
+            >
+              List Your Business
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>

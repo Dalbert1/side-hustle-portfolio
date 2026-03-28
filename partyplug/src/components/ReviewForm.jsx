@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import { Star, CheckCircle } from 'lucide-react'
+import { Star, CheckCircle, AlertCircle } from 'lucide-react'
+import { submitReview } from '../lib/api'
 
 export default function ReviewForm({ vendorId, onReviewSubmitted }) {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(null)
   const [hoveredStar, setHoveredStar] = useState(0)
   const [form, setForm] = useState({
     author: '',
@@ -10,15 +13,21 @@ export default function ReviewForm({ vendorId, onReviewSubmitted }) {
     text: '',
   })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (form.rating === 0) return
-    // In production, this would insert into Supabase reviews table
-    console.log('Review:', { vendorId, ...form })
-    if (onReviewSubmitted) {
-      onReviewSubmitted({ ...form, date: new Date().toISOString().split('T')[0] })
+    setSubmitting(true)
+    setError(null)
+    const result = await submitReview(vendorId, form)
+    setSubmitting(false)
+    if (result.success) {
+      if (onReviewSubmitted) {
+        onReviewSubmitted({ ...form, date: new Date().toISOString().split('T')[0] })
+      }
+      setSubmitted(true)
+    } else {
+      setError(result.error || 'Something went wrong. Please try again.')
     }
-    setSubmitted(true)
   }
 
   if (submitted) {
@@ -80,12 +89,19 @@ export default function ReviewForm({ vendorId, onReviewSubmitted }) {
         />
       </div>
 
+      {error && (
+        <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 px-3 py-2 rounded-lg">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          {error}
+        </div>
+      )}
+
       <button
         type="submit"
-        disabled={form.rating === 0}
+        disabled={form.rating === 0 || submitting}
         className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
-        Submit Review
+        {submitting ? 'Submitting...' : 'Submit Review'}
       </button>
     </form>
   )

@@ -1,11 +1,18 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Zap, Search, Star, Shield, ArrowRight } from 'lucide-react'
 import CategoryCard from '../components/CategoryCard'
 import VendorCard from '../components/VendorCard'
-import { categories, vendors } from '../data/mockVendors'
+import { fetchCategories, fetchFeaturedVendors } from '../lib/api'
 
 export default function Home() {
-  const featuredVendors = vendors.filter((v) => v.featured).slice(0, 4)
+  const [categories, setCategories] = useState([])
+  const [featuredVendors, setFeaturedVendors] = useState([])
+
+  useEffect(() => {
+    fetchCategories().then(setCategories)
+    fetchFeaturedVendors().then(setFeaturedVendors)
+  }, [])
 
   return (
     <div>

@@ -1,14 +1,40 @@
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, MapPin, Phone, Star, Tag } from 'lucide-react'
+import { ArrowLeft, MapPin, Phone, Star, Tag, Loader2 } from 'lucide-react'
 import StarRating from '../components/StarRating'
 import ReviewCard from '../components/ReviewCard'
 import ReviewForm from '../components/ReviewForm'
 import BookingForm from '../components/BookingForm'
-import { vendors, categories } from '../data/mockVendors'
+import { fetchVendor, fetchReviews, fetchCategories } from '../lib/api'
 
 export default function VendorDetail() {
   const { id } = useParams()
-  const vendor = vendors.find((v) => v.id === Number(id))
+  const [vendor, setVendor] = useState(null)
+  const [reviews, setReviews] = useState([])
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    Promise.all([
+      fetchVendor(id),
+      fetchReviews(id),
+      fetchCategories(),
+    ]).then(([v, r, c]) => {
+      setVendor(v)
+      setReviews(r)
+      setCategories(c)
+      setLoading(false)
+    })
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-24">
+        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      </div>
+    )
+  }
 
   if (!vendor) {
     return (
@@ -21,7 +47,11 @@ export default function VendorDetail() {
     )
   }
 
-  const category = categories.find((c) => c.id === vendor.category)
+  const category = vendor.categoryData || categories.find((c) => c.id === vendor.category)
+
+  const handleReviewSubmitted = (newReview) => {
+    setReviews([{ ...newReview, id: Date.now(), date: new Date().toISOString().split('T')[0] }, ...reviews])
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -80,45 +110,53 @@ export default function VendorDetail() {
                 <MapPin className="w-4 h-4" />
                 {vendor.location}
               </div>
-              <div className="flex items-center gap-1 text-gray-500 text-sm">
-                <Phone className="w-4 h-4" />
-                {vendor.phone}
-              </div>
+              {vendor.phone && (
+                <div className="flex items-center gap-1 text-gray-500 text-sm">
+                  <Phone className="w-4 h-4" />
+                  {vendor.phone}
+                </div>
+              )}
             </div>
 
             <p className="text-gray-600 mt-4 leading-relaxed">{vendor.description}</p>
           </div>
 
           {/* Services */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <Tag className="w-5 h-5 text-primary" />
-              Services Offered
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {vendor.services.map((service) => (
-                <span
-                  key={service}
-                  className="bg-surface text-primary-dark text-sm font-medium px-3 py-1.5 rounded-full"
-                >
-                  {service}
-                </span>
-              ))}
+          {vendor.services?.length > 0 && (
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <Tag className="w-5 h-5 text-primary" />
+                Services Offered
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {vendor.services.map((service) => (
+                  <span
+                    key={service}
+                    className="bg-surface text-primary-dark text-sm font-medium px-3 py-1.5 rounded-full"
+                  >
+                    {service}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Reviews */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Star className="w-5 h-5 text-primary" />
-              Reviews ({vendor.reviews.length})
+              Reviews ({reviews.length})
             </h2>
-            <div className="space-y-4">
-              {vendor.reviews.map((review) => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
-            </div>
-            <ReviewForm vendorId={vendor.id} />
+            {reviews.length > 0 ? (
+              <div className="space-y-4">
+                {reviews.map((review) => (
+                  <ReviewCard key={review.id} review={review} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-400 text-sm">No reviews yet. Be the first!</p>
+            )}
+            <ReviewForm vendorId={vendor.id} onReviewSubmitted={handleReviewSubmitted} />
           </div>
         </div>
 

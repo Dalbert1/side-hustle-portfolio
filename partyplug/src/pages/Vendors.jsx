@@ -1,17 +1,31 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { SlidersHorizontal } from 'lucide-react'
+import { SlidersHorizontal, Loader2 } from 'lucide-react'
 import SearchBar from '../components/SearchBar'
 import VendorCard from '../components/VendorCard'
-import { categories, vendors } from '../data/mockVendors'
+import { fetchCategories, fetchVendors } from '../lib/api'
 
 export default function Vendors() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+  const [categories, setCategories] = useState([])
+  const [vendors, setVendors] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const activeCategory = searchParams.get('category') || ''
   const activeSort = searchParams.get('sort') || 'rating'
+
+  useEffect(() => {
+    fetchCategories().then(setCategories)
+  }, [])
+
+  useEffect(() => {
+    setLoading(true)
+    fetchVendors({ category: activeCategory, search, sort: activeSort })
+      .then(setVendors)
+      .finally(() => setLoading(false))
+  }, [activeCategory, search, activeSort])
 
   const setCategory = (cat) => {
     const params = new URLSearchParams(searchParams)
@@ -26,34 +40,6 @@ export default function Vendors() {
     setSearchParams(params)
   }
 
-  const filtered = useMemo(() => {
-    let result = [...vendors]
-
-    if (activeCategory) {
-      result = result.filter((v) => v.category === activeCategory)
-    }
-
-    if (search.trim()) {
-      const q = search.toLowerCase()
-      result = result.filter(
-        (v) =>
-          v.name.toLowerCase().includes(q) ||
-          v.description.toLowerCase().includes(q) ||
-          v.services.some((s) => s.toLowerCase().includes(q))
-      )
-    }
-
-    if (activeSort === 'rating') {
-      result.sort((a, b) => b.rating - a.rating)
-    } else if (activeSort === 'reviews') {
-      result.sort((a, b) => b.reviewCount - a.reviewCount)
-    } else if (activeSort === 'name') {
-      result.sort((a, b) => a.name.localeCompare(b.name))
-    }
-
-    return result
-  }, [activeCategory, search, activeSort])
-
   const activeCatName = categories.find((c) => c.id === activeCategory)?.name
 
   return (
@@ -64,7 +50,7 @@ export default function Vendors() {
           {activeCatName ? activeCatName : 'All Vendors'}
         </h1>
         <p className="text-gray-500 text-sm">
-          {filtered.length} vendor{filtered.length !== 1 ? 's' : ''} in the Tulsa area
+          {vendors.length} vendor{vendors.length !== 1 ? 's' : ''} in the Tulsa area
         </p>
       </div>
 
@@ -152,14 +138,18 @@ export default function Vendors() {
       )}
 
       {/* Results */}
-      {filtered.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center py-16">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        </div>
+      ) : vendors.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-gray-500 text-lg mb-2">No vendors found</p>
           <p className="text-gray-400 text-sm">Try a different search or category.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((vendor) => (
+          {vendors.map((vendor) => (
             <VendorCard key={vendor.id} vendor={vendor} />
           ))}
         </div>

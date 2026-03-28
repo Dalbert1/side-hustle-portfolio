@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import { Send, CheckCircle } from 'lucide-react'
+import { Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { submitBooking } from '../lib/api'
 
 export default function BookingForm({ vendorName, vendorId }) {
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState(null)
+  const [submitting, setSubmitting] = useState(false)
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -18,11 +21,17 @@ export default function BookingForm({ vendorName, vendorId }) {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // In production, this would insert into Supabase booking_requests table
-    console.log('Booking request:', { vendorId, ...form })
-    setSubmitted(true)
+    setSubmitting(true)
+    setError(null)
+    const result = await submitBooking(vendorId, form)
+    setSubmitting(false)
+    if (result.success) {
+      setSubmitted(true)
+    } else {
+      setError(result.error || 'Something went wrong. Please try again.')
+    }
   }
 
   if (submitted) {
@@ -138,12 +147,20 @@ export default function BookingForm({ vendorName, vendorId }) {
         />
       </div>
 
+      {error && (
+        <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 px-3 py-2 rounded-lg">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          {error}
+        </div>
+      )}
+
       <button
         type="submit"
-        className="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors cursor-pointer"
+        disabled={submitting}
+        className="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors cursor-pointer disabled:opacity-50"
       >
         <Send className="w-4 h-4" />
-        Send Booking Request
+        {submitting ? 'Sending...' : 'Send Booking Request'}
       </button>
     </form>
   )

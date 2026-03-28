@@ -19,7 +19,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <img
-          src={`${import.meta.env.BASE_URL}918-party.png`}
+          src={`${import.meta.env.BASE_URL}918-party.webp`}
           alt="918 Party Co. - Tulsa Area's Party & Event Marketplace"
           className="w-full h-auto"
         />

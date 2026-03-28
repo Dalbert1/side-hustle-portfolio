@@ -118,7 +118,7 @@ function Hero() {
               <span className="text-accent"> Right.</span>
             </h1>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed max-w-lg">
-              From new builds to remodels, framing to fencing -- Heeler Construction delivers
+              From new builds to remodels, framing to fencing - Heeler Construction delivers
               quality craftsmanship you can count on. Locally owned and operated.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -166,7 +166,7 @@ function Services() {
           <span className="text-accent font-semibold text-sm tracking-wider uppercase">What We Do</span>
           <h2 className="text-3xl md:text-4xl font-bold text-navy mt-2">Our Services</h2>
           <p className="text-gray-500 mt-3 max-w-2xl mx-auto">
-            We handle projects big and small across Western Oklahoma. If it involves building or remodeling -- we have got you covered.
+            We handle projects big and small across Western Oklahoma. If it involves building or remodeling - we have got you covered.
           </p>
         </div>
 
@@ -297,7 +297,7 @@ function About() {
               Western Oklahoma.
             </p>
             <p className="text-gray-600 leading-relaxed mb-6">
-              Whether you need a full custom home build, a kitchen remodel, or a new fence --
+              Whether you need a full custom home build, a kitchen remodel, or a new fence -
               we bring the same level of dedication and craftsmanship to every job. No project is too big or too small.
             </p>
 

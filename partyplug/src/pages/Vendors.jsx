@@ -8,13 +8,13 @@ import { fetchCategories, fetchVendors } from '../lib/api'
 export default function Vendors() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState('')
-  const [showFilters, setShowFilters] = useState(false)
   const [categories, setCategories] = useState([])
   const [vendors, setVendors] = useState([])
   const [loading, setLoading] = useState(true)
 
   const activeCategory = searchParams.get('category') || ''
   const activeSort = searchParams.get('sort') || 'rating'
+  const [showFilters, setShowFilters] = useState(!!activeCategory)
 
   useEffect(() => {
     fetchCategories().then(setCategories)

@@ -14,3 +14,10 @@ body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
+
+/* Tools/construction-themed background */
+.bg-tools-pattern {
+  background-color: #f8fdf9;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.06'%3E%3C!-- Wrench --%3E%3Cpath d='M12 10 L12 22 M9 10 A3 3 0 0 1 15 10 M9 22 A3 3 0 0 0 15 22' stroke='%23059669' stroke-width='1.5' fill='none'/%3E%3C!-- Hammer --%3E%3Crect x='56' y='8' width='4' height='16' rx='1' fill='%23b45309' transform='rotate(30 58 16)'/%3E%3Crect x='52' y='5' width='12' height='5' rx='1.5' fill='%23737373' transform='rotate(30 58 7.5)'/%3E%3C!-- Saw teeth --%3E%3Cpath d='M30 60 L33 55 L36 60 L39 55 L42 60 L45 55 L48 60' stroke='%23059669' stroke-width='1.2' fill='none'/%3E%3Crect x='29' y='60' width='20' height='3' rx='1' fill='%23b45309'/%3E%3C!-- Bolt/nut --%3E%3Ccircle cx='68' cy='52' r='4' stroke='%23737373' stroke-width='1.5' fill='none'/%3E%3Ccircle cx='68' cy='52' r='1.5' fill='%23737373'/%3E%3C!-- Nail --%3E%3Cline x1='22' y1='42' x2='22' y2='56' stroke='%23737373' stroke-width='1'/%3E%3Ccircle cx='22' cy='42' r='2' fill='%23737373'/%3E%3C!-- Ruler marks --%3E%3Cline x1='55' y1='72' x2='75' y2='72' stroke='%23059669' stroke-width='1'/%3E%3Cline x1='58' y1='72' x2='58' y2='69' stroke='%23059669' stroke-width='0.8'/%3E%3Cline x1='63' y1='72' x2='63' y2='70' stroke='%23059669' stroke-width='0.8'/%3E%3Cline x1='68' y1='72' x2='68' y2='69' stroke='%23059669' stroke-width='0.8'/%3E%3Cline x1='73' y1='72' x2='73' y2='70' stroke='%23059669' stroke-width='0.8'/%3E%3C/g%3E%3C/svg%3E");
+}

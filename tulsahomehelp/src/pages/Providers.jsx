@@ -8,13 +8,13 @@ import { fetchCategories, fetchProviders } from '../lib/api'
 export default function Providers() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState('')
-  const [showFilters, setShowFilters] = useState(false)
   const [categories, setCategories] = useState([])
   const [providers, setProviders] = useState([])
   const [loading, setLoading] = useState(true)
 
   const activeCategory = searchParams.get('category') || ''
   const activeSort = searchParams.get('sort') || 'rating'
+  const [showFilters, setShowFilters] = useState(!!activeCategory)
 
   useEffect(() => {
     fetchCategories().then(setCategories)
@@ -52,6 +52,23 @@ export default function Providers() {
           {providers.length} pro{providers.length !== 1 ? 's' : ''} in the Tulsa area
         </p>
       </div>
+
+      {/* Active category indicator */}
+      {activeCategory && !showFilters && (
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-sm text-gray-500">Filtered by:</span>
+          <span className="inline-flex items-center gap-1 bg-primary text-white text-xs font-medium px-3 py-1.5 rounded-full">
+            {categories.find((c) => c.id === activeCategory)?.icon} {activeCatName}
+            <button
+              onClick={() => setCategory('')}
+              className="ml-1 hover:text-gray-200 cursor-pointer bg-transparent border-none text-white text-xs"
+              aria-label="Clear filter"
+            >
+              x
+            </button>
+          </span>
+        </div>
+      )}
 
       <div className="flex gap-3 mb-6">
         <div className="flex-1">

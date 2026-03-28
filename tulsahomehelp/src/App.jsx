@@ -1,4 +1,5 @@
 import { HashRouter, Routes, Route } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -8,7 +9,8 @@ import ProviderDetail from './pages/ProviderDetail'
 export default function App() {
   return (
     <HashRouter>
-      <div className="min-h-screen flex flex-col bg-white">
+      <ScrollToTop />
+      <div className="min-h-screen flex flex-col bg-tools-pattern">
         <Navbar />
         <main className="flex-1">
           <Routes>

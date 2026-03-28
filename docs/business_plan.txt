@@ -1,0 +1,706 @@
+AI-ACCELERATED SIDE HUSTLE PORTFOLIO
+Market Analysis & Revised Execution Strategy
+11 Products · 3 Categories · 1 Stack
+Prepared for: Dudley Base of Operations: Tulsa, Oklahoma
+Date: March 2026
+Includes: Deep Tulsa Market Analysis · Trust & Safety Framework · Pricing Strategy · Custom Web Dev vs. Platforms
+
+PART 1
+
+Deep Market Analysis: Tulsa, Oklahoma
+Tulsa by the Numbers
+
+1.06M
+Metro Population (2024 Census)
+
+415,899
+City Population (2026 est.)
+
+$59,838
+Median Household Income
+
+35.6
+Median Age (Years)
+
+The Tulsa metropolitan area encompasses roughly 1.06 million people across Tulsa, Osage, Rogers, and Wagoner counties. The city itself has a 2026 estimated population of 415,899, making it Oklahoma's second-largest city. The metro area is projected to grow 3.2% over the next five years, reaching approximately 1.47 million by 2030. This is a stable, growing market -- not explosive growth, but consistent enough to support local digital products.
+Small businesses make up more than 80% of Tulsa's companies. Between March 2023 and March 2024, 12,517 small businesses opened in Oklahoma while 11,064 closed, reflecting a net positive but highly competitive environment. Small businesses contributed a net increase of 16,295 jobs out of 20,366 total new jobs in that period. There are over 100 entities in Tulsa dedicated to supporting entrepreneurs, yet the digital infrastructure for connecting these businesses with customers remains underdeveloped.
+
+The Underserved Digital Gap
+Nationally, approximately 27­33% of small businesses still operate without any website. In trades and home services specifically, the percentage without websites can reach 40­60%. This gap is even more pronounced in mid-size markets like Tulsa where local businesses rely heavily on word-of-mouth, Facebook groups, and outdated directory listings.
+
+Key finding: 81% of consumers research businesses online before making a purchase, yet roughly 1 in 3 small businesses has no web presence. In Tulsa, this means tens of thousands of small businesses are invisible at the exact moment customers are searching for them.
+The 2026 State of Small Business luncheon in Tulsa highlighted that costs are up, margins are narrower, and small businesses have "almost no room for error." Restaurant owners describe 2026 as one of the hardest periods in the industry's history due to inflation. This creates an opportunity: businesses that are struggling with margins are more likely to adopt affordable digital tools that bring in new customers, as long as the price point is right.
+Sectors with the Largest Digital Gaps in Tulsa
+
+Sector
+
+Est. Businesses
+in Tulsa Metro
+
+% Without Website
+
+Primary Discovery Method
+
+Opportunity Level
+
+Home services (pressure wash, junk, lawn)
+
+2,000­3,000 40­60%
+
+Facebook, word-of-mouth
+
+VERY HIGH
+
+Handyman / small trades
+
+1,500­2,500 50­65%
+
+Nextdoor, Craigslist VERY HIGH
+
+Event services (DJs, bounce houses, etc.)
+
+500­1,000 35­50%
+
+Facebook groups
+
+HIGH
+
+Pet services (grooming, training, sitting)
+
+300­600
+
+30­45%
+
+Google, Yelp
+
+HIGH
+
+Local food producers (cottage food, bakers)
+
+200­500
+
+60­75%
+
+Facebook groups
+
+HIGH
+
+Tutors / instructors
+
+200­400
+
+45­60%
+
+Word-of-mouth, schools
+
+HIGH
+
+Auto detailing / mobile mechanics
+
+200­400
+
+50­65%
+
+Craigslist, Facebook MEDIUM
+
+Estimates based on Census business data, Google Maps listings, and industry averages for cities of Tulsa's size.
+
+What People Pay for These Systems Today
+Understanding current pricing is critical for undercutting the competition. Here's the landscape of what Tulsa small businesses face today:
+
+Custom Website Development (Static/Brochure Sites)
+
+Provider Type
+
+Typical Price Range
+
+What You Get
+
+Timeline
+
+Local Tulsa agencies $3,000­$10,000
+
+5­10 page WordPress site, basic SEO, mobile responsive
+
+4­8 weeks
+
+National agencies
+
+$5,000­$20,000+
+
+Custom design, CMS, SEO, analytics
+
+6­12 weeks
+
+Freelancers (mid-tier) $1,500­$5,000
+
+Template-based WordPress,
+
+basic customization
+
+2­4 weeks
+
+DIY builders (Wix, etc.)
+
+$20­$45/month
+
+Self-service, limited customization
+
+Days to weeks
+
+AI-assisted builders $0­$30/month
+
+Generated sites, generic designs
+
+Hours to days
+
+Platform/Marketplace Solutions
+
+Platform Type Existing Options
+
+Cost to Providers
+
+Home services
+
+Thumbtack, Angi, 15­30% per lead
+
+HomeAdvisor
+
+or $300+/mo
+
+Event booking
+
+GigSalad, The Bash
+
+10­15% commission or $200­400/yr
+
+Pet services
+
+Rover, Wag
+
+20­40% commission
+
+Local food
+
+None specific
+
+N/A
+
+Tutoring
+
+Wyzant, Varsity Tutors
+
+25­40% commission
+
+Handyman
+
+TaskRabbit
+
+15% + trust fee
+
+Why They Fall Short Locally
+Expensive, poor local coverage in mid-size cities
+Low Tulsa provider density, generic experience
+Only dog walking/boarding; no exotic pets, grooming
+Facebook groups are the only option currently
+SEO dominated by big schools; local tutors invisible
+Not available in Tulsa; zero local alternative
+
+How to Undercut the Competition
+The pricing sweet spot: charge 50­70% less than existing platforms while offering better local coverage. Most Tulsa service providers are price-sensitive but desperate for customers. The key is making the cost of entry near-zero, then monetizing through transaction fees once value is proven.
+
+Strategy
+
+Their Price
+
+Custom static websites for local businesses
+
+$3,000­$10,000
+
+Platform listing fees (provider side)
+
+$200­$400/yr or 15­30% take
+
+Lead generation
+
+$5­30 per lead (Thumbtack)
+
+Booking platform (solo operators)
+
+$12­20/mo (Calendly/Acuity)
+
+Your Price
+$500­$1,500 (AI-generated)
+FREE first 90 days then $15­25/mo or 8­12%
+$3­5 per lead
+$8­12/mo
+
+Your Advantage
+AI compresses build time from weeks to days
+Lower fees, local focus, better curation
+Half the cost, same or better conversion
+Simpler, cheaper, integrated with your marketplaces
+
+PART 2
+
+Custom Web Development vs. Platform Products
+This is a critical strategic decision. Should you build individual websites for local businesses (service model), or build multi-tenant platforms that many providers use simultaneously (product model)? The answer is: both, but weighted heavily toward platforms.
+
+The Case for Each Approach
+
+Factor Revenue model Time to revenue Scalability Revenue ceiling AI leverage Risk Exit value
+
+Custom Web Dev (Service Business) One-time fee + retainer ($500­$1,500 + $50­100/mo) Fast (1­2 weeks per client)
+LINEAR -- scales with your hours
+$5K­10K/mo solo (10­15 clients max) HIGH -- AI builds sites in hours, not weeks Low -- guaranteed revenue per client
+Low -- tied to you personally
+
+Platform Products (Product Business)
+Transaction fees + subscriptions (recurring, scalable)
+Slow (6­8 weeks to first $)
+EXPONENTIAL -- scales with users, not your time
+$20K­50K+/mo possible if a product hits
+VERY HIGH -- AI builds once, serves many
+Higher -- may not find market fit
+High -- acquirable asset (30­48x monthly revenue)
+
+Recommended Hybrid Strategy
+Use custom web development as a cash flow engine to fund platform development. Build 3­5 client websites per month at $500­$1,500 each ($1,500­$7,500/mo) while simultaneously shipping platform MVPs. Once a platform product gains traction, reduce client work and shift focus. This eliminates the "zero revenue while building" problem.
+Phase 1 (Weeks 1­4): Build your first platform MVP (QuickFix or TulsaTasker) while simultaneously taking on 2­3 custom web dev clients for immediate cash flow. Each AI-assisted client site takes 2­3 days. Charge $750­$1,000 for a 5-page responsive site with basic SEO -- this massively undercuts agencies charging $3,000­$5,000 for the same work.
+Phase 2 (Weeks 5­12): Ship remaining platform MVPs. Continue web dev clients at a sustainable pace (2­3 per month). Reinvest client revenue into marketing for platform products. Begin provider outreach for local marketplaces.
+Phase 3 (Month 3+): Evaluate platform traction. If a platform product shows clear growth signals, begin transitioning away from client work. If no platform hits, maintain client work as reliable income
+
+and continue iterating.
+
+PART 3
+Revised Product Portfolio
+Based on the market analysis, the portfolio has been refined. Calculator/freemium tools (NicheCalc) have been removed in favor of focusing on platform marketplaces and custom web development. Five new products have been added, including the tutor platform concept. All products include domain name suggestions and a trust & safety assessment.
+TIER 1: Local Service Marketplaces
+Transaction-based platforms connecting buyers and sellers. Geographic moat. Start in Tulsa, expand to OKC and beyond.
+1. TulsaTasker -- Home & Property Services
+A marketplace connecting Tulsa homeowners with local service providers for pressure washing, junk hauling, gutter cleaning, fence repair, tree trimming, and lawn care. Providers in this space have the worst digital presence of any sector -- 40­60% have no website at all. They rely entirely on Facebook and word-of-mouth. Target Market: 180K+ households in Tulsa metro. Secondary: property managers, landlords, real estate agents. Revenue: 10­15% transaction fee. $25/mo featured listings. $3­5/lead pay-per-inquiry option. Viability: VERY HIGH. Daily Google search volume with weak local competition. Thumbtack charges 15­30%; you charge 10­12%. MVP Scope: Provider directory, service categories, booking request form, review system. No payment processing at launch.
+Domain Ideas: tulsatasker.com · tulsa-pros.com · tulsahomehelp.com
+2. PartyPlug -- Event & Occasion Services
+Booking platform for bounce houses, DJs, face painters, balloon artists, photo booths, tent rentals, and catering. Parents scramble through chaotic Facebook group posts that disappear within hours. PartyPlug makes it searchable and bookable. Target Market: Parents (kids 2­12), event planners, churches, schools, corporate HR. Revenue: 8­12% booking fee. $20/mo vendor subscription for premium profiles with calendar integration. Viability: HIGH. Zero dominant local player. High emotional urgency drives fast conversion.
+
+Domain Ideas: partyplug.co · booktheparty.com · tulsapartybook.com
+3. PetCircle -- Pet Services
+Platform for mobile grooming, exotic pet sitting, dog training, pet photography, and holistic pet care. Rover/Wag only cover dog walking and boarding. The niche services are completely unserved. Target Market: ~60% of US households own pets. Fastest growth in non-traditional pets (reptiles, small mammals). Revenue: Freemium directory ($15/mo premium). 10% booking fee. Affiliate revenue from pet product partnerships. Viability: MEDIUM-HIGH. US pet spending exceeds $140B annually. Niche services wide open.
+Domain Ideas: petcircle.app · pawslocal.com · tulsapetpro.com
+4. QuickFix -- Small Trades & Handyman
+Platform for jobs too small for a contractor but too skilled for DIY: drywall patches, toilet swaps, ceiling fan installs, TV mounting, door repairs. This is the single highest-demand, lowest-competition category. TaskRabbit does not operate in Tulsa. Target Market: Every homeowner and renter. Especially elderly, busy dual-income families, new homeowners. Revenue: Lead gen ($3­5/lead). $20/mo subscription for unlimited leads. 10% transaction fee later. Viability: VERY HIGH. The current competition is literally "ask your neighbor."
+Domain Ideas: quickfixlocal.com · fixitulsa.com · handyhometulsa.com
+5. FarmFresh Local -- Food & Farm
+Marketplace for backyard egg sellers, micro-bakers, honey producers, tamale makers, BBQ smokers, and garden surplus. These producers live in Facebook groups where posts disappear in hours. You formalize the marketplace. Oklahoma SB 508 provides favorable cottage food legislation. Target Market: Local food enthusiasts, farmers market regulars, health-conscious families. Revenue: 8­12% marketplace fee. $10/mo featured vendor spots. Future: curated subscription boxes. Viability: HIGH. No organized local food marketplace exists in any mid-size city.
+Domain Ideas: farmfreshtulsa.com · localbitestulsa.com · tulsafoodmarket.com
+TIER 2: Platform Products (National Reach)
+Recurring subscription revenue with no geographic limits. Higher scalability. Community and SEO-driven growth.
+
+6. SkillMatch -- Local & Online Tutor Platform
+A marketplace connecting students with verified local and online tutors across academic subjects, languages, music, coding, and test prep. Your friend in California nailed the problem: when you Google a tutor, only big institutions (Kumon, Sylvan, Varsity Tutors) show up. Independent tutors are invisible despite often being better and cheaper.
+The global online tutoring market was valued at $10.4B in 2024 and is growing at 14.5% CAGR. The US private tutoring market alone is $4.3B. But the market is dominated by national platforms that charge tutors 25­40% commission. Local/independent tutors have no affordable platform to be found.
+Target Market: Parents of K­12 students (primary). College students seeking subject help. Adults learning languages or professional skills. Independent tutors seeking students without the 25­40% commission hit from Wyzant/Varsity Tutors.
+Revenue: Free for students to browse. Tutors pay $10/mo for a profile (free first 60 days). 8­10% booking fee on platform-facilitated sessions. Premium tier ($20/mo) includes scheduling, payment collection, and student management dashboard.
+Viability: HIGH. The individual tutors segment is estimated at $6B globally in 2025. The barrier isn't demand -- it's discovery. This product solves the discovery problem with better local SEO and lower commission rates than national platforms.
+MVP Scope: Tutor directory with profiles, subject/location/price filters, booking request form, review system, and identity verification flow (see Trust & Safety section). Start with Tulsa and California as dual test markets.
+Expansion Potential: This concept scales to any metro area. Unlike local service marketplaces, the online tutoring component has zero geographic limits. A tutor in Tulsa can teach a student in California.
+Domain Ideas: skillmatch.io · localtutor.app · findmytutor.co
+7. GigLedger -- Freelancer Finance Tracker
+A dead-simple financial dashboard for gig workers and freelancers. Track income across multiple gigs, log expenses with receipt photos, estimate quarterly taxes in real-time. The US has 64+ million freelancers. QuickBooks is overkill; spreadsheets are chaos.
+Target Market: Gig workers, Etsy sellers, freelance contractors, side hustlers.
+Revenue: Free for 1 gig. $8/mo Pro (unlimited gigs, tax estimates). $15/mo Premium (mileage, accountant sharing).
+Viability: HIGH. Massive TAM, clear pain point, strong SEO terms like "freelance tax calculator."
+Domain Ideas: gigledger.com · gigtrackr.com · freelancedash.io
+8. FlipScout -- Resale Deal Finder
+Alert system for resellers and flippers that monitors Facebook Marketplace, Craigslist, and estate sales for underpriced items matching keyword + price + location filters. The US resale market exceeds $350B. r/Flipping has 400K+ members.
+
+Target Market: Resellers, eBay/Poshmark flippers, thrift entrepreneurs, bargain hunters. Revenue: 3 free alerts. $10/mo unlimited. $20/mo adds price history and profit margin estimates. Viability: HIGH. Active community, willingness to pay for competitive edge, Reddit-friendly marketing.
+Domain Ideas: flipscout.io · dealflip.app · resalealerts.com
+9. BookedUp -- Micro-Booking for Solo Operators
+Lightweight booking/scheduling for solo providers: notaries, trainers, photographers, music teachers, massage therapists. They get a clean booking page with custom URL, auto-reminders, basic payment. Cross-sells directly with all local marketplace products. Target Market: Solo service providers booking via text/DM/phone (massive friction). Revenue: Free (10 bookings/mo). $12/mo Pro (unlimited, payments). $25/mo (client management, intake forms). Viability: MEDIUM-HIGH. Calendly/Acuity exist but are overpriced/overbuilt for a solo barber or mobile notary.
+Domain Ideas: bookedup.app · getbooked.io · easybookme.com
+TIER 3: Info Products & Consumer Tools
+SEO-driven passive traffic. Low dev cost. Feeds leads to Tier 1 and Tier 2 products.
+10. PermitPal -- Home Improvement Permit Guide
+Localized guide telling homeowners whether their project needs a permit, what type, how to apply, what it costs. The information is technically public but buried in impossible-to-navigate city websites. "Do I need a permit for [X]" is a massively searched query with near-zero good results. Target Market: DIY homeowners, house flippers, property investors, contractors working across municipalities. Revenue: Free lookup (SEO traffic). Lead gen to licensed contractors ($5­10/lead). Premium city guides ($5­9). Viability: HIGH for traffic. Directly feeds QuickFix and TulsaTasker with qualified leads.
+Domain Ideas: permitpal.com · doINeedaPermit.com · permitcheck.io
+11. RentalReady -- Tenant Toolkit
+Move-in/move-out inspection checklists with photo documentation, security deposit demand letter generator, rent tracker, lease explainer, and maintenance request templates. 44+ million US renter households. Landlords have dozens of tools; tenants have almost nothing. High TikTok/Reddit viral
+
+potential. Target Market: Renters 18­35 navigating leases. 44M+ US renter households. Revenue: Free checklist. $5/mo full toolkit. $10 one-time deposit recovery kit. Viability: HIGH. Huge search volume for "how to get security deposit back." Simple to build, high perceived value.
+Domain Ideas: rentalready.app · tenanttools.io · renterkit.com
+
+PART 4
+Trust & Safety Framework
+Any platform that hosts user-generated content or connects people with service providers faces content risk and safety concerns. This is especially critical for SkillMatch (tutor platform) where minors are involved, but applies across all marketplace products. Here is a comprehensive framework for managing these risks at every stage of growth.
+Content Moderation Strategy
+Vendors who sign up to list their services on any platform can potentially post inappropriate content -- misleading credentials, offensive language, inappropriate images, spam, or fraudulent service listings. Here's a layered defense approach:
+Layer 1: Pre-Publication Screening (Automated)
+· Text filtering: Use keyword-based and AI-powered text moderation to screen profile descriptions, service listings, and messages for profanity, hate speech, and inappropriate content before they go live. · Image screening: Run uploaded profile photos and portfolio images through AI moderation APIs (e.g., AWS Rekognition, Google Cloud Vision, or open-source alternatives like NSFW.js) to flag explicit or inappropriate imagery. · Rate limiting: Prevent newly registered accounts from posting excessive content. New accounts get a 24-hour review window before their first listing goes live. · Phone/email verification: Require verified phone number and email at registration. This alone eliminates 80­90% of spam and bot accounts.
+Layer 2: Community Reporting (User-Driven)
+· Flag/report buttons: Every profile, listing, review, and message should have a "Report" option with categorized reasons (inappropriate content, misleading info, harassment, suspected fraud). · Review moderation: User reviews are held for 24 hours before publication. AI scans for obvious violations; borderline cases queue for manual review. · Reputation scoring: Providers build trust scores over time based on completed jobs, response rates, and review quality. New providers are marked as "New" rather than "Verified."
+Layer 3: Manual Review (Human Oversight)
+· Flagged content queue: All AI-flagged and user-reported content goes into a review dashboard. At early scale, you review this yourself. As volume grows, consider part-time moderators. · Strike system: First violation = warning with content removed. Second = temporary suspension (7 days). Third = permanent ban. Serious violations (CSAM, threats, fraud) result in immediate permanent ban and law enforcement referral.
+
+· Appeal process: Providers who believe content was incorrectly removed can submit a one-time appeal with an explanation.
+Layer 4: Terms of Service & Legal Protection
+· Comprehensive ToS: Clear Terms of Service and Acceptable Use Policy that explicitly prohibit offensive content, fraud, misrepresentation, and harassment. AI can draft initial versions; have a lawyer review ($200­400 one-time). · Section 230 protection: As a platform (not a publisher), you're generally protected from liability for user-generated content under Section 230 of the Communications Decency Act, as long as you moderate in good faith. · Indemnification clause: Providers agree that they are responsible for the accuracy and legality of their own listings.
+At MVP scale (under 1,000 users), manual moderation is feasible and actually preferred. You learn what problems arise in your specific market before investing in automated solutions. Budget: $0 initially (your own time), scaling to $500­1,000/mo for part-time human moderators when volume justifies it.
+
+Identity Verification & Safety for SkillMatch (Tutor Platform)
+Tutor platforms present elevated safety concerns because sessions frequently involve minors. Protecting students from predatory individuals is a non-negotiable requirement. Here is a tiered verification approach:
+Tier 1: Basic Identity Verification (All Tutors)
+· Government ID verification: Require all tutors to upload a government-issued photo ID (driver's license, passport). Use a third-party verification service like Stripe Identity ($1.50/verification), Jumio, or Persona to match the ID to a live selfie. This confirms the person is who they claim to be. · Phone + email verification: Verified phone number and email address, confirmed via OTP. · Profile review: Manual review of tutor profiles before they go live. Verify that claimed qualifications are plausible (e.g., a 19-year-old claiming a PhD is flagged). · Social proof linking: Optional but encouraged -- link LinkedIn, university credentials, or professional profiles. Display verification badges prominently.
+Tier 2: Background Check (Tutors Working with Minors)
+· Background check requirement: Any tutor who offers sessions to students under 18 must pass a background check through a certified provider (e.g., Checkr at ~$30/check, GoodHire, Sterling). Cover: criminal history, sex offender registry, identity verification. · Cost structure: Background check cost can be passed to the tutor ("Background Verified" badge is a premium feature that builds trust and justifies the cost), or subsidized by the platform as a marketing expense. · Recurring checks: Re-run background checks annually for all active tutors working with minors. · Display badge prominently: "Background Verified" badge appears on the tutor's profile and search results. Parents can filter for verified-only tutors.
+Tier 3: Session Safety Measures (Operational)
+· Parent/guardian controls: For students under 18, require a parent/guardian account linked to the student's account. Parents receive notifications of booked sessions, can view tutor profiles, and receive session summaries. · Session logging: If sessions happen through the platform (video/chat), log session metadata (start time, end time, participants). Do NOT record session content for privacy reasons, but maintain an audit trail. · No private contact at first: Initial communication happens through the platform's messaging system. Direct contact info exchange (phone, email) is only available after a parent/guardian approves or after 3+ completed sessions with positive reviews. · Public session option: Offer an option for sessions to be "observable" -- a parent can join a video session without participating. · In-person safety: For in-person tutoring, recommend public locations (libraries, coffee shops). Include safety tips in the booking confirmation email.
+
+Verification Cost Summary
+
+Verification Level
+
+Cost Per Tutor
+
+Who Pays
+
+Required For
+
+Phone + Email + ID
+
+$1.50­2.00
+
+Platform (absorbed) All tutors
+
+Background check
+
+$25­35
+
+Tutor (or subsidized)
+
+Tutors of minors
+
+Credential verification
+
+$0 (self-reported +
+
+manual review)
+
+Platform (time)
+
+All tutors
+
+Annual re-check
+
+$25­35
+
+Tutor
+
+Continuing tutors of minors
+
+Content Risk Matrix Across All Products
+
+Product
+
+Content Risk Level
+
+Primary Risks
+
+Recommended Safeguards
+
+SkillMatch (Tutor) HIGH
+
+Minor safety, fake credentials, predatory actors
+
+ID + background check, parent controls, messaging limits
+
+QuickFix
+
+MEDIUM
+
+Fake credentials, fraudulent providers
+
+ID verification, review system, license badges
+
+TulsaTasker
+
+MEDIUM
+
+Misleading listings, spam accounts
+
+Phone verification, review moderation, strike system
+
+PartyPlug
+
+MEDIUM
+
+Service misrepresentation, no-shows
+
+Booking deposits, review system, ID check
+
+PetCircle
+
+LOW-MED
+
+Unqualified pet handlers, misleading credentials
+
+Review system, insurance verification option
+
+FarmFresh
+
+LOW-MED
+
+Food safety concerns, cottage food compliance
+
+Seller attestation, regulatory disclaimers
+
+GigLedger
+
+LOW
+
+Minimal UGC -- personal financial data
+
+Data encryption, privacy policy, SOC2 roadmap
+
+FlipScout
+
+LOW
+
+Minimal UGC
+
+Standard ToS
+
+BookedUp
+
+LOW
+
+Provider profile content Basic text/image moderation
+
+PermitPal
+
+LOW
+
+Information accuracy
+
+Disclaimers, source citations
+
+RentalReady
+
+LOW
+
+No UGC--generated documents only
+
+Legal disclaimers
+
+PART 5
+
+Revenue Projections & Execution Timeline
+
+Combined Revenue Projections
+
+Product
+
+Month 1
+
+Month 3
+
+Month 6
+
+Month 12
+
+Custom web dev clients
+
+$1,500­3,000
+
+$2,000­4,000
+
+$2,000­5,000
+
+$1,000­3,000*
+
+TulsaTasker
+
+$0
+
+$200­500
+
+$800­2,000
+
+$3,000­6,000
+
+PartyPlug
+
+$0
+
+$150­400
+
+$500­1,500
+
+$2,000­5,000
+
+PetCircle
+
+$0
+
+$100­300
+
+$400­1,000
+
+$1,500­4,000
+
+QuickFix
+
+$0
+
+$200­500
+
+$600­1,500
+
+$2,500­5,000
+
+FarmFresh Local
+
+$0
+
+$100­300
+
+$400­1,200
+
+$2,000­4,000
+
+SkillMatch (Tutor)
+
+$0
+
+$100­300
+
+$400­1,200
+
+$2,000­5,000
+
+GigLedger
+
+$0
+
+$100­400
+
+$500­1,500
+
+$2,000­5,000
+
+FlipScout
+
+$0
+
+$50­200
+
+$300­800
+
+$1,000­3,000
+
+BookedUp
+
+$0
+
+$100­300
+
+$400­1,000
+
+$1,500­4,000
+
+PermitPal
+
+$0
+
+$50­150
+
+$200­600
+
+$800­2,000
+
+RentalReady
+
+$0
+
+$50­200
+
+$200­700
+
+$1,000­3,000
+
+PORTFOLIO TOTAL $1,500­3,000
+
+$3,200­7,550
+
+$6,700­19,000 $20,300­49,000
+
+*Custom web dev revenue decreases at Month 12 as platform revenue grows and you shift focus. This is by design.
+
+Realistic scenario: 3­4 products gain meaningful traction ($2K­5K/mo each), 3­4 produce modest results worth maintaining, and 3­4 get killed within 8 weeks. Custom web dev provides $1.5­4K/mo cash flow while platforms ramp. Conservative Month 12 target: $8,000­15,000/month combined.
+
+Execution Timeline
+
+Phase Weeks 1­2
+
+Development
+
+Launch & Marketing
+
+Growth Targets
+
+TulsaTasker MVP QuickFix MVP 2­3 web dev clients
+
+Set up hosting infra Create social accounts Research 50 local providers
+
+First client revenue Provider outreach begins Domains registered
+
+Weeks 3­4 Weeks 5­6 Weeks 7­8 Month 3+
+
+GigLedger MVP SkillMatch MVP PartyPlug MVP
+
+Launch TulsaTasker Launch GigLedger Begin SEO groundwork
+
+20­30 provider listings 2­3 more web dev clients First 10 tutor profiles
+
+PetCircle MVP FarmFresh MVP BookedUp MVP
+
+Launch remaining locals SkillMatch outreach (Tulsa + CA test markets)
+
+Flyer drops at events Partner w/ local groups Reddit/forum seeding
+
+FlipScout MVP PermitPal + RentalReady Iterate on feedback
+
+Enable transactions A/B test landing pages Product Hunt: GigLedger
+
+First platform revenue Kill clear losers Double down on signals
+
+Scale winners Add features Kill losers
+
+Google Ads on top 3 Automate marketing Expand to OKC if local hits
+
+Target: $3K­7.5K/mo Reduce web dev work Reinvest in top products
+
+PART 6
+Additional Product Ideas & Expansion Vectors
+Beyond the core 11 products, here are additional concepts worth considering as the portfolio matures or if early products fail and need replacement:
+CrewBoard -- Informal Labor Marketplace
+A platform for day labor, moving help, event setup/teardown, warehouse loading, and farm work. Think "TaskRabbit for blue-collar gig work" in markets TaskRabbit ignores. Workers set their hourly rate and availability; employers post short-term jobs. Revenue via 10­12% transaction fee.
+Domain Ideas: crewboard.co · hirelocalnow.com · dayworkapp.com
+StudioHop -- Creative Space & Gear Rental
+Marketplace for renting creative spaces (photography studios, podcast rooms, art studios, workshop spaces) and gear (cameras, lighting, PA systems). Targets content creators, photographers, podcasters, and small event hosts. Revenue via booking fee + optional gear insurance.
+Domain Ideas: studiohop.io · rentagear.local · creativespacerent.com
+CoachLink -- Personal Coaching Marketplace
+Expands the SkillMatch tutor concept beyond academics: fitness coaching, career coaching, music lessons, art instruction, financial coaching, life coaching. Same trust & safety framework as SkillMatch but for adult learners. The coaching industry is $20B+ and highly fragmented.
+Domain Ideas: coachlink.app · findmycoach.io · localcoach.co
+VenueSnap -- Small Event Venue Finder
+Directory of affordable small event venues: community centers, restaurant private rooms, church halls, farm/ranch spaces, rooftop patios. Parents planning birthday parties and small business teams planning offsites struggle to find these spaces. Cross-sells directly with PartyPlug.
+Domain Ideas: venuesnap.com · smallvenues.co · bookaspace.app
+TradeSchool Hub -- Skills Training Directory
+Directory connecting people with local trade programs: welding, HVAC, plumbing, electrical, CDL training, and coding bootcamps. With growing awareness that trade careers pay well, parents and career changers search for local programs but find only national aggregator sites. Revenue via lead gen to training programs ($10­20/lead).
+Domain Ideas: tradeschoolhub.com · learnaskill.app · localtraining.io
+
+Cross-Product Synergy Map
+· SkillMatch  BookedUp: Every tutor on SkillMatch needs a booking page. BookedUp is the natural upsell. · PermitPal  QuickFix + TulsaTasker: Homeowners who learn they need a permit get offered licensed providers. · RentalReady  QuickFix: Renters documenting maintenance issues need someone to fix them. · FlipScout  GigLedger: Resellers tracking deals also need to track income/expenses for taxes. · FarmFresh  PartyPlug: Event planners looking for catering get connected to local food producers. · Custom web dev  All platforms: Every client website you build is a potential provider on your marketplaces. · SkillMatch  nationwide: Online tutoring removes all geographic limits. A Tulsa tutor teaching a California student is pure margin.
+Total startup cost: ~$300­500 (LLC + domains + first month hosting + initial background check credits). Time to first revenue: Week 1 (custom web dev clients). Time to first platform revenue: 6­8 weeks. Realistic Month 12 target: $8,000­15,000/month combined across custom dev + platform portfolio. Upside ceiling: $20K­49K/month at full maturity if 3­4 products hit their stride.
+
+

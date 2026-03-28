@@ -7,7 +7,7 @@ export async function fetchCategories() {
   if (!isConfigured) return mockCategories
 
   const { data, error } = await supabase
-    .from('categories')
+    .from('thh_categories')
     .select('*')
     .order('name')
 
@@ -34,7 +34,7 @@ export async function fetchProviders({ category, search, sort = 'rating' } = {})
     return result
   }
 
-  let query = supabase.from('providers').select('*')
+  let query = supabase.from('thh_providers').select('*')
   if (category) query = query.eq('category_id', category)
   if (search) query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
   if (sort === 'rating') query = query.order('rating', { ascending: false })
@@ -50,7 +50,7 @@ export async function fetchFeaturedProviders() {
   if (!isConfigured) return mockProviders.filter((p) => p.featured).slice(0, 4)
 
   const { data, error } = await supabase
-    .from('providers')
+    .from('thh_providers')
     .select('*')
     .eq('featured', true)
     .order('rating', { ascending: false })
@@ -64,8 +64,8 @@ export async function fetchProvider(id) {
   if (!isConfigured) return mockProviders.find((p) => p.id === Number(id)) || null
 
   const { data, error } = await supabase
-    .from('providers')
-    .select('*, categories(*)')
+    .from('thh_providers')
+    .select('*, thh_categories(*)')
     .eq('id', id)
     .single()
 
@@ -80,7 +80,7 @@ export async function fetchReviews(providerId) {
   }
 
   const { data, error } = await supabase
-    .from('reviews')
+    .from('thh_reviews')
     .select('*')
     .eq('provider_id', providerId)
     .order('created_at', { ascending: false })
@@ -101,7 +101,7 @@ export async function submitQuoteRequest(providerId, form) {
     return { success: true }
   }
 
-  const { error } = await supabase.from('quote_requests').insert({
+  const { error } = await supabase.from('thh_quote_requests').insert({
     provider_id: providerId,
     customer_name: form.name,
     customer_email: form.email,
@@ -122,7 +122,7 @@ export async function submitReview(providerId, form) {
     return { success: true }
   }
 
-  const { error } = await supabase.from('reviews').insert({
+  const { error } = await supabase.from('thh_reviews').insert({
     provider_id: providerId,
     author_name: form.author,
     rating: form.rating,
@@ -147,6 +147,6 @@ function normalizeProvider(row) {
     phone: row.phone,
     featured: row.featured,
     services: row.services || [],
-    categoryData: row.categories || null,
+    categoryData: row.thh_categories || null,
   }
 }

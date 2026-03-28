@@ -148,6 +148,32 @@ export async function submitReview(vendorId, form) {
   return { success: true }
 }
 
+export async function submitVendorListing(form) {
+  if (!isConfigured) {
+    console.log('Mock vendor listing:', form)
+    return { success: true }
+  }
+
+  const { error } = await supabase.from('vendor_listings').insert({
+    business_name: form.businessName,
+    contact_name: form.contactName,
+    email: form.email,
+    phone: form.phone,
+    category: form.category,
+    price_range: form.priceRange,
+    location: form.location,
+    description: form.description,
+    services: form.services.split(',').map((s) => s.trim()).filter(Boolean),
+    website: form.website || null,
+  })
+
+  if (error) {
+    console.error('Listing error:', error)
+    return { success: false, error: error.message }
+  }
+  return { success: true }
+}
+
 function normalizeVendor(row) {
   return {
     id: row.id,

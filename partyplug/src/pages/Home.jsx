@@ -33,7 +33,7 @@ export default function Home() {
               Find Vendors
             </Link>
             <Link
-              to="/vendors"
+              to="/get-listed"
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3 rounded-xl text-base no-underline transition-colors backdrop-blur border border-white/20"
             >
               List Your Business
@@ -109,7 +109,7 @@ export default function Home() {
             Your first 90 days are completely free.
           </p>
           <Link
-            to="/vendors"
+            to="/get-listed"
             className="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-3 rounded-xl text-base no-underline hover:bg-primary-dark transition-colors"
           >
             Get Listed Free

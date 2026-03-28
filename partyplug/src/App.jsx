@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Vendors from './pages/Vendors'
 import VendorDetail from './pages/VendorDetail'
+import GetListed from './pages/GetListed'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/vendors" element={<Vendors />} />
             <Route path="/vendors/:id" element={<VendorDetail />} />
+            <Route path="/get-listed" element={<GetListed />} />
           </Routes>
         </main>
         <Footer />

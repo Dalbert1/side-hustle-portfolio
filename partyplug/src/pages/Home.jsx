@@ -23,8 +23,9 @@ export default function Home() {
           alt="918 Party Co. - Tulsa Area's Party & Event Marketplace"
           className="w-full h-auto"
         />
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 pb-6 pt-16 text-center">
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        {/* Desktop: overlay on image */}
+        <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 pb-6 pt-16 text-center">
+          <div className="flex flex-row gap-3 justify-center">
             <Link
               to="/vendors"
               className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-light text-gray-900 font-bold px-6 py-3 rounded-xl text-base no-underline transition-colors"
@@ -40,6 +41,23 @@ export default function Home() {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+        </div>
+        {/* Mobile: below image */}
+        <div className="md:hidden px-4 py-4 bg-surface text-center flex flex-col gap-3">
+          <Link
+            to="/vendors"
+            className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-light text-gray-900 font-bold px-6 py-3 rounded-xl text-base no-underline transition-colors"
+          >
+            <Search className="w-5 h-5" />
+            Find Vendors
+          </Link>
+          <Link
+            to="/get-listed"
+            className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-6 py-3 rounded-xl text-base no-underline transition-colors"
+          >
+            List Your Business
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
 

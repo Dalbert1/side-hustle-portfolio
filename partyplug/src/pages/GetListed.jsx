@@ -41,6 +41,7 @@ export default function GetListed() {
     location: '',
     description: '',
     services: '',
+    areasServed: '',
     website: '',
   })
 
@@ -180,6 +181,20 @@ export default function GetListed() {
                   placeholder="e.g. Tulsa, OK"
                   className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Areas Served *</label>
+                <input
+                  type="text"
+                  name="areasServed"
+                  required
+                  value={form.areasServed}
+                  onChange={handleChange}
+                  placeholder="e.g. Tulsa, Broken Arrow, Bixby, Jenks - up to 30 miles from Tulsa"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+                <p className="text-xs text-gray-400 mt-1">List the cities/areas you serve and how far outside of Tulsa you're willing to travel (e.g. "50 miles from Tulsa")</p>
               </div>
 
               <div>

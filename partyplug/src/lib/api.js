@@ -164,6 +164,7 @@ export async function submitVendorListing(form) {
     location: form.location,
     description: form.description,
     services: form.services.split(',').map((s) => s.trim()).filter(Boolean),
+    areas_served: form.areasServed,
     website: form.website || null,
   })
 

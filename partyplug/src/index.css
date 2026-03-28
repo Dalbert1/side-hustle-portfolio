@@ -20,6 +20,11 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+input, select, textarea {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 @layer utilities {
   /* Party-themed background: confetti, balloons, stars */
   .bg-party-pattern {

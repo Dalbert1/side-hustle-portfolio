@@ -100,7 +100,7 @@ export default function GetListed() {
       </section>
 
       {/* Perks */}
-      <section className="bg-surface dark:bg-gray-800/50 py-10 border-b border-gray-100 dark:border-gray-700">
+      <section className="py-10 border-b border-gray-100 dark:border-gray-700">
         <div className="max-w-4xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             {PERKS.map((perk) => (

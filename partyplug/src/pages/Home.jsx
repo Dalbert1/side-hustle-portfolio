@@ -23,7 +23,7 @@ export default function Home() {
           alt="918 Party Co. - Tulsa Area's Party & Event Marketplace"
           className="w-full h-auto"
         />
-        <div className="px-4 py-4 bg-surface dark:bg-gray-800 text-center flex flex-col sm:flex-row gap-3 justify-center transition-colors">
+        <div className="px-4 py-4 text-center flex flex-col sm:flex-row gap-3 justify-center transition-colors">
           <Link
             to="/vendors"
             className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-light text-gray-900 font-bold px-6 py-3 rounded-xl text-base no-underline transition-colors"
@@ -42,7 +42,7 @@ export default function Home() {
       </section>
 
       {/* Value Props */}
-      <section className="bg-surface dark:bg-gray-800/50 py-10 border-b border-gray-100 dark:border-gray-700 transition-colors">
+      <section className="py-10 border-b border-gray-100 dark:border-gray-700 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="flex flex-col items-center gap-2">
@@ -77,7 +77,7 @@ export default function Home() {
       </section>
 
       {/* Featured Vendors */}
-      <section className="bg-surface dark:bg-gray-800/50 py-12 md:py-16 transition-colors">
+      <section className="py-12 md:py-16 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Featured Vendors</h2>

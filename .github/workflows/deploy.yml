@@ -60,6 +60,15 @@ jobs:
         run: npm run build
         working-directory: heelerconstruction
 
+      # ── Build HaughHoney ──
+      - name: Install HaughHoney deps
+        run: npm ci
+        working-directory: haughhoney
+
+      - name: Build HaughHoney
+        run: npm run build
+        working-directory: haughhoney
+
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
         run: |
@@ -67,6 +76,7 @@ jobs:
           cp -r partyplug/dist _site/partyplug
           cp -r tulsahomehelp/dist _site/tulsahomehelp
           cp -r heelerconstruction/dist _site/heelerconstruction
+          cp -r haughhoney/dist _site/haughhoney
 
       # ── Root landing page ──
       - name: Generate index
@@ -95,9 +105,10 @@ jobs:
               <h1>Side Hustle Portfolio</h1>
               <p>Tulsa-focused digital products</p>
               <div class="grid">
-                <a href="./partyplug/">918 Party Co. <span class="tag">-- Event Services Marketplace</span></a>
-                <a href="./tulsahomehelp/">TulsaHomeHelp <span class="tag">-- Home & Property Services</span></a>
-                <a href="./heelerconstruction/">Heeler Construction <span class="tag">-- Construction & Welding</span></a>
+                <a href="./partyplug/">918 Party Co. <span class="tag">- Event Services Marketplace</span></a>
+                <a href="./tulsahomehelp/">TulsaHomeHelp <span class="tag">- Home & Property Services</span></a>
+                <a href="./heelerconstruction/">Heeler Construction <span class="tag">- Construction Services</span></a>
+                <a href="./haughhoney/">Haugh Honey <span class="tag">- Local Raw Honey</span></a>
               </div>
             </div>
           </body>

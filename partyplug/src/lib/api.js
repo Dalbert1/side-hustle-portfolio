@@ -165,7 +165,7 @@ export async function submitVendorListing(form) {
     description: form.description,
     services: form.services.split(',').map((s) => s.trim()).filter(Boolean),
     areas_served: form.areasServed,
-    website: form.website || null,
+    website: form.website ? (form.website.match(/^https?:\/\//) ? form.website : `https://${form.website}`) : null,
   })
 
   if (error) {

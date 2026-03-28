@@ -227,11 +227,11 @@ export default function GetListed() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
                 <input
-                  type="url"
+                  type="text"
                   name="website"
                   value={form.website}
                   onChange={handleChange}
-                  placeholder="https://yourbusiness.com"
+                  placeholder="yourbusiness.com"
                   className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>

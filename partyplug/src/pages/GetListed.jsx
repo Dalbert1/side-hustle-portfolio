@@ -91,7 +91,7 @@ export default function GetListed() {
       <section className="bg-gradient-to-br from-primary via-primary-dark to-amber-900 text-white py-12 md:py-16">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <PartyPopper className="w-10 h-10 text-accent mx-auto mb-3" />
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">List Your Business on 918 Party Co.</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3">List Your Business on<br />918 Party Co.</h1>
           <p className="text-orange-100 text-lg max-w-xl mx-auto">
             Join Tulsa's party and event marketplace. Get found by local families
             and start receiving booking requests - your first 90 days are free.
@@ -122,10 +122,10 @@ export default function GetListed() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Business Info */}
             <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Business Details</h3>
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Business Details</h3>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Business Name *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Business Name *</label>
                 <input
                   type="text"
                   name="businessName"
@@ -133,19 +133,19 @@ export default function GetListed() {
                   value={form.businessName}
                   onChange={handleChange}
                   placeholder="e.g. Tulsa Bounce Co."
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category *</label>
                   <select
                     name="category"
                     required
                     value={form.category}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700"
                   >
                     <option value="">Select a category...</option>
                     {CATEGORY_OPTIONS.map((opt) => (
@@ -154,13 +154,13 @@ export default function GetListed() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Price Range *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price Range *</label>
                   <select
                     name="priceRange"
                     required
                     value={form.priceRange}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700"
                   >
                     <option value="">Select range...</option>
                     {PRICE_OPTIONS.map((opt) => (
@@ -171,7 +171,7 @@ export default function GetListed() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location *</label>
                 <input
                   type="text"
                   name="location"
@@ -179,12 +179,12 @@ export default function GetListed() {
                   value={form.location}
                   onChange={handleChange}
                   placeholder="e.g. Tulsa, OK"
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Areas Served *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Areas Served *</label>
                 <input
                   type="text"
                   name="areasServed"
@@ -192,13 +192,13 @@ export default function GetListed() {
                   value={form.areasServed}
                   onChange={handleChange}
                   placeholder="e.g. Tulsa, Broken Arrow, Bixby, Jenks - up to 30 miles from Tulsa"
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
                 <p className="text-xs text-gray-400 mt-1">List the cities/areas you serve and how far outside of Tulsa you're willing to travel (e.g. "50 miles from Tulsa")</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description *</label>
                 <textarea
                   name="description"
                   required
@@ -206,12 +206,12 @@ export default function GetListed() {
                   value={form.description}
                   onChange={handleChange}
                   placeholder="Tell potential customers what you offer and what makes your business special..."
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Services Offered *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Services Offered *</label>
                 <input
                   type="text"
                   name="services"
@@ -219,31 +219,31 @@ export default function GetListed() {
                   value={form.services}
                   onChange={handleChange}
                   placeholder="e.g. Bounce Houses, Water Slides, Obstacle Courses"
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
                 <p className="text-xs text-gray-400 mt-1">Separate each service with a comma</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Website</label>
                 <input
                   type="text"
                   name="website"
                   value={form.website}
                   onChange={handleChange}
                   placeholder="yourbusiness.com"
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Contact Info */}
             <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Contact Information</h3>
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Contact Information</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Contact Name *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Contact Name *</label>
                   <input
                     type="text"
                     name="contactName"
@@ -251,11 +251,11 @@ export default function GetListed() {
                     value={form.contactName}
                     onChange={handleChange}
                     placeholder="Your full name"
-                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email *</label>
                   <input
                     type="email"
                     name="email"
@@ -263,13 +263,13 @@ export default function GetListed() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="you@yourbusiness.com"
-                    className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone *</label>
                 <input
                   type="tel"
                   name="phone"
@@ -277,7 +277,7 @@ export default function GetListed() {
                   value={form.phone}
                   onChange={handleChange}
                   placeholder="(918) 555-0000"
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
             </div>

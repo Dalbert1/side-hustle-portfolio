@@ -23,7 +23,7 @@ export default function Home() {
           alt="918 Party Co. - Tulsa Area's Party & Event Marketplace"
           className="w-full h-auto"
         />
-        <div className="bg-gradient-to-t from-primary-dark/80 to-transparent px-4 py-8 md:py-12 text-center">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-4 pb-6 pt-16 text-center">
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               to="/vendors"

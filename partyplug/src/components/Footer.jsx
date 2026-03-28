@@ -1,4 +1,3 @@
-import { Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
@@ -8,8 +7,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2 text-white font-bold text-lg mb-3">
-              <Zap className="w-5 h-5 text-accent" fill="currentColor" />
-              PartyPlug
+              <img src={`${import.meta.env.BASE_URL}918-party.png`} alt="918 Party Co." className="h-8 w-auto rounded" />
+              918 Party Co.
             </div>
             <p className="text-sm leading-relaxed">
               Tulsa's go-to platform for booking event and party services.
@@ -41,7 +40,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm">
-          &copy; {new Date().getFullYear()} PartyPlug -- Tulsa, Oklahoma. All rights reserved.
+          &copy; {new Date().getFullYear()} 918 Party Co. -- Tulsa, Oklahoma. All rights reserved.
         </div>
       </div>
     </footer>

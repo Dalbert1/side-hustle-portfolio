@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Zap } from 'lucide-react'
+import { Menu, X, PartyPopper } from 'lucide-react'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -15,9 +15,9 @@ export default function Navbar() {
     <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <Link to="/" className="flex items-center gap-2 text-primary font-bold text-xl no-underline">
-            <Zap className="w-7 h-7 text-accent" fill="currentColor" />
-            <span>PartyPlug</span>
+          <Link to="/" className="flex items-center gap-2 no-underline">
+            <img src={`${import.meta.env.BASE_URL}918-party.png`} alt="918 Party Co." className="h-10 w-auto rounded" />
+            <span className="text-primary font-bold text-xl">918 Party Co.</span>
           </Link>
 
           {/* Desktop nav */}

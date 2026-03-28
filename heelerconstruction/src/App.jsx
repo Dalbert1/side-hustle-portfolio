@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   Phone, Mail, MapPin, Menu, X, Hammer, Home, Fence,
-  PaintBucket, Wrench, Frame, ChevronRight, Star, ArrowUp,
+  PaintBucket, Frame, ChevronRight, Star, ArrowUp,
   MessageSquareQuote
 } from 'lucide-react'
 
@@ -29,7 +29,6 @@ const SERVICES = [
   { icon: Hammer, title: 'Exterior Remodels', desc: 'Siding, roofing, porches, and exterior upgrades that transform your property.' },
   { icon: Frame, title: 'Framing', desc: 'Residential and commercial framing for new construction and additions.' },
   { icon: Fence, title: 'Fencing', desc: 'Custom wood, metal, and privacy fencing built to last in Oklahoma weather.' },
-  { icon: Wrench, title: 'Welding', desc: 'Structural and custom welding for gates, handrails, brackets, and more.' },
 ]
 
 const REVIEWS = [
@@ -119,8 +118,8 @@ function Hero() {
               <span className="text-accent"> Right.</span>
             </h1>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed max-w-lg">
-              From new builds to remodels, framing to fencing -- Heeler Construction & Welding delivers
-              quality craftsmanship you can count on. Licensed, insured, and locally owned.
+              From new builds to remodels, framing to fencing -- Heeler Construction delivers
+              quality craftsmanship you can count on. Locally owned and operated.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <a href="tel:5807999191" className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-light text-white font-bold px-6 py-3.5 rounded-xl text-base no-underline transition-colors">
@@ -167,7 +166,7 @@ function Services() {
           <span className="text-accent font-semibold text-sm tracking-wider uppercase">What We Do</span>
           <h2 className="text-3xl md:text-4xl font-bold text-navy mt-2">Our Services</h2>
           <p className="text-gray-500 mt-3 max-w-2xl mx-auto">
-            We handle projects big and small across Western Oklahoma. If it involves building, remodeling, or welding -- we have got you covered.
+            We handle projects big and small across Western Oklahoma. If it involves building or remodeling -- we have got you covered.
           </p>
         </div>
 
@@ -283,22 +282,22 @@ function About() {
           <div>
             <img
               src={`${BASE}images/471201290_562700539909092_4606000884168691823_n.jpg`}
-              alt="Heeler Construction & Welding"
+              alt="Heeler Construction"
               className="rounded-xl shadow-lg w-full max-w-md mx-auto"
             />
           </div>
           <div>
             <span className="text-accent font-semibold text-sm tracking-wider uppercase">About Us</span>
             <h2 className="text-3xl md:text-4xl font-bold text-navy mt-2 mb-6">
-              Western Oklahoma's Construction & Welding Professionals
+              Western Oklahoma's Construction Professionals
             </h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Heeler Construction LLC is a locally owned and operated construction and welding company based
+              Heeler Construction LLC is a locally owned and operated construction company based
               out of Elk City, Oklahoma. We take pride in delivering quality work at fair prices throughout
               Western Oklahoma.
             </p>
             <p className="text-gray-600 leading-relaxed mb-6">
-              Whether you need a full custom home build, a kitchen remodel, a new fence, or custom welding work --
+              Whether you need a full custom home build, a kitchen remodel, or a new fence --
               we bring the same level of dedication and craftsmanship to every job. No project is too big or too small.
             </p>
 
@@ -352,7 +351,7 @@ function Contact() {
               <Mail className="w-6 h-6 text-accent" />
             </div>
             <div className="text-white font-semibold">Email Us</div>
-            <div className="text-gray-400 text-sm text-center break-all">Heelerconstructionllc @gmail.com</div>
+            <div className="text-gray-400 text-sm text-center break-all">Heelerconstructionllc@gmail.com</div>
           </a>
 
           <div className="flex flex-col items-center gap-3 bg-white/5 border border-white/10 rounded-xl p-6">

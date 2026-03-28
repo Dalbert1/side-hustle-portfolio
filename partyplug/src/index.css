@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #7c3aed;
-  --color-primary-light: #a78bfa;
-  --color-primary-dark: #5b21b6;
-  --color-accent: #f59e0b;
-  --color-accent-light: #fbbf24;
-  --color-surface: #faf5ff;
-  --color-surface-dark: #ede9fe;
+  --color-primary: #c2665a;
+  --color-primary-light: #d4877d;
+  --color-primary-dark: #a14f44;
+  --color-accent: #e8a54b;
+  --color-accent-light: #f0bc6e;
+  --color-surface: #fef8f0;
+  --color-surface-dark: #faecd8;
 }
 
 body {
@@ -17,7 +17,7 @@ body {
 
 /* Party-themed background: confetti, balloons, stars */
 .bg-party-pattern {
-  background-color: #fdf9ff;
+  background-color: #fffaf5;
   background-image:
-    url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.07'%3E%3Ccircle cx='12' cy='15' r='4' fill='%237c3aed'/%3E%3Ccircle cx='60' cy='55' r='3' fill='%23f59e0b'/%3E%3Ccircle cx='35' cy='70' r='3.5' fill='%23ec4899'/%3E%3Crect x='50' y='10' width='6' height='3' rx='1' fill='%2310b981' transform='rotate(25 53 11.5)'/%3E%3Crect x='18' y='45' width='5' height='2.5' rx='1' fill='%23f59e0b' transform='rotate(-15 20.5 46.25)'/%3E%3Crect x='68' y='35' width='5' height='2.5' rx='1' fill='%237c3aed' transform='rotate(40 70.5 36.25)'/%3E%3Cpolygon points='40,3 41.5,7 46,7.5 42.5,10.5 43.5,15 40,12.5 36.5,15 37.5,10.5 34,7.5 38.5,7' fill='%23f59e0b'/%3E%3Cpath d='M5 62 Q7 55 9 62' stroke='%23ec4899' stroke-width='1.5' fill='none'/%3E%3Cpath d='M72 68 Q74 61 76 68' stroke='%237c3aed' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.06'%3E%3Ccircle cx='12' cy='15' r='4' fill='%23c2665a'/%3E%3Ccircle cx='60' cy='55' r='3' fill='%23e8a54b'/%3E%3Ccircle cx='35' cy='70' r='3.5' fill='%23d4877d'/%3E%3Crect x='50' y='10' width='6' height='3' rx='1' fill='%23e8a54b' transform='rotate(25 53 11.5)'/%3E%3Crect x='18' y='45' width='5' height='2.5' rx='1' fill='%23c2665a' transform='rotate(-15 20.5 46.25)'/%3E%3Crect x='68' y='35' width='5' height='2.5' rx='1' fill='%23d4877d' transform='rotate(40 70.5 36.25)'/%3E%3Cpolygon points='40,3 41.5,7 46,7.5 42.5,10.5 43.5,15 40,12.5 36.5,15 37.5,10.5 34,7.5 38.5,7' fill='%23e8a54b'/%3E%3Cpath d='M5 62 Q7 55 9 62' stroke='%23d4877d' stroke-width='1.5' fill='none'/%3E%3Cpath d='M72 68 Q74 61 76 68' stroke='%23c2665a' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
 }

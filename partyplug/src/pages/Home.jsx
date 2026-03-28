@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Zap, Search, Star, Shield, ArrowRight } from 'lucide-react'
+import { Search, Star, Shield, ArrowRight } from 'lucide-react'
 import CategoryCard from '../components/CategoryCard'
 import VendorCard from '../components/VendorCard'
 import { fetchCategories, fetchFeaturedVendors } from '../lib/api'
@@ -17,21 +17,20 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary via-primary-dark to-purple-900 text-white">
+      <section className="bg-gradient-to-br from-primary via-primary-dark to-amber-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Zap className="w-8 h-8 text-accent" fill="currentColor" />
-              <span className="text-accent font-bold text-sm tracking-wider uppercase">PartyPlug</span>
+            <div className="flex items-center justify-center mb-4">
+              <img src={`${import.meta.env.BASE_URL}918-party.png`} alt="918 Party Co." className="h-16 w-auto rounded-lg" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-              Tulsa's Party & Event
+              Tulsa Area's Party & Event
               <br />
-              <span className="text-accent-light">Services Marketplace</span>
+              <span className="text-accent-light">Marketplace</span>
             </h1>
-            <p className="text-lg text-purple-200 mb-8 leading-relaxed">
-              Find and book bounce houses, DJs, caterers, photo booths, and more
-              for your next event. All the best Tulsa vendors in one place.
+            <p className="text-lg text-orange-100 mb-8 leading-relaxed">
+              Book the best Tulsa party vendors from one site. Find bounce houses,
+              caterers, DJs, photo booths, and more for your next celebration.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link

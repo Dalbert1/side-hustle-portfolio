@@ -1,0 +1,14 @@
+import StarRating from './StarRating'
+
+export default function ReviewCard({ review }) {
+  return (
+    <div className="border-b border-gray-100 pb-4 last:border-0">
+      <div className="flex items-center justify-between mb-1">
+        <span className="font-medium text-gray-900 text-sm">{review.author}</span>
+        <span className="text-xs text-gray-400">{review.date}</span>
+      </div>
+      <StarRating rating={review.rating} size={14} />
+      <p className="text-gray-600 text-sm mt-2 leading-relaxed">{review.text}</p>
+    </div>
+  )
+}

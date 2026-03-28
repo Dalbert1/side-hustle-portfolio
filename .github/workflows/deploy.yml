@@ -26,25 +26,78 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: partyplug/package-lock.json
 
-      - name: Install dependencies
+      # ── Build PartyPlug ──
+      - name: Install PartyPlug deps
         run: npm ci
         working-directory: partyplug
 
-      - name: Build
+      - name: Build PartyPlug
         run: npm run build
         working-directory: partyplug
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
+      # ── Build TulsaHomeHelp ──
+      - name: Install TulsaHomeHelp deps
+        run: npm ci
+        working-directory: tulsahomehelp
+
+      - name: Build TulsaHomeHelp
+        run: npm run build
+        working-directory: tulsahomehelp
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      # ── Merge all builds into one deploy folder ──
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r partyplug/dist _site/partyplug
+          cp -r tulsahomehelp/dist _site/tulsahomehelp
+
+      # ── Root landing page ──
+      - name: Generate index
+        run: |
+          cat > _site/index.html << 'HTMLEOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Side Hustle Portfolio</title>
+            <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body { font-family: system-ui, sans-serif; background: #0f0a1a; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+              .container { max-width: 600px; padding: 2rem; text-align: center; }
+              h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+              p { color: #a0a0b0; margin-bottom: 2rem; }
+              .grid { display: grid; gap: 1rem; }
+              a { display: block; padding: 1.25rem; background: #1a1230; border: 1px solid #2a2045; border-radius: 12px; color: #fff; text-decoration: none; font-weight: 600; transition: border-color 0.2s; }
+              a:hover { border-color: #7c3aed; }
+              .tag { font-size: 0.75rem; color: #a78bfa; font-weight: 400; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>Side Hustle Portfolio</h1>
+              <p>Tulsa-focused digital products</p>
+              <div class="grid">
+                <a href="./partyplug/">PartyPlug <span class="tag">-- Event Services Marketplace</span></a>
+                <a href="./tulsahomehelp/">TulsaHomeHelp <span class="tag">-- Home & Property Services</span></a>
+              </div>
+            </div>
+          </body>
+          </html>
+          HTMLEOF
+
       - uses: actions/configure-pages@v4
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: partyplug/dist
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

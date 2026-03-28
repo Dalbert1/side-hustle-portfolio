@@ -2,8 +2,8 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
-import Vendors from './pages/Vendors'
-import VendorDetail from './pages/VendorDetail'
+import Providers from './pages/Providers'
+import ProviderDetail from './pages/ProviderDetail'
 
 export default function App() {
   return (
@@ -13,8 +13,8 @@ export default function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/vendors" element={<Vendors />} />
-            <Route path="/vendors/:id" element={<VendorDetail />} />
+            <Route path="/providers" element={<Providers />} />
+            <Route path="/providers/:id" element={<ProviderDetail />} />
           </Routes>
         </main>
         <Footer />

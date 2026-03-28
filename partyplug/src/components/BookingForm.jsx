@@ -38,8 +38,8 @@ export default function BookingForm({ vendorName, vendorId }) {
     return (
       <div className="text-center py-8">
         <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">Request Sent!</h3>
-        <p className="text-gray-600 text-sm">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Request Sent!</h3>
+        <p className="text-gray-600 dark:text-gray-400 text-sm">
           {vendorName} will get back to you within 24 hours.
         </p>
       </div>
@@ -47,7 +47,7 @@ export default function BookingForm({ vendorName, vendorId }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 min-w-0">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Request a Booking</h3>
 
       <div className="grid grid-cols-1 gap-4">
@@ -59,7 +59,7 @@ export default function BookingForm({ vendorName, vendorId }) {
             required
             value={form.name}
             onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
         <div>
@@ -70,7 +70,7 @@ export default function BookingForm({ vendorName, vendorId }) {
             required
             value={form.email}
             onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
         <div>
@@ -80,7 +80,7 @@ export default function BookingForm({ vendorName, vendorId }) {
             name="phone"
             value={form.phone}
             onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
         <div>
@@ -91,7 +91,7 @@ export default function BookingForm({ vendorName, vendorId }) {
             required
             value={form.eventDate}
             onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
         <div>
@@ -101,7 +101,7 @@ export default function BookingForm({ vendorName, vendorId }) {
             name="eventTime"
             value={form.eventTime}
             onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
         <div>
@@ -110,7 +110,7 @@ export default function BookingForm({ vendorName, vendorId }) {
             name="eventType"
             value={form.eventType}
             onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700"
           >
             <option value="">Select type...</option>
             <option value="birthday">Birthday Party</option>
@@ -130,7 +130,7 @@ export default function BookingForm({ vendorName, vendorId }) {
             value={form.guestCount}
             onChange={handleChange}
             placeholder="Approx. guests"
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
         </div>
       </div>
@@ -143,7 +143,7 @@ export default function BookingForm({ vendorName, vendorId }) {
           value={form.message}
           onChange={handleChange}
           placeholder="Tell the vendor about your event..."
-          className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+          className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
         />
       </div>
 

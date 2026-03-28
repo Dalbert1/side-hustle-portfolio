@@ -161,8 +161,8 @@ export default function VendorDetail() {
         </div>
 
         {/* Sidebar: Booking form */}
-        <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 sticky top-20">
+        <div className="lg:col-span-1 min-w-0">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-4 sm:p-5 sticky top-20 overflow-hidden">
             <BookingForm vendorName={vendor.name} vendorId={vendor.id} />
           </div>
         </div>

@@ -26,7 +26,7 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="bg-ribbon-pattern dark:bg-gray-900 shadow-sm sticky top-0 z-50 transition-colors">
+    <nav className="bg-ribbon-pattern shadow-sm sticky top-0 z-50 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <Link to="/" className="flex items-center gap-2 no-underline">

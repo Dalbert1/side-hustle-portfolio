@@ -49,7 +49,7 @@ export default function Vendors() {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
           {activeCatName ? activeCatName : 'All Vendors'}
         </h1>
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-500 dark:text-gray-400 text-sm">
           {vendors.length} vendor{vendors.length !== 1 ? 's' : ''} in the Tulsa area
         </p>
 
@@ -81,7 +81,7 @@ export default function Vendors() {
       {showFilters && (
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 mb-6 shadow-sm">
           <div className="mb-4">
-            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
               Category
             </label>
             <div className="flex flex-wrap gap-2">
@@ -90,7 +90,7 @@ export default function Vendors() {
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
                   !activeCategory
                     ? 'bg-primary text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 All
@@ -102,7 +102,7 @@ export default function Vendors() {
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
                     activeCategory === cat.id
                       ? 'bg-primary text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {cat.icon} {cat.name}
@@ -112,7 +112,7 @@ export default function Vendors() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
               Sort By
             </label>
             <div className="flex flex-wrap gap-2">
@@ -127,7 +127,7 @@ export default function Vendors() {
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
                     activeSort === opt.value
                       ? 'bg-primary text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {opt.label}
@@ -145,8 +145,8 @@ export default function Vendors() {
         </div>
       ) : vendors.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-gray-500 text-lg mb-2">No vendors found</p>
-          <p className="text-gray-400 text-sm">Try a different search or category.</p>
+          <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">No vendors found</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm">Try a different search or category.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

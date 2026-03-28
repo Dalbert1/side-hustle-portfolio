@@ -22,7 +22,15 @@ body {
 
 input, select, textarea {
   max-width: 100%;
+  min-width: 0;
   box-sizing: border-box;
+}
+
+input[type="date"],
+input[type="time"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
 }
 
 @layer utilities {

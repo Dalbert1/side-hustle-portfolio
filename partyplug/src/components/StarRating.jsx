@@ -6,10 +6,10 @@ export default function StarRating({ rating, size = 16 }) {
       {[1, 2, 3, 4, 5].map((star) => (
         <Star
           key={star}
-          className={`w-${size === 16 ? 4 : 5} h-${size === 16 ? 4 : 5} ${
+          className={`${
             star <= Math.round(rating)
               ? 'text-accent fill-accent'
-              : 'text-gray-300'
+              : 'text-gray-300 dark:text-gray-600'
           }`}
           style={{ width: size, height: size }}
         />

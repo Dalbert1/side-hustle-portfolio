@@ -67,12 +67,12 @@ export default function GetListed() {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-        <h1 className="text-3xl font-bold text-gray-900 mb-3">You're All Set!</h1>
-        <p className="text-gray-600 mb-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">You're All Set!</h1>
+        <p className="text-gray-600 dark:text-gray-300 mb-2">
           Thanks for submitting your listing. We'll review your information and get your
           business live on 918 Party Co. within 1-2 business days.
         </p>
-        <p className="text-gray-500 text-sm mb-8">
+        <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">
           We'll send a confirmation to <strong>{form.email}</strong> once your listing is active.
         </p>
         <Link
@@ -105,9 +105,9 @@ export default function GetListed() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             {PERKS.map((perk) => (
               <div key={perk.title} className="flex flex-col items-center gap-2">
-                <perk.icon className="w-8 h-8 text-primary" />
-                <h3 className="font-semibold text-gray-900">{perk.title}</h3>
-                <p className="text-sm text-gray-600">{perk.desc}</p>
+                <perk.icon className="w-8 h-8 text-primary dark:text-accent" />
+                <h3 className="font-semibold text-gray-900 dark:text-white">{perk.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{perk.desc}</p>
               </div>
             ))}
           </div>

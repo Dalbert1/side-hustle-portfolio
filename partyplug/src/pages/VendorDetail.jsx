@@ -39,8 +39,8 @@ export default function VendorDetail() {
   if (!vendor) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Vendor Not Found</h2>
-        <Link to="/vendors" className="text-primary font-medium no-underline">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Vendor Not Found</h2>
+        <Link to="/vendors" className="text-primary dark:text-accent font-medium no-underline">
           Back to vendors
         </Link>
       </div>
@@ -58,7 +58,7 @@ export default function VendorDetail() {
       {/* Back link */}
       <Link
         to="/vendors"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-primary no-underline mb-4 transition-colors"
+        className="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-accent no-underline mb-4 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to vendors
@@ -89,13 +89,13 @@ export default function VendorDetail() {
                 {category && (
                   <Link
                     to={`/vendors?category=${category.id}`}
-                    className="inline-flex items-center gap-1 text-sm text-primary no-underline mt-1"
+                    className="inline-flex items-center gap-1 text-sm text-primary dark:text-accent no-underline mt-1"
                   >
                     <span>{category.icon}</span> {category.name}
                   </Link>
                 )}
               </div>
-              <span className="bg-surface-dark text-primary font-bold text-lg px-3 py-1 rounded-lg">
+              <span className="bg-surface-dark dark:bg-gray-700 text-primary dark:text-accent font-bold text-lg px-3 py-1 rounded-lg">
                 {vendor.priceRange}
               </span>
             </div>
@@ -103,36 +103,36 @@ export default function VendorDetail() {
             <div className="flex items-center gap-4 mt-3 flex-wrap">
               <div className="flex items-center gap-1.5">
                 <StarRating rating={vendor.rating} size={18} />
-                <span className="text-sm font-medium text-gray-700">{vendor.rating}</span>
-                <span className="text-sm text-gray-400">({vendor.reviewCount} reviews)</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{vendor.rating}</span>
+                <span className="text-sm text-gray-400 dark:text-gray-500">({vendor.reviewCount} reviews)</span>
               </div>
-              <div className="flex items-center gap-1 text-gray-500 text-sm">
+              <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-sm">
                 <MapPin className="w-4 h-4" />
                 {vendor.location}
               </div>
               {vendor.phone && (
-                <div className="flex items-center gap-1 text-gray-500 text-sm">
+                <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-sm">
                   <Phone className="w-4 h-4" />
                   {vendor.phone}
                 </div>
               )}
             </div>
 
-            <p className="text-gray-600 dark:text-gray-400 mt-4 leading-relaxed">{vendor.description}</p>
+            <p className="text-gray-600 dark:text-gray-300 mt-4 leading-relaxed">{vendor.description}</p>
           </div>
 
           {/* Services */}
           {vendor.services?.length > 0 && (
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <Tag className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <Tag className="w-5 h-5 text-primary dark:text-accent" />
                 Services Offered
               </h2>
               <div className="flex flex-wrap gap-2">
                 {vendor.services.map((service) => (
                   <span
                     key={service}
-                    className="bg-surface text-primary-dark text-sm font-medium px-3 py-1.5 rounded-full"
+                    className="bg-surface dark:bg-gray-700 text-primary-dark dark:text-gray-300 text-sm font-medium px-3 py-1.5 rounded-full"
                   >
                     {service}
                   </span>
@@ -143,8 +143,8 @@ export default function VendorDetail() {
 
           {/* Reviews */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Star className="w-5 h-5 text-primary" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <Star className="w-5 h-5 text-primary dark:text-accent" />
               Reviews ({reviews.length})
             </h2>
             {reviews.length > 0 ? (
@@ -154,7 +154,7 @@ export default function VendorDetail() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-400 text-sm">No reviews yet. Be the first!</p>
+              <p className="text-gray-400 dark:text-gray-500 text-sm">No reviews yet. Be the first!</p>
             )}
             <ReviewForm vendorId={vendor.id} onReviewSubmitted={handleReviewSubmitted} />
           </div>

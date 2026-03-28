@@ -46,12 +46,13 @@ export default function Vendors() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
           {activeCatName ? activeCatName : 'All Vendors'}
         </h1>
         <p className="text-gray-500 text-sm">
           {vendors.length} vendor{vendors.length !== 1 ? 's' : ''} in the Tulsa area
         </p>
+
       </div>
 
       {/* Search + Filter Toggle */}
@@ -68,7 +69,7 @@ export default function Vendors() {
           className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-colors cursor-pointer ${
             showFilters
               ? 'bg-primary text-white border-primary'
-              : 'bg-white text-gray-700 border-gray-200 hover:border-primary'
+              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-primary'
           }`}
         >
           <SlidersHorizontal className="w-4 h-4" />
@@ -78,7 +79,7 @@ export default function Vendors() {
 
       {/* Filter Panel */}
       {showFilters && (
-        <div className="bg-white rounded-xl border border-gray-100 p-4 mb-6 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 mb-6 shadow-sm">
           <div className="mb-4">
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
               Category

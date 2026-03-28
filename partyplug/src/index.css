@@ -9,6 +9,8 @@
   --color-surface: #fdf3de;
   --color-surface-dark: #faecd8;
   --color-ribbon: #f7dea6;
+  --color-card: #ffffff;
+  --color-page: #fdf3de;
 }
 
 body {
@@ -21,4 +23,11 @@ body {
   background-color: #fdf3de;
   background-image:
     url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.12'%3E%3Ccircle cx='12' cy='15' r='4' fill='%23c2665a'/%3E%3Ccircle cx='60' cy='55' r='3' fill='%23edb654'/%3E%3Ccircle cx='35' cy='70' r='3.5' fill='%23d4877d'/%3E%3Ccircle cx='80' cy='20' r='2.5' fill='%2345b7a0'/%3E%3Ccircle cx='50' cy='90' r='3' fill='%23e87da5'/%3E%3Crect x='50' y='10' width='6' height='3' rx='1' fill='%23edb654' transform='rotate(25 53 11.5)'/%3E%3Crect x='18' y='45' width='5' height='2.5' rx='1' fill='%23c2665a' transform='rotate(-15 20.5 46.25)'/%3E%3Crect x='68' y='35' width='5' height='2.5' rx='1' fill='%23d4877d' transform='rotate(40 70.5 36.25)'/%3E%3Crect x='88' y='70' width='5' height='2.5' rx='1' fill='%2345b7a0' transform='rotate(-30 90.5 71.25)'/%3E%3Crect x='5' y='85' width='4' height='2' rx='1' fill='%23e87da5' transform='rotate(50 7 86)'/%3E%3Crect x='30' y='30' width='5' height='2.5' rx='1' fill='%23edb654' transform='rotate(60 32.5 31.25)'/%3E%3Cpolygon points='40,3 41.5,7 46,7.5 42.5,10.5 43.5,15 40,12.5 36.5,15 37.5,10.5 34,7.5 38.5,7' fill='%23edb654'/%3E%3Cpolygon points='90,50 91,53 94,53.5 91.5,55 92,57 90,55.5 88,57 88.5,55 86,53.5 89,53' fill='%23e87da5'/%3E%3Cpath d='M5 62 Q7 55 9 62' stroke='%23d4877d' stroke-width='1.5' fill='none'/%3E%3Cpath d='M72 68 Q74 61 76 68' stroke='%23c2665a' stroke-width='1.5' fill='none'/%3E%3Cpath d='M25 5 Q27 0 29 5' stroke='%2345b7a0' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Dark mode */
+.dark .bg-party-pattern {
+  background-color: #1a1520;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.08'%3E%3Ccircle cx='12' cy='15' r='4' fill='%23c2665a'/%3E%3Ccircle cx='60' cy='55' r='3' fill='%23edb654'/%3E%3Ccircle cx='35' cy='70' r='3.5' fill='%23d4877d'/%3E%3Ccircle cx='80' cy='20' r='2.5' fill='%2345b7a0'/%3E%3Ccircle cx='50' cy='90' r='3' fill='%23e87da5'/%3E%3Crect x='50' y='10' width='6' height='3' rx='1' fill='%23edb654' transform='rotate(25 53 11.5)'/%3E%3Crect x='18' y='45' width='5' height='2.5' rx='1' fill='%23c2665a' transform='rotate(-15 20.5 46.25)'/%3E%3Crect x='68' y='35' width='5' height='2.5' rx='1' fill='%23d4877d' transform='rotate(40 70.5 36.25)'/%3E%3Crect x='88' y='70' width='5' height='2.5' rx='1' fill='%2345b7a0' transform='rotate(-30 90.5 71.25)'/%3E%3Crect x='5' y='85' width='4' height='2' rx='1' fill='%23e87da5' transform='rotate(50 7 86)'/%3E%3Crect x='30' y='30' width='5' height='2.5' rx='1' fill='%23edb654' transform='rotate(60 32.5 31.25)'/%3E%3Cpolygon points='40,3 41.5,7 46,7.5 42.5,10.5 43.5,15 40,12.5 36.5,15 37.5,10.5 34,7.5 38.5,7' fill='%23edb654'/%3E%3Cpolygon points='90,50 91,53 94,53.5 91.5,55 92,57 90,55.5 88,57 88.5,55 86,53.5 89,53' fill='%23e87da5'/%3E%3Cpath d='M5 62 Q7 55 9 62' stroke='%23d4877d' stroke-width='1.5' fill='none'/%3E%3Cpath d='M72 68 Q74 61 76 68' stroke='%23c2665a' stroke-width='1.5' fill='none'/%3E%3Cpath d='M25 5 Q27 0 29 5' stroke='%2345b7a0' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
 }

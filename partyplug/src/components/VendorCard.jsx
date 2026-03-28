@@ -6,7 +6,7 @@ export default function VendorCard({ vendor }) {
   return (
     <Link
       to={`/vendors/${vendor.id}`}
-      className="group block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow no-underline"
+      className="group block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow no-underline"
     >
       <div className="relative h-48 overflow-hidden">
         <img
@@ -25,23 +25,23 @@ export default function VendorCard({ vendor }) {
       </div>
 
       <div className="p-4">
-        <h3 className="text-gray-900 font-semibold text-base mb-1 group-hover:text-primary transition-colors">
+        <h3 className="text-gray-900 dark:text-white font-semibold text-base mb-1 group-hover:text-primary dark:group-hover:text-accent transition-colors">
           {vendor.name}
         </h3>
 
         <div className="flex items-center gap-2 mb-2">
           <StarRating rating={vendor.rating} />
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-gray-400">
             {vendor.rating} ({vendor.reviewCount})
           </span>
         </div>
 
-        <div className="flex items-center gap-1 text-gray-500 text-sm">
+        <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-sm">
           <MapPin className="w-3.5 h-3.5" />
           {vendor.location}
         </div>
 
-        <p className="text-gray-500 text-sm mt-2 line-clamp-2">
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 line-clamp-2">
           {vendor.description}
         </p>
       </div>

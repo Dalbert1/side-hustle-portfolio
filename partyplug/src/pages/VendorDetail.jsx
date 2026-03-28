@@ -85,7 +85,7 @@ export default function VendorDetail() {
           <div>
             <div className="flex items-start justify-between flex-wrap gap-2">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{vendor.name}</h1>
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{vendor.name}</h1>
                 {category && (
                   <Link
                     to={`/vendors?category=${category.id}`}
@@ -118,7 +118,7 @@ export default function VendorDetail() {
               )}
             </div>
 
-            <p className="text-gray-600 mt-4 leading-relaxed">{vendor.description}</p>
+            <p className="text-gray-600 dark:text-gray-400 mt-4 leading-relaxed">{vendor.description}</p>
           </div>
 
           {/* Services */}
@@ -162,7 +162,7 @@ export default function VendorDetail() {
 
         {/* Sidebar: Booking form */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 sticky top-20">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 sticky top-20">
             <BookingForm vendorName={vendor.name} vendorId={vendor.id} />
           </div>
         </div>

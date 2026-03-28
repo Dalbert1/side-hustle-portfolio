@@ -100,7 +100,7 @@ export default function GetListed() {
       </section>
 
       {/* Perks */}
-      <section className="bg-surface py-10 border-b border-gray-100">
+      <section className="bg-surface dark:bg-gray-800/50 py-10 border-b border-gray-100 dark:border-gray-700">
         <div className="max-w-4xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             {PERKS.map((perk) => (
@@ -117,11 +117,11 @@ export default function GetListed() {
       {/* Form */}
       <section className="py-12 md:py-16">
         <div className="max-w-2xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Tell Us About Your Business</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Tell Us About Your Business</h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Business Info */}
-            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 space-y-4">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Business Details</h3>
 
               <div>
@@ -238,7 +238,7 @@ export default function GetListed() {
             </div>
 
             {/* Contact Info */}
-            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 space-y-4">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Contact Information</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

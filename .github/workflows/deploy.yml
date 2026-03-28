@@ -51,12 +51,22 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
+      # ── Build HeelerConstruction ──
+      - name: Install HeelerConstruction deps
+        run: npm ci
+        working-directory: heelerconstruction
+
+      - name: Build HeelerConstruction
+        run: npm run build
+        working-directory: heelerconstruction
+
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
         run: |
           mkdir -p _site
           cp -r partyplug/dist _site/partyplug
           cp -r tulsahomehelp/dist _site/tulsahomehelp
+          cp -r heelerconstruction/dist _site/heelerconstruction
 
       # ── Root landing page ──
       - name: Generate index
@@ -87,6 +97,7 @@ jobs:
               <div class="grid">
                 <a href="./partyplug/">PartyPlug <span class="tag">-- Event Services Marketplace</span></a>
                 <a href="./tulsahomehelp/">TulsaHomeHelp <span class="tag">-- Home & Property Services</span></a>
+                <a href="./heelerconstruction/">Heeler Construction <span class="tag">-- Construction & Welding</span></a>
               </div>
             </div>
           </body>

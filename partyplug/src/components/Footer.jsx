@@ -13,7 +13,7 @@ export default function Footer() {
             </div>
             <p className="text-sm leading-relaxed">
               Tulsa's go-to platform for booking event and party services.
-              Find bounce houses, DJs, caterers, and more -- all in one place.
+              Find bounce houses, DJs, caterers, and more -all in one place.
             </p>
           </div>
 
@@ -41,7 +41,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm">
-          &copy; {new Date().getFullYear()} 918 Party Co. -- Tulsa, Oklahoma. All rights reserved.
+          &copy; {new Date().getFullYear()} 918 Party Co. -Tulsa, Oklahoma. All rights reserved.
         </div>
       </div>
     </footer>

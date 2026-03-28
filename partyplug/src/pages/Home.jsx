@@ -34,7 +34,7 @@ export default function Home() {
             </Link>
             <Link
               to="/get-listed"
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3 rounded-xl text-base no-underline transition-colors backdrop-blur border border-white/20"
+              className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-6 py-3 rounded-xl text-base no-underline transition-colors"
             >
               List Your Business
               <ArrowRight className="w-4 h-4" />

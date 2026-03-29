@@ -14,13 +14,41 @@ export default function Community() {
   }, [])
 
   async function loadPublicSetups() {
-    const { data } = await supabase
+    // Fetch public setups (no join - user_screenshots FK points to auth.users, not user_profiles)
+    const { data, error } = await supabase
       .from('user_screenshots')
-      .select('*, user_profiles(email)')
+      .select('*')
       .eq('is_public', true)
       .order('updated_at', { ascending: false })
 
-    setSetups(data || [])
+    if (error) {
+      console.error('Failed to load public setups:', error.message)
+      setSetups([])
+      setLoading(false)
+      return
+    }
+
+    // Fetch display names for each unique user
+    const userIds = [...new Set((data || []).map(s => s.user_id))]
+    const profileMap = {}
+
+    if (userIds.length > 0) {
+      const { data: profiles } = await supabase
+        .from('user_profiles')
+        .select('id, email')
+        .in('id', userIds)
+
+      for (const p of profiles || []) {
+        profileMap[p.id] = p.email?.split('@')[0] || 'Player'
+      }
+    }
+
+    const enriched = (data || []).map(s => ({
+      ...s,
+      display_name: profileMap[s.user_id] || 'Player',
+    }))
+
+    setSetups(enriched)
     setLoading(false)
   }
 
@@ -55,7 +83,7 @@ export default function Community() {
       ) : (
         <div className="space-y-3">
           {setups.map(setup => {
-            const username = setup.user_profiles?.email?.split('@')[0] || 'Anonymous'
+            const username = setup.display_name || 'Player'
             const isOwnSetup = user && setup.user_id === user.id
 
             return (

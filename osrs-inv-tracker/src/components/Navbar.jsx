@@ -7,7 +7,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
-  const { user, signOut } = useAuth()
+  const { user, displayName, signOut } = useAuth()
 
   async function handleSignOut() {
     await signOut()
@@ -59,10 +59,10 @@ export default function Navbar() {
 
             {user ? (
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-text-muted flex items-center gap-1">
+                <Link to="/profile" className="text-[11px] text-text-muted hover:text-gold flex items-center gap-1 no-underline transition-colors duration-150">
                   <User className="w-3 h-3" aria-hidden="true" />
-                  {user.email?.split('@')[0]}
-                </span>
+                  {displayName || user.email?.split('@')[0]}
+                </Link>
                 <button
                   onClick={handleSignOut}
                   className="flex items-center gap-1 text-[12px] text-text-secondary hover:text-gold px-2 py-1 rounded-md transition-colors duration-150 cursor-pointer bg-transparent border-none"
@@ -113,10 +113,10 @@ export default function Navbar() {
             ))}
             {user ? (
               <>
-                <div className="py-1.5 px-2 text-xs text-text-muted flex items-center gap-1 mt-1 border-t border-border-subtle pt-2">
+                <Link to="/profile" onClick={() => setOpen(false)} className="block py-1.5 px-2 text-xs text-text-muted hover:text-gold no-underline flex items-center gap-1 mt-1 border-t border-border-subtle pt-2 transition-colors duration-150">
                   <User className="w-3 h-3" aria-hidden="true" />
-                  {user.email}
-                </div>
+                  {displayName || user.email}
+                </Link>
                 <button
                   onClick={() => { handleSignOut(); setOpen(false) }}
                   role="menuitem"

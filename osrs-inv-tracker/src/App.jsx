@@ -11,6 +11,7 @@ import Activity from './pages/Activity'
 import MySetups from './pages/MySetups'
 import AddActivity from './pages/AddActivity'
 import Community from './pages/Community'
+import Profile from './pages/Profile'
 
 export default function App() {
   return (
@@ -26,6 +27,14 @@ export default function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/activity/:slug" element={<Activity />} />
               <Route path="/community" element={<Community />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/my-setups"
                 element={

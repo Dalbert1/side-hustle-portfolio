@@ -7,6 +7,7 @@ export default function Signup() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [rsn, setRsn] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
@@ -28,7 +29,7 @@ export default function Signup() {
     }
 
     setLoading(true)
-    const { data, error } = await signUp(email, password)
+    const { data, error } = await signUp(email, password, rsn)
 
     if (error) {
       setError(error.message)
@@ -76,6 +77,22 @@ export default function Signup() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="signup-rsn" className="block text-[13px] font-medium text-text-primary mb-1">
+              RSN <span className="text-text-muted font-normal">(optional)</span>
+            </label>
+            <input
+              id="signup-rsn"
+              type="text"
+              value={rsn}
+              onChange={e => setRsn(e.target.value)}
+              maxLength={12}
+              autoComplete="username"
+              className="w-full px-3 py-2 bg-surface-raised border border-border-subtle rounded-md text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-gold transition-colors duration-150"
+              placeholder="Your RuneScape name"
+            />
+          </div>
+
           <div>
             <label htmlFor="signup-email" className="block text-[13px] font-medium text-text-primary mb-1">Email</label>
             <input

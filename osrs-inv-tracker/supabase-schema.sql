@@ -7,6 +7,7 @@
 create table if not exists public.user_profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text,
+  rsn text,
   created_at timestamptz default now()
 );
 
@@ -22,6 +23,11 @@ create policy "Users can insert own profile"
   on public.user_profiles for insert
   with check (auth.uid() = id);
 
+-- Users can update their own profile (RSN etc)
+create policy "Users can update own profile"
+  on public.user_profiles for update
+  using (auth.uid() = id);
+
 -- Auto-create profile on signup via trigger
 create or replace function public.handle_new_user()
 returns trigger as $$
@@ -31,8 +37,8 @@ begin
     raise exception 'Maximum number of users (5) reached. Signups are currently closed.';
   end if;
 
-  insert into public.user_profiles (id, email)
-  values (new.id, new.email);
+  insert into public.user_profiles (id, email, rsn)
+  values (new.id, new.email, new.raw_user_meta_data->>'rsn');
   return new;
 end;
 $$ language plpgsql security definer;
@@ -108,15 +114,37 @@ create policy "Authenticated users can insert custom activities"
 
 
 -- ============================================================
--- MIGRATION: If you already have the tables from the initial
--- schema, run this to add the is_public column:
+-- MIGRATION: Run these if you already have the tables from
+-- a previous version of the schema:
 --
+-- -- Add is_public column
 -- alter table public.user_screenshots
 --   add column if not exists is_public boolean default false;
 --
 -- create policy "Authenticated users can view public screenshots"
 --   on public.user_screenshots for select
 --   using (is_public = true and auth.role() = 'authenticated');
+--
+-- -- Add rsn column and update policy/trigger
+-- alter table public.user_profiles
+--   add column if not exists rsn text;
+--
+-- create policy "Users can update own profile"
+--   on public.user_profiles for update
+--   using (auth.uid() = id);
+--
+-- -- Update the trigger function to save RSN on signup
+-- create or replace function public.handle_new_user()
+-- returns trigger as $$
+-- begin
+--   if (select count(*) from public.user_profiles) >= 5 then
+--     raise exception 'Maximum number of users (5) reached. Signups are currently closed.';
+--   end if;
+--   insert into public.user_profiles (id, email, rsn)
+--   values (new.id, new.email, new.raw_user_meta_data->>'rsn');
+--   return new;
+-- end;
+-- $$ language plpgsql security definer;
 -- ============================================================
 
 -- ============================================================

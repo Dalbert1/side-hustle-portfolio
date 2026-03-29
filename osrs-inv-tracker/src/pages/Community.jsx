@@ -35,17 +35,17 @@ export default function Community() {
     if (userIds.length > 0) {
       const { data: profiles } = await supabase
         .from('user_profiles')
-        .select('id, email')
+        .select('id, rsn')
         .in('id', userIds)
 
       for (const p of profiles || []) {
-        profileMap[p.id] = p.email?.split('@')[0] || 'Player'
+        profileMap[p.id] = p.rsn || null
       }
     }
 
     const enriched = (data || []).map(s => ({
       ...s,
-      display_name: profileMap[s.user_id] || 'Player',
+      display_name: profileMap[s.user_id] || null,
     }))
 
     setSetups(enriched)
@@ -83,7 +83,6 @@ export default function Community() {
       ) : (
         <div className="space-y-3">
           {setups.map(setup => {
-            const username = setup.display_name || 'Player'
             const isOwnSetup = user && setup.user_id === user.id
 
             return (
@@ -105,10 +104,12 @@ export default function Community() {
                     )}
                   </div>
                   <div className="flex items-center gap-2 text-[11px] text-text-muted flex-shrink-0">
-                    <span className="flex items-center gap-1">
-                      <User className="w-3 h-3" aria-hidden="true" />
-                      {username}
-                    </span>
+                    {setup.display_name && (
+                      <span className="flex items-center gap-1">
+                        <User className="w-3 h-3" aria-hidden="true" />
+                        {setup.display_name}
+                      </span>
+                    )}
                     <span className="flex items-center gap-1">
                       <Clock className="w-3 h-3" aria-hidden="true" />
                       {new Date(setup.updated_at).toLocaleDateString()}

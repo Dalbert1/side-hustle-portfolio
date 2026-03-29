@@ -74,245 +74,228 @@ const REVIEWS = [
 function HawkBeeLogo({ className = '', size = 48 }) {
   return (
     <svg
-      viewBox="0 0 240 240"
+      viewBox="0 0 260 200"
       width={size}
-      height={size}
+      height={size * (200/260)}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Circle badge */}
-      <circle cx="120" cy="120" r="116" fill="#fffbeb" stroke="#d4930d" strokeWidth="3" />
+      {/* Rounded badge background */}
+      <rect x="3" y="3" width="254" height="194" rx="24" fill="#fffbeb" stroke="#d4930d" strokeWidth="3" />
 
-      {/* === HAWK - tattoo style, full wingspan === */}
-      <g transform="translate(120, 105) scale(0.88)">
+      {/* === HAWK - side view, diving right toward bee === */}
+      <g transform="translate(28, 30)">
 
-        {/* ── LEFT WING (hawk's right) ── */}
-        <g>
-          {/* Primary flight feathers - long, separated tips */}
-          <path d="M-10,-15 Q-45,-65 -95,-85" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
-          <path d="M-10,-12 Q-50,-55 -100,-70" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
-          <path d="M-10,-9 Q-55,-45 -105,-55" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
-          <path d="M-10,-6 Q-55,-35 -105,-40" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
-          <path d="M-10,-3 Q-55,-25 -100,-27" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
+        {/* ── WING (upper, swept back) ── */}
+        {/* Primary flight feathers - long, separated, swept back aggressively */}
+        <path d="M68,28 Q40,5 8,0" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <path d="M65,34 Q35,14 2,12" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <path d="M62,39 Q32,22 0,24" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <path d="M60,44 Q30,30 2,36" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <path d="M58,48 Q32,38 6,46" stroke="#1b0f0b" strokeWidth="2.2" fill="none" strokeLinecap="round" />
 
-          {/* Wing fill shape */}
-          <path d="M-5,-18 Q-40,-70 -95,-88 Q-100,-72 -105,-58 Q-108,-42 -103,-28 Q-60,-15 -10,2 Z" fill="#3e2723" />
+        {/* Wing fill - main shape */}
+        <path d="M70,25 Q38,0 6,-2 Q0,10 -2,24 Q0,36 4,46 Q30,38 58,50 Q65,42 70,30 Z" fill="#3e2723" />
 
-          {/* Secondary feathers - layered rows */}
-          <path d="M-8,0 Q-45,-15 -85,-18 Q-80,-12 -8,5 Z" fill="#5d4037" />
-          <path d="M-6,4 Q-40,-5 -70,-6 Q-65,0 -6,10 Z" fill="#3e2723" />
+        {/* Secondary feather layer */}
+        <path d="M72,35 Q50,30 25,38 Q18,44 10,50 Q30,46 55,52 Q65,46 72,38 Z" fill="#5d4037" />
+        {/* Tertiary coverts */}
+        <path d="M74,42 Q55,40 35,48 Q50,48 68,52 Q74,48 74,44 Z" fill="#795548" opacity="0.6" />
 
-          {/* Feather detail strokes - inner wing */}
-          <path d="M-20,-10 Q-35,-30 -55,-42" stroke="#5d4037" strokeWidth="0.8" fill="none" />
-          <path d="M-18,-5 Q-32,-22 -50,-32" stroke="#5d4037" strokeWidth="0.8" fill="none" />
-          <path d="M-16,0 Q-30,-14 -48,-22" stroke="#5d4037" strokeWidth="0.8" fill="none" />
-          <path d="M-25,-20 Q-45,-45 -70,-58" stroke="#5d4037" strokeWidth="0.7" fill="none" />
-          <path d="M-22,-15 Q-40,-35 -62,-48" stroke="#5d4037" strokeWidth="0.7" fill="none" />
+        {/* Feather detail strokes */}
+        <path d="M50,20 Q30,10 15,8" stroke="#5d4037" strokeWidth="0.8" fill="none" />
+        <path d="M48,26 Q28,18 12,18" stroke="#5d4037" strokeWidth="0.8" fill="none" />
+        <path d="M46,32 Q28,26 10,28" stroke="#5d4037" strokeWidth="0.8" fill="none" />
+        <path d="M44,38 Q28,34 12,38" stroke="#5d4037" strokeWidth="0.8" fill="none" />
+        <path d="M55,15 Q35,5 18,3" stroke="#5d4037" strokeWidth="0.7" fill="none" />
 
-          {/* Covert feather rows */}
-          <path d="M-12,6 Q-30,0 -55,-2 Q-50,4 -12,12 Z" fill="#795548" opacity="0.5" />
+        {/* Primary feather tip separations */}
+        <path d="M8,0 L4,-4" stroke="#1b0f0b" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        <path d="M2,12 L-3,9" stroke="#1b0f0b" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        <path d="M0,24 L-5,22" stroke="#1b0f0b" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        <path d="M2,36 L-3,35" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+        <path d="M6,46 L2,47" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" fill="none" />
 
-          {/* Primary feather separations at tips */}
-          <line x1="-88" y1="-82" x2="-95" y2="-88" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="-94" y1="-66" x2="-102" y2="-72" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="-99" y1="-51" x2="-107" y2="-56" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="-100" y1="-36" x2="-108" y2="-40" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="-96" y1="-24" x2="-103" y2="-27" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
+        {/* ── BODY - sleek, muscular, torpedo-shaped for dive ── */}
+        <path d="M70,35 Q85,30 110,38 Q130,44 140,52 Q130,62 110,64 Q85,62 70,55 Z" fill="#3e2723" />
+        {/* Underbelly - lighter */}
+        <path d="M80,50 Q100,44 120,50 Q130,56 125,62 Q110,64 90,60 Q78,56 80,50 Z" fill="#5d4037" />
+        {/* Chest streaking */}
+        <path d="M82,42 L84,50" stroke="#795548" strokeWidth="0.7" opacity="0.6" />
+        <path d="M88,40 L90,49" stroke="#795548" strokeWidth="0.7" opacity="0.6" />
+        <path d="M94,39 L95,48" stroke="#795548" strokeWidth="0.7" opacity="0.6" />
+        <path d="M100,40 L100,49" stroke="#795548" strokeWidth="0.7" opacity="0.6" />
+        <path d="M106,42 L105,50" stroke="#795548" strokeWidth="0.7" opacity="0.6" />
+        <path d="M86,52 L87,58" stroke="#795548" strokeWidth="0.5" opacity="0.4" />
+        <path d="M92,51 L93,58" stroke="#795548" strokeWidth="0.5" opacity="0.4" />
+        <path d="M98,51 L98,58" stroke="#795548" strokeWidth="0.5" opacity="0.4" />
+
+        {/* ── TAIL FEATHERS - fanned behind ── */}
+        <path d="M70,42 Q50,35 35,52 Q42,50 52,50 Q62,48 70,46 Z" fill="#3e2723" />
+        <path d="M70,46 Q48,42 32,58 Q42,54 55,54 Q64,52 70,50 Z" fill="#5d4037" />
+        <path d="M70,50 Q50,50 35,64 Q45,58 58,58 Q66,56 70,54 Z" fill="#3e2723" opacity="0.85" />
+        <path d="M70,54 Q52,56 40,70 Q50,62 60,60 Q68,58 70,56 Z" fill="#5d4037" opacity="0.7" />
+        {/* Tail feather detail lines */}
+        <path d="M50,40 L38,50" stroke="#1b0f0b" strokeWidth="0.8" fill="none" />
+        <path d="M48,46 L34,56" stroke="#1b0f0b" strokeWidth="0.8" fill="none" />
+        <path d="M48,52 L36,62" stroke="#1b0f0b" strokeWidth="0.8" fill="none" />
+        <path d="M50,56 L42,68" stroke="#1b0f0b" strokeWidth="0.8" fill="none" />
+
+        {/* ── HEAD - side profile, turned slightly, FURIOUS expression ── */}
+        <g transform="translate(132, 38)">
+          {/* Head shape - angular, predatory profile */}
+          <path d="M0,-10 Q12,-14 20,-8 Q24,-2 22,6 Q18,12 10,14 Q4,14 0,10 Q-4,6 -4,0 Q-4,-6 0,-10 Z" fill="#3e2723" />
+          {/* Crown - dark cap */}
+          <path d="M0,-10 Q10,-14 18,-10 Q14,-6 6,-4 Q0,-4 -2,-6 Q-3,-8 0,-10 Z" fill="#1b0f0b" />
+
+          {/* === BROW - heavy, angry, slanting sharply down toward beak === */}
+          {/* This is the key intimidation feature - a thick angry brow shelf */}
+          <path d="M-2,-4 Q4,-8 14,-6 Q18,-4 20,-2 L18,0 Q14,-3 8,-4 Q2,-4 0,-2 Z" fill="#1b0f0b" />
+          {/* Secondary brow crease - adds fury wrinkle */}
+          <path d="M2,-2 Q8,-5 16,-3" stroke="#1b0f0b" strokeWidth="1.5" fill="none" />
+
+          {/* === EYE - narrow, squinting, ENRAGED === */}
+          {/* Eye is slanted and narrowed like a furious glare */}
+          <ellipse cx="10" cy="1" rx="5" ry="3" fill="#f59e0b" transform="rotate(-8, 10, 1)" />
+          <ellipse cx="10" cy="1" rx="4" ry="2.2" fill="#e68a00" transform="rotate(-8, 10, 1)" />
+          {/* Pupil - dilated, locked on target */}
+          <ellipse cx="12" cy="1" rx="2.2" ry="2" fill="#1b0f0b" transform="rotate(-8, 12, 1)" />
+          {/* Glint */}
+          <circle cx="13" cy="-0.5" r="0.8" fill="#fff" opacity="0.9" />
+          {/* Heavy upper eyelid - squinting with rage, covering top of eye */}
+          <path d="M5,0 Q8,-3 14,-2.5 Q17,-1.5 18,0 Q14,-1 10,-1.5 Q7,-1 5,0 Z" fill="#1b0f0b" />
+          {/* Lower eyelid pushed up - squinting */}
+          <path d="M6,2.5 Q10,4 15,2.5 Q12,3.5 8,3.5 Z" fill="#3e2723" />
+          {/* Wrinkle lines around eye - fury marks */}
+          <path d="M5,-1 Q3,-2 1,-2" stroke="#1b0f0b" strokeWidth="0.8" fill="none" />
+          <path d="M5,0 Q3,0 1,1" stroke="#1b0f0b" strokeWidth="0.6" fill="none" />
+
+          {/* === BEAK - large, hooked, open slightly showing aggression === */}
+          {/* Upper beak */}
+          <path d="M20,2 Q28,2 34,6 Q36,8 34,10 Q30,8 24,8 Q20,8 18,8 Z" fill="#d4930d" />
+          {/* Beak hook - sharp curved tip */}
+          <path d="M34,6 Q37,7 36,10 Q35,12 33,11 Q34,9 34,8 Z" fill="#a16f09" />
+          {/* Upper beak ridge detail */}
+          <path d="M22,3 Q28,3 33,6" stroke="#a16f09" strokeWidth="0.7" fill="none" />
+          {/* Nostril */}
+          <ellipse cx="24" cy="5" rx="1" ry="0.7" fill="#a16f09" />
+
+          {/* Lower beak - slightly open, screaming */}
+          <path d="M18,10 Q24,10 30,12 Q32,13 30,14 Q24,12 18,12 Z" fill="#c4830c" />
+          {/* Open mouth gap - dark interior showing rage */}
+          <path d="M20,8 Q26,9 32,11 Q30,12 24,10 Q20,10 20,8 Z" fill="#1b0f0b" opacity="0.7" />
+          {/* Mouth corner crease */}
+          <path d="M18,8 Q19,10 18,12" stroke="#a16f09" strokeWidth="0.6" fill="none" />
         </g>
 
-        {/* ── RIGHT WING (hawk's left) ── */}
-        <g>
-          {/* Primary flight feathers */}
-          <path d="M10,-15 Q45,-65 95,-85" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
-          <path d="M10,-12 Q50,-55 100,-70" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
-          <path d="M10,-9 Q55,-45 105,-55" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
-          <path d="M10,-6 Q55,-35 105,-40" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
-          <path d="M10,-3 Q55,-25 100,-27" stroke="#1b0f0b" strokeWidth="2.2" fill="none" />
+        {/* ── LEGS & TALONS - extended forward, reaching for the kill ── */}
 
-          {/* Wing fill shape */}
-          <path d="M5,-18 Q40,-70 95,-88 Q100,-72 105,-58 Q108,-42 103,-28 Q60,-15 10,2 Z" fill="#3e2723" />
+        {/* == UPPER LEG (closer, larger) == */}
+        <g transform="translate(120, 62)">
+          {/* Thigh feathers */}
+          <path d="M0,0 Q8,2 12,8 Q10,10 4,8 Q0,4 0,0 Z" fill="#5d4037" />
+          {/* Scaled leg */}
+          <path d="M10,6 Q18,16 22,28" stroke="#d4930d" strokeWidth="3.5" fill="none" />
+          {/* Scale marks */}
+          <path d="M12,10 L16,10" stroke="#c4830c" strokeWidth="0.7" />
+          <path d="M14,14 L18,14" stroke="#c4830c" strokeWidth="0.7" />
+          <path d="M16,18 L20,18" stroke="#c4830c" strokeWidth="0.7" />
+          <path d="M18,22 L22,22" stroke="#c4830c" strokeWidth="0.7" />
+          <path d="M19,26 L23,26" stroke="#c4830c" strokeWidth="0.7" />
 
-          {/* Secondary feathers */}
-          <path d="M8,0 Q45,-15 85,-18 Q80,-12 8,5 Z" fill="#5d4037" />
-          <path d="M6,4 Q40,-5 70,-6 Q65,0 6,10 Z" fill="#3e2723" />
+          {/* Foot pad */}
+          <ellipse cx="23" cy="30" rx="4" ry="2.5" fill="#d4930d" />
 
-          {/* Feather detail strokes */}
-          <path d="M20,-10 Q35,-30 55,-42" stroke="#5d4037" strokeWidth="0.8" fill="none" />
-          <path d="M18,-5 Q32,-22 50,-32" stroke="#5d4037" strokeWidth="0.8" fill="none" />
-          <path d="M16,0 Q30,-14 48,-22" stroke="#5d4037" strokeWidth="0.8" fill="none" />
-          <path d="M25,-20 Q45,-45 70,-58" stroke="#5d4037" strokeWidth="0.7" fill="none" />
-          <path d="M22,-15 Q40,-35 62,-48" stroke="#5d4037" strokeWidth="0.7" fill="none" />
+          {/* TALON 1 - front, longest, killer claw curving down */}
+          <path d="M24,28 Q32,30 38,36 Q42,42 40,48" stroke="#1b0f0b" strokeWidth="3" fill="none" strokeLinecap="round" />
+          <path d="M40,48 Q39,52 37,50" stroke="#1b0f0b" strokeWidth="2" fill="none" strokeLinecap="round" />
 
-          {/* Covert feather rows */}
-          <path d="M12,6 Q30,0 55,-2 Q50,4 12,12 Z" fill="#795548" opacity="0.5" />
+          {/* TALON 2 - front middle */}
+          <path d="M25,30 Q34,36 38,44 Q40,50 38,54" stroke="#1b0f0b" strokeWidth="3" fill="none" strokeLinecap="round" />
+          <path d="M38,54 Q37,57 35,55" stroke="#1b0f0b" strokeWidth="2" fill="none" strokeLinecap="round" />
 
-          {/* Primary feather tip separations */}
-          <line x1="88" y1="-82" x2="95" y2="-88" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="94" y1="-66" x2="102" y2="-72" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="99" y1="-51" x2="107" y2="-56" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="100" y1="-36" x2="108" y2="-40" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="96" y1="-24" x2="103" y2="-27" stroke="#1b0f0b" strokeWidth="1.5" strokeLinecap="round" />
+          {/* TALON 3 - front outer, splayed wide */}
+          <path d="M22,32 Q28,40 30,48 Q32,54 30,60" stroke="#1b0f0b" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+          <path d="M30,60 Q29,63 27,61" stroke="#1b0f0b" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+          {/* TALON 4 - back hallux, opposing grip */}
+          <path d="M22,28 Q16,24 12,18 Q10,14 8,10" stroke="#1b0f0b" strokeWidth="3" fill="none" strokeLinecap="round" />
+          <path d="M8,10 Q7,7 9,8" stroke="#1b0f0b" strokeWidth="2" fill="none" strokeLinecap="round" />
         </g>
 
-        {/* ── BODY ── */}
-        <ellipse cx="0" cy="8" rx="16" ry="22" fill="#3e2723" />
-        {/* Chest feather texture */}
-        <path d="M-8,0 Q0,-4 8,0 Q4,6 0,8 Q-4,6 -8,0 Z" fill="#5d4037" />
-        <path d="M-6,8 Q0,5 6,8 Q3,14 0,16 Q-3,14 -6,8 Z" fill="#5d4037" />
-        <path d="M-10,2 L-8,8" stroke="#795548" strokeWidth="0.6" opacity="0.6" />
-        <path d="M-6,-2 L-4,5" stroke="#795548" strokeWidth="0.6" opacity="0.6" />
-        <path d="M6,-2 L4,5" stroke="#795548" strokeWidth="0.6" opacity="0.6" />
-        <path d="M10,2 L8,8" stroke="#795548" strokeWidth="0.6" opacity="0.6" />
-        <path d="M-3,10 L-2,18" stroke="#795548" strokeWidth="0.5" opacity="0.5" />
-        <path d="M3,10 L2,18" stroke="#795548" strokeWidth="0.5" opacity="0.5" />
+        {/* == LOWER LEG (farther, slightly smaller) == */}
+        <g transform="translate(108, 58)">
+          {/* Thigh feathers */}
+          <path d="M0,0 Q6,2 10,8 Q8,10 2,6 Q0,3 0,0 Z" fill="#5d4037" opacity="0.8" />
+          {/* Scaled leg */}
+          <path d="M8,6 Q14,18 18,30" stroke="#d4930d" strokeWidth="3" fill="none" />
+          {/* Scale marks */}
+          <path d="M9,10 L13,10" stroke="#c4830c" strokeWidth="0.6" />
+          <path d="M11,14 L15,14" stroke="#c4830c" strokeWidth="0.6" />
+          <path d="M13,18 L17,18" stroke="#c4830c" strokeWidth="0.6" />
+          <path d="M14,22 L18,22" stroke="#c4830c" strokeWidth="0.6" />
+          <path d="M16,26 L20,26" stroke="#c4830c" strokeWidth="0.6" />
 
-        {/* ── HEAD ── */}
-        <g transform="translate(0, -22)">
-          {/* Head shape */}
-          <path d="M0,-12 Q10,-12 13,-4 Q14,4 10,8 L-10,8 Q-14,4 -13,-4 Q-10,-12 0,-12 Z" fill="#3e2723" />
-          {/* Crown/top of head - darker */}
-          <path d="M0,-12 Q8,-12 11,-6 Q0,-8 -11,-6 Q-8,-12 0,-12 Z" fill="#1b0f0b" />
-          {/* Brow ridge - fierce V shape */}
-          <path d="M-12,-2 Q-6,-6 0,-4 Q6,-6 12,-2 L10,0 Q6,-3 0,-1 Q-6,-3 -10,0 Z" fill="#1b0f0b" />
+          {/* Foot pad */}
+          <ellipse cx="19" cy="32" rx="3.5" ry="2" fill="#d4930d" />
 
-          {/* Eyes - intense, angry */}
-          <ellipse cx="-6" cy="1" rx="3.5" ry="3" fill="#f59e0b" />
-          <ellipse cx="-6" cy="1" rx="2.5" ry="2.2" fill="#e68a00" />
-          <circle cx="-5.5" cy="0.5" r="1.5" fill="#1b0f0b" />
-          <circle cx="-5" cy="0" r="0.5" fill="#fff" opacity="0.8" />
+          {/* TALON 1 - front */}
+          <path d="M20,30 Q26,34 30,40 Q34,46 32,52" stroke="#1b0f0b" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+          <path d="M32,52 Q31,55 29,53" stroke="#1b0f0b" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
-          <ellipse cx="6" cy="1" rx="3.5" ry="3" fill="#f59e0b" />
-          <ellipse cx="6" cy="1" rx="2.5" ry="2.2" fill="#e68a00" />
-          <circle cx="6.5" cy="0.5" r="1.5" fill="#1b0f0b" />
-          <circle cx="7" cy="0" r="0.5" fill="#fff" opacity="0.8" />
+          {/* TALON 2 - front middle */}
+          <path d="M20,32 Q28,38 32,46 Q34,52 32,56" stroke="#1b0f0b" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+          <path d="M32,56 Q31,59 29,57" stroke="#1b0f0b" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
-          {/* Beak - sharp hooked raptor beak */}
-          <path d="M-4,6 L0,18 L4,6 Z" fill="#d4930d" />
-          <path d="M0,18 Q1,19 0,20" fill="#a16f09" />
-          {/* Beak detail line */}
-          <line x1="0" y1="8" x2="0" y2="17" stroke="#a16f09" strokeWidth="0.8" />
-          {/* Nostrils */}
-          <circle cx="-2" cy="8" r="0.6" fill="#a16f09" />
-          <circle cx="2" cy="8" r="0.6" fill="#a16f09" />
-          {/* Beak hook */}
-          <path d="M-1,17 L0,20 L1,17" fill="#a16f09" />
-        </g>
+          {/* TALON 3 - outer */}
+          <path d="M18,34 Q22,40 24,48 Q26,54 24,60" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          <path d="M24,60 Q23,63 21,61" stroke="#1b0f0b" strokeWidth="1.5" fill="none" strokeLinecap="round" />
 
-        {/* ── TAIL FEATHERS - fanned wide ── */}
-        <g transform="translate(0, 28)">
-          <path d="M0,0 Q-5,15 -18,35 Q-12,32 -8,25 Q-5,15 0,5 Z" fill="#3e2723" />
-          <path d="M0,0 Q-2,18 -8,38 Q-4,34 -2,26 Q0,16 0,5 Z" fill="#5d4037" />
-          <path d="M0,0 Q2,18 8,38 Q4,34 2,26 Q0,16 0,5 Z" fill="#5d4037" />
-          <path d="M0,0 Q5,15 18,35 Q12,32 8,25 Q5,15 0,5 Z" fill="#3e2723" />
-          {/* Center tail feather */}
-          <path d="M-2,2 Q0,20 0,40 Q0,20 2,2 Z" fill="#1b0f0b" opacity="0.4" />
-          {/* Tail feather edge details */}
-          <path d="M-14,30 L-18,35" stroke="#1b0f0b" strokeWidth="1" strokeLinecap="round" />
-          <path d="M-6,34 L-8,38" stroke="#1b0f0b" strokeWidth="1" strokeLinecap="round" />
-          <path d="M6,34 L8,38" stroke="#1b0f0b" strokeWidth="1" strokeLinecap="round" />
-          <path d="M14,30 L18,35" stroke="#1b0f0b" strokeWidth="1" strokeLinecap="round" />
-        </g>
-
-        {/* ── LEFT LEG & TALONS ── */}
-        <g transform="translate(-14, 22)">
-          {/* Leg - muscular, scaled */}
-          <path d="M0,0 Q-4,10 -6,20" stroke="#d4930d" strokeWidth="3" fill="none" />
-          <path d="M-1,5 L1,5" stroke="#c4830c" strokeWidth="0.5" />
-          <path d="M-2,9 L0,9" stroke="#c4830c" strokeWidth="0.5" />
-          <path d="M-3,13 L-1,13" stroke="#c4830c" strokeWidth="0.5" />
-          <path d="M-4,17 L-2,17" stroke="#c4830c" strokeWidth="0.5" />
-
-          {/* Foot structure */}
-          <circle cx="-6" cy="22" r="2.5" fill="#d4930d" />
-
-          {/* Front talon 1 - long, curved, razor sharp */}
-          <path d="M-5,22 Q-2,28 0,32 Q2,36 0,40" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-          <path d="M0,40 Q-1,42 -2,41" fill="#1b0f0b" />
-
-          {/* Front talon 2 */}
-          <path d="M-7,23 Q-10,30 -12,34 Q-13,38 -14,40" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-          <path d="M-14,40 Q-15,42 -16,41" fill="#1b0f0b" />
-
-          {/* Front talon 3 - outer */}
-          <path d="M-8,22 Q-14,26 -18,30 Q-22,34 -24,36" stroke="#1b0f0b" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-          <path d="M-24,36 Q-25,38 -26,37" fill="#1b0f0b" />
-
-          {/* Back talon - opposing, deadly */}
-          <path d="M-4,21 Q0,18 4,14 Q6,12 8,10" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-          <path d="M8,10 Q9,8 8,8" fill="#1b0f0b" />
-
-          {/* Talon tips - sharp points */}
-          <circle cx="0" cy="41" r="0.8" fill="#1b0f0b" />
-          <circle cx="-14" cy="41" r="0.8" fill="#1b0f0b" />
-          <circle cx="-25" cy="37" r="0.7" fill="#1b0f0b" />
-          <circle cx="8" cy="9" r="0.7" fill="#1b0f0b" />
-        </g>
-
-        {/* ── RIGHT LEG & TALONS ── */}
-        <g transform="translate(14, 22)">
-          {/* Leg */}
-          <path d="M0,0 Q4,10 6,20" stroke="#d4930d" strokeWidth="3" fill="none" />
-          <path d="M1,5 L-1,5" stroke="#c4830c" strokeWidth="0.5" />
-          <path d="M2,9 L0,9" stroke="#c4830c" strokeWidth="0.5" />
-          <path d="M3,13 L1,13" stroke="#c4830c" strokeWidth="0.5" />
-          <path d="M4,17 L2,17" stroke="#c4830c" strokeWidth="0.5" />
-
-          {/* Foot structure */}
-          <circle cx="6" cy="22" r="2.5" fill="#d4930d" />
-
-          {/* Front talon 1 */}
-          <path d="M5,22 Q2,28 0,32 Q-2,36 0,40" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-          <path d="M0,40 Q1,42 2,41" fill="#1b0f0b" />
-
-          {/* Front talon 2 */}
-          <path d="M7,23 Q10,30 12,34 Q13,38 14,40" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-          <path d="M14,40 Q15,42 16,41" fill="#1b0f0b" />
-
-          {/* Front talon 3 - outer */}
-          <path d="M8,22 Q14,26 18,30 Q22,34 24,36" stroke="#1b0f0b" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-          <path d="M24,36 Q25,38 26,37" fill="#1b0f0b" />
-
-          {/* Back talon */}
-          <path d="M4,21 Q0,18 -4,14 Q-6,12 -8,10" stroke="#1b0f0b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-          <path d="M-8,10 Q-9,8 -8,8" fill="#1b0f0b" />
-
-          {/* Talon tips */}
-          <circle cx="0" cy="41" r="0.8" fill="#1b0f0b" />
-          <circle cx="14" cy="41" r="0.8" fill="#1b0f0b" />
-          <circle cx="25" cy="37" r="0.7" fill="#1b0f0b" />
-          <circle cx="-8" cy="9" r="0.7" fill="#1b0f0b" />
+          {/* TALON 4 - back hallux */}
+          <path d="M18,30 Q12,26 8,20 Q6,16 4,12" stroke="#1b0f0b" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+          <path d="M4,12 Q3,9 5,10" stroke="#1b0f0b" strokeWidth="1.8" fill="none" strokeLinecap="round" />
         </g>
       </g>
 
-      {/* === BEE - small, fleeing below the hawk === */}
-      <g transform="translate(155, 175) scale(0.7)">
-        {/* Wings */}
-        <ellipse cx="18" cy="4" rx="9" ry="5" fill="#fffbeb" stroke="#d4930d" strokeWidth="0.8" opacity="0.6" transform="rotate(-30, 18, 4)" />
-        <ellipse cx="14" cy="2" rx="7" ry="4.5" fill="#fffbeb" stroke="#d4930d" strokeWidth="0.8" opacity="0.6" transform="rotate(-45, 14, 2)" />
+      {/* === BEE - ahead of the hawk, about to get caught === */}
+      <g transform="translate(195, 100)">
+        {/* Wings - frantic buzzing */}
+        <ellipse cx="5" cy="-8" rx="10" ry="6" fill="#fffbeb" stroke="#d4930d" strokeWidth="0.8" opacity="0.6" transform="rotate(-20, 5, -8)" />
+        <ellipse cx="0" cy="-10" rx="8" ry="5" fill="#fffbeb" stroke="#d4930d" strokeWidth="0.8" opacity="0.6" transform="rotate(-40, 0, -10)" />
         {/* Body */}
-        <ellipse cx="20" cy="15" rx="11" ry="7" fill="#f59e0b" />
+        <ellipse cx="8" cy="2" rx="12" ry="8" fill="#f59e0b" />
         {/* Stripes */}
-        <rect x="13" y="12" width="14" height="2.2" rx="1" fill="#1b0f0b" />
-        <rect x="14" y="17" width="12" height="2.2" rx="1" fill="#1b0f0b" />
+        <rect x="1" y="-1" width="14" height="2.5" rx="1.2" fill="#1b0f0b" />
+        <rect x="2" y="4" width="12" height="2.5" rx="1.2" fill="#1b0f0b" />
         {/* Head */}
-        <circle cx="32" cy="15" r="4.5" fill="#1b0f0b" />
-        {/* Eye */}
-        <circle cx="34.5" cy="13.5" r="1.1" fill="#f59e0b" />
-        {/* Antennae */}
-        <path d="M35,10 Q38,5 40,3" stroke="#1b0f0b" strokeWidth="1" fill="none" strokeLinecap="round" />
-        <path d="M34,11 Q36,6 35,2" stroke="#1b0f0b" strokeWidth="1" fill="none" strokeLinecap="round" />
-        <circle cx="40" cy="2.5" r="1" fill="#1b0f0b" />
-        <circle cx="35" cy="1.5" r="1" fill="#1b0f0b" />
+        <circle cx="21" cy="2" r="5" fill="#1b0f0b" />
+        {/* Eye - panicked */}
+        <circle cx="24" cy="0.5" r="1.5" fill="#f59e0b" />
+        <circle cx="24.5" cy="0" r="0.6" fill="#1b0f0b" />
+        {/* Antennae - swept back in flight */}
+        <path d="M24,-4 Q28,-9 30,-11" stroke="#1b0f0b" strokeWidth="1" fill="none" strokeLinecap="round" />
+        <path d="M23,-3 Q26,-8 25,-12" stroke="#1b0f0b" strokeWidth="1" fill="none" strokeLinecap="round" />
+        <circle cx="30" cy="-11.5" r="1" fill="#1b0f0b" />
+        <circle cx="25" cy="-12.5" r="1" fill="#1b0f0b" />
         {/* Stinger */}
-        <polygon points="9,15 3,13 3,17" fill="#1b0f0b" />
-        {/* Motion lines */}
-        <line x1="-2" y1="11" x2="-10" y2="10" stroke="#d4930d" strokeWidth="0.8" opacity="0.35" strokeLinecap="round" />
-        <line x1="-1" y1="15" x2="-9" y2="15" stroke="#d4930d" strokeWidth="0.8" opacity="0.35" strokeLinecap="round" />
-        <line x1="-2" y1="19" x2="-8" y2="20" stroke="#d4930d" strokeWidth="0.8" opacity="0.35" strokeLinecap="round" />
+        <polygon points="-4,2 -9,0 -9,4" fill="#1b0f0b" />
+        {/* Legs dangling in panic */}
+        <path d="M5,9 Q4,14 6,16" stroke="#1b0f0b" strokeWidth="0.7" fill="none" />
+        <path d="M8,10 Q7,15 9,17" stroke="#1b0f0b" strokeWidth="0.7" fill="none" />
+        <path d="M12,10 Q12,14 14,16" stroke="#1b0f0b" strokeWidth="0.7" fill="none" />
+        {/* Motion lines - desperate escape */}
+        <line x1="32" y1="-2" x2="40" y2="-3" stroke="#d4930d" strokeWidth="1" opacity="0.4" strokeLinecap="round" />
+        <line x1="32" y1="2" x2="42" y2="2" stroke="#d4930d" strokeWidth="1" opacity="0.4" strokeLinecap="round" />
+        <line x1="32" y1="6" x2="39" y2="7" stroke="#d4930d" strokeWidth="1" opacity="0.4" strokeLinecap="round" />
       </g>
 
-      {/* Honeycomb accent - bottom left */}
-      <g transform="translate(18, 185)" opacity="0.2">
+      {/* Honeycomb accents - bottom corners */}
+      <g transform="translate(12, 160)" opacity="0.18">
+        <polygon points="10,0 18,5 18,15 10,20 2,15 2,5" fill="none" stroke="#d4930d" strokeWidth="1.5" />
+        <polygon points="26,0 34,5 34,15 26,20 18,15 18,5" fill="none" stroke="#d4930d" strokeWidth="1.5" />
+        <polygon points="18,20 26,25 26,35 18,40 10,35 10,25" fill="none" stroke="#d4930d" strokeWidth="1.5" />
+      </g>
+      <g transform="translate(200, 160)" opacity="0.18">
         <polygon points="10,0 18,5 18,15 10,20 2,15 2,5" fill="none" stroke="#d4930d" strokeWidth="1.5" />
         <polygon points="26,0 34,5 34,15 26,20 18,15 18,5" fill="none" stroke="#d4930d" strokeWidth="1.5" />
         <polygon points="18,20 26,25 26,35 18,40 10,35 10,25" fill="none" stroke="#d4930d" strokeWidth="1.5" />

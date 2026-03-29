@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Plus, ArrowLeft } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
-import { Link } from 'react-router-dom'
 
 const CATEGORIES = [
   'Combat Minigames',
@@ -38,7 +37,6 @@ export default function AddActivity() {
       setError('Activity name is required.')
       return
     }
-
     if (!category) {
       setError('Please select a category.')
       return
@@ -67,75 +65,76 @@ export default function AddActivity() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link to="/" className="inline-flex items-center gap-1.5 text-parchment-dim hover:text-gold transition-colors text-sm no-underline mb-6">
-        <ArrowLeft className="w-4 h-4" />
-        All Activities
+    <div className="max-w-lg mx-auto px-4 sm:px-6 py-6">
+      <Link to="/" className="inline-flex items-center gap-1 text-text-muted hover:text-gold transition-colors duration-150 text-[13px] no-underline mb-4">
+        <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
+        Activities
       </Link>
 
-      <div className="bg-dark-card border border-dark-border rounded-xl p-6">
-        <div className="mb-6">
-          <h1 className="text-xl font-bold text-gold mb-1">Add New Activity</h1>
-          <p className="text-sm text-parchment-dim">
-            OSRS is always changing. Add a new boss, minigame, or activity that isn't in the list yet.
-          </p>
+      <header className="mb-5">
+        <h1 className="text-xl font-bold text-gold">Add Activity</h1>
+        <p className="text-text-secondary text-sm mt-1">
+          Add a new boss, minigame, or activity that isn't in the list yet.
+        </p>
+      </header>
+
+      {error && (
+        <div className="bg-danger/8 border border-danger/20 text-danger rounded-md p-2.5 mb-4 text-[13px]" role="alert">
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="activity-name" className="block text-[13px] font-medium text-text-primary mb-1">Name *</label>
+          <input
+            id="activity-name"
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
+            className="w-full px-3 py-2 bg-surface-raised border border-border-subtle rounded-md text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-gold transition-colors duration-150"
+            placeholder="e.g. New Boss Name"
+          />
         </div>
 
-        {error && (
-          <div className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 mb-6 text-sm">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-parchment mb-1.5">Activity Name *</label>
-            <input
-              type="text"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              required
-              className="w-full px-4 py-2.5 bg-dark-surface border border-dark-border rounded-lg text-parchment placeholder-parchment-dim/50 focus:outline-none focus:border-gold transition-colors"
-              placeholder="e.g. New Boss Name"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-parchment mb-1.5">Category *</label>
-            <select
-              value={category}
-              onChange={e => setCategory(e.target.value)}
-              required
-              className="w-full px-4 py-2.5 bg-dark-surface border border-dark-border rounded-lg text-parchment focus:outline-none focus:border-gold transition-colors appearance-none"
-            >
-              <option value="" className="text-parchment-dim">Select a category</option>
-              {CATEGORIES.map(cat => (
-                <option key={cat} value={cat} className="text-parchment">{cat}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-parchment mb-1.5">Description</label>
-            <textarea
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              rows={3}
-              className="w-full px-4 py-2.5 bg-dark-surface border border-dark-border rounded-lg text-parchment placeholder-parchment-dim/50 focus:outline-none focus:border-gold transition-colors resize-y"
-              placeholder="Brief description of the activity (optional)"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-dark-bg font-semibold py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer border-none"
+        <div>
+          <label htmlFor="activity-category" className="block text-[13px] font-medium text-text-primary mb-1">Category *</label>
+          <select
+            id="activity-category"
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            required
+            className="w-full px-3 py-2 bg-surface-raised border border-border-subtle rounded-md text-sm text-text-primary focus:outline-none focus:border-gold transition-colors duration-150 appearance-none"
           >
-            <Plus className="w-4 h-4" />
-            {loading ? 'Adding...' : 'Add Activity'}
-          </button>
-        </form>
-      </div>
+            <option value="">Select a category</option>
+            {CATEGORIES.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="activity-description" className="block text-[13px] font-medium text-text-primary mb-1">Description</label>
+          <textarea
+            id="activity-description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            rows={3}
+            className="w-full px-3 py-2 bg-surface-raised border border-border-subtle rounded-md text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-gold transition-colors duration-150 resize-y"
+            placeholder="Brief description (optional)"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full flex items-center justify-center gap-1.5 bg-gold hover:bg-gold-hover text-text-on-gold font-semibold text-sm py-2 px-3 rounded-md transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer border-none"
+        >
+          <Plus className="w-3.5 h-3.5" aria-hidden="true" />
+          {loading ? 'Adding...' : 'Add Activity'}
+        </button>
+      </form>
     </div>
   )
 }

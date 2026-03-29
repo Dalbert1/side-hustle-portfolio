@@ -10,13 +10,14 @@ import Signup from './pages/Signup'
 import Activity from './pages/Activity'
 import MySetups from './pages/MySetups'
 import AddActivity from './pages/AddActivity'
+import Community from './pages/Community'
 
 export default function App() {
   return (
     <AuthProvider>
       <HashRouter>
         <ScrollToTop />
-        <div className="min-h-screen flex flex-col bg-medieval-pattern">
+        <div className="min-h-screen flex flex-col">
           <Navbar />
           <main className="flex-1">
             <Routes>
@@ -24,6 +25,7 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/activity/:slug" element={<Activity />} />
+              <Route path="/community" element={<Community />} />
               <Route
                 path="/my-setups"
                 element={

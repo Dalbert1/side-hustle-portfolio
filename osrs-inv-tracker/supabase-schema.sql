@@ -38,6 +38,7 @@ end;
 $$ language plpgsql security definer;
 
 -- Trigger fires on every new auth.users insert
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
@@ -52,6 +53,7 @@ create table if not exists public.user_screenshots (
   gear_url text,
   inventory_url text,
   notes text,
+  is_public boolean default false,
   created_at timestamptz default now(),
   updated_at timestamptz default now(),
   unique(user_id, activity_slug)
@@ -59,10 +61,15 @@ create table if not exists public.user_screenshots (
 
 alter table public.user_screenshots enable row level security;
 
--- Users can only see their own screenshots
+-- Users can view their own screenshots
 create policy "Users can view own screenshots"
   on public.user_screenshots for select
   using (auth.uid() = user_id);
+
+-- Authenticated users can view public screenshots
+create policy "Authenticated users can view public screenshots"
+  on public.user_screenshots for select
+  using (is_public = true and auth.role() = 'authenticated');
 
 create policy "Users can insert own screenshots"
   on public.user_screenshots for insert
@@ -101,13 +108,18 @@ create policy "Authenticated users can insert custom activities"
 
 
 -- ============================================================
--- STORAGE BUCKET SETUP (run separately or configure in UI)
+-- MIGRATION: If you already have the tables from the initial
+-- schema, run this to add the is_public column:
+--
+-- alter table public.user_screenshots
+--   add column if not exists is_public boolean default false;
+--
+-- create policy "Authenticated users can view public screenshots"
+--   on public.user_screenshots for select
+--   using (is_public = true and auth.role() = 'authenticated');
 -- ============================================================
--- Note: Storage bucket creation via SQL may not work on all
--- Supabase tiers. See the README for manual UI setup steps.
---
--- insert into storage.buckets (id, name, public)
--- values ('osrs-screenshots', 'osrs-screenshots', true);
---
--- Storage policies are set up via the Supabase Dashboard.
--- See the setup instructions provided with this project.
+
+-- ============================================================
+-- STORAGE BUCKET SETUP (configure via Supabase Dashboard)
+-- See setup instructions in the project README.
+-- ============================================================

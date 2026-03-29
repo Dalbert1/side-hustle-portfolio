@@ -6,8 +6,8 @@ export default function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-gold animate-pulse text-lg">Loading...</div>
+      <div className="flex items-center justify-center min-h-[60vh]" role="status" aria-label="Loading">
+        <span className="text-gold-muted text-sm animate-pulse">Loading...</span>
       </div>
     )
   }

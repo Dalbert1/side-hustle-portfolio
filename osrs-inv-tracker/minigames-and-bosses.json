@@ -1,0 +1,793 @@
+{
+  "source": "OSRS Wiki (oldschool.runescape.wiki)",
+  "last_updated": "2026-03-29",
+  "note": "Based on OSRS Wiki data. Game updates may add new content at any time.",
+
+  "minigames": {
+    "combat": [
+      {
+        "name": "Barbarian Assault",
+        "classification": "Safe",
+        "type": "PvM",
+        "description": "A team of five fights waves of penance creatures and the penance queen."
+      },
+      {
+        "name": "Bounty Hunter",
+        "classification": "Dangerous",
+        "type": "PvP",
+        "description": "Fight other players assigned to you in the Wilderness."
+      },
+      {
+        "name": "Castle Wars",
+        "classification": "Safe",
+        "type": "PvP",
+        "f2p": true,
+        "description": "A competitive game of Capture the Flag between two teams."
+      },
+      {
+        "name": "Clan Wars",
+        "classification": "Safe",
+        "type": "PvP",
+        "f2p": true,
+        "description": "Members of two opposing Friends Chats engage in PvP combat."
+      },
+      {
+        "name": "Emir's Arena",
+        "classification": "Safe",
+        "type": "PvP",
+        "f2p": true,
+        "description": "Players duel each other with the ability to set special rules."
+      },
+      {
+        "name": "Fortis Colosseum",
+        "classification": "Dangerous",
+        "type": "PvM",
+        "description": "Players battle gladiators and creatures to prove their worth to Sol Heredit."
+      },
+      {
+        "name": "Inferno",
+        "classification": "Safe",
+        "type": "PvM",
+        "description": "Players battle an onslaught of enemies, making their way to defeat TzKal-Zuk."
+      },
+      {
+        "name": "Intelligence Gathering",
+        "classification": "Dangerous",
+        "type": "PvM",
+        "description": "Players locate and raid gang meetings across Great Kourend for intelligence."
+      },
+      {
+        "name": "Last Man Standing",
+        "classification": "Safe",
+        "type": "PvP",
+        "f2p": true,
+        "description": "Players fight for survival on an island using only resources found there."
+      },
+      {
+        "name": "Mage Arena",
+        "classification": "Dangerous",
+        "type": "PvM",
+        "description": "Battle Kolodion for the right to learn God spells."
+      },
+      {
+        "name": "Nightmare Zone",
+        "classification": "Safe",
+        "type": "PvM",
+        "description": "Partake in dreams to fight bosses previously defeated in quests."
+      },
+      {
+        "name": "Pest Control",
+        "classification": "Safe",
+        "type": "PvM",
+        "description": "A team combat minigame involving protecting a Void Knight while fending off waves of monsters."
+      },
+      {
+        "name": "Soul Wars",
+        "classification": "Safe",
+        "type": "PvP/PvM",
+        "description": "Two teams compete to gather soul fragments and defeat each other's Avatars."
+      },
+      {
+        "name": "Temple Trekking / Burgh de Rott Ramble",
+        "classification": "Dangerous",
+        "type": "PvM",
+        "description": "Guide recruits or refugees between Paterdomus and Burgh de Rott."
+      },
+      {
+        "name": "TzHaar Fight Cave",
+        "classification": "Safe",
+        "type": "PvM",
+        "description": "Players fight alone against waves of TzHaar monsters, culminating in TzTok-Jad."
+      },
+      {
+        "name": "TzHaar Fight Pit",
+        "classification": "Safe",
+        "type": "PvP",
+        "description": "Free-for-all PvP combat in a safe pit; last player standing wins."
+      },
+      {
+        "name": "TzHaar-Ket-Rak's Challenges",
+        "classification": "Safe",
+        "type": "PvM",
+        "description": "Players face increasingly brutal challenges against multiple JalTok-Jads."
+      }
+    ],
+    "skilling": [
+      {
+        "name": "Archery Competition",
+        "classification": "Non-combat",
+        "skills": ["Ranged"],
+        "description": "Earn Archery tickets and Ranged XP shooting at a target at the Ranging Guild."
+      },
+      {
+        "name": "Blast Furnace",
+        "classification": "Non-combat",
+        "skills": ["Smithing", "Strength", "Agility", "Crafting"],
+        "description": "Players work together to keep a furnace running that halves coal needed for smelting."
+      },
+      {
+        "name": "Brimhaven Agility Arena",
+        "classification": "Dangerous",
+        "skills": ["Agility"],
+        "description": "A medium-level Agility course where pillars dispense tickets for rewards."
+      },
+      {
+        "name": "Fishing Trawler",
+        "classification": "Non-combat",
+        "skills": ["Fishing"],
+        "description": "Players work together to keep a boat afloat while catching fish."
+      },
+      {
+        "name": "Giants' Foundry",
+        "classification": "Non-combat",
+        "skills": ["Smithing"],
+        "description": "Players use their own metal to create weapons for giants."
+      },
+      {
+        "name": "Gnome Ball",
+        "classification": "Dangerous",
+        "skills": ["Agility", "Ranged"],
+        "description": "Players try to pass and charge with a ball towards a hoop to score while gnomes tackle them."
+      },
+      {
+        "name": "Gnome Restaurant",
+        "classification": "Non-combat",
+        "skills": ["Cooking"],
+        "description": "Players deliver food to gnome customers within a time limit."
+      },
+      {
+        "name": "Guardians of the Rift",
+        "classification": "Non-combat",
+        "skills": ["Runecrafting", "Mining", "Crafting"],
+        "description": "Assist The Great Guardian in closing a rift into the Abyss by supplying imbued essence."
+      },
+      {
+        "name": "Hallowed Sepulchre",
+        "classification": "Dangerous",
+        "skills": ["Agility", "Thieving", "Construction", "Prayer"],
+        "description": "Overcome agility obstacles while looting coffins for Hallowed marks."
+      },
+      {
+        "name": "Impetuous Impulses",
+        "classification": "Non-combat",
+        "skills": ["Hunter"],
+        "description": "Hunt and trap implings in magical jars for various rewards."
+      },
+      {
+        "name": "Mage Training Arena",
+        "classification": "Safe",
+        "skills": ["Magic"],
+        "description": "Four sub-minigames earning pizazz points for spells and items like infinity robes."
+      },
+      {
+        "name": "Mahogany Homes",
+        "classification": "Non-combat",
+        "skills": ["Construction"],
+        "description": "Take on tasks to repair and build furniture for clients around Gielinor."
+      },
+      {
+        "name": "Mastering Mixology",
+        "classification": "Non-combat",
+        "skills": ["Herblore"],
+        "description": "Refine herbs into basic elements to brew potions for order."
+      },
+      {
+        "name": "Mess",
+        "classification": "Non-combat",
+        "skills": ["Cooking"],
+        "description": "Cook food to serve to soldiers of Shayzien."
+      },
+      {
+        "name": "Pyramid Plunder",
+        "classification": "Dangerous",
+        "skills": ["Thieving"],
+        "description": "Advance through 8 rooms avoiding traps and looting treasure within a time limit."
+      },
+      {
+        "name": "Rogues' Den",
+        "classification": "Non-combat",
+        "skills": ["Agility", "Thieving"],
+        "description": "Navigate a tricky maze filled with traps and obstacles for rogue equipment."
+      },
+      {
+        "name": "Sorceress's Garden",
+        "classification": "Non-combat",
+        "skills": ["Thieving", "Farming"],
+        "description": "Sneak around watchful elementals to pick Sq'irk fruits or herbs."
+      },
+      {
+        "name": "Stealing Artefacts",
+        "classification": "Non-combat",
+        "skills": ["Thieving"],
+        "description": "Retrieve items for Captain Khaled while avoiding guards."
+      },
+      {
+        "name": "Tithe Farm",
+        "classification": "Non-combat",
+        "skills": ["Farming"],
+        "description": "Intensively plant, tend, and harvest special seeds to earn points."
+      },
+      {
+        "name": "Trouble Brewing",
+        "classification": "Safe",
+        "skills": ["Agility", "Cooking", "Crafting", "Firemaking", "Fletching", "Hunter", "Strength"],
+        "description": "Two teams compete to brew the most bottles of 'rum'."
+      },
+      {
+        "name": "Vale Totems",
+        "classification": "Non-combat",
+        "skills": ["Fletching"],
+        "description": "Earn vale offerings and research points by building, carving, and decorating totems."
+      },
+      {
+        "name": "Volcanic Mine",
+        "classification": "Dangerous",
+        "skills": ["Mining"],
+        "description": "Mine as many ore fragments as possible before the volcano erupts."
+      }
+    ],
+    "combat_and_skilling": [
+      {
+        "name": "Shades of Mort'ton",
+        "classification": "Dangerous",
+        "skills": ["Crafting", "Firemaking", "Prayer", "Combat"],
+        "description": "Build up a temple, defend it from shades, and venture into catacombs for rewards."
+      },
+      {
+        "name": "Tai Bwo Wannai Cleanup",
+        "classification": "Dangerous",
+        "skills": ["Woodcutting", "Combat"],
+        "description": "Help clean up the village of Tai Bwo Wannai while encountering monsters."
+      },
+      {
+        "name": "The Gauntlet",
+        "classification": "Dangerous",
+        "skills": ["Fishing", "Mining", "Cooking", "Woodcutting", "Herblore", "Smithing", "Crafting", "Combat"],
+        "description": "Enter a dungeon without equipment and gather resources to survive a fight against the Crystalline Hunllef."
+      },
+      {
+        "name": "Warriors' Guild",
+        "classification": "Dangerous",
+        "skills": ["Melee"],
+        "description": "Various minigames to train melee and earn warrior guild tokens for defenders."
+      }
+    ],
+    "miscellaneous": [
+      {
+        "name": "Burthorpe Games Room",
+        "classification": "Non-combat",
+        "description": "Compete in various board games. Also available at the Games Zone."
+      },
+      {
+        "name": "Forestry",
+        "classification": "Non-combat",
+        "skills": ["Woodcutting", "Thieving", "Construction", "Fletching", "Farming", "Hunter"],
+        "description": "Earn anima-infused bark by participating in randomly spawned forestry events while Woodcutting."
+      },
+      {
+        "name": "Rat Pits",
+        "classification": "Dangerous (to the cat)",
+        "description": "Train cats to become wily cats in arenas of battle between cats and mice."
+      },
+      {
+        "name": "Tears of Guthix",
+        "classification": "Non-combat",
+        "description": "Collect tears of Guthix in a sacred cave for XP in your lowest skill. Once per week."
+      }
+    ]
+  },
+
+  "minigame_like_activities": {
+    "bosses": [
+      {
+        "name": "Barrows",
+        "classification": "Dangerous",
+        "description": "Defeat the six Barrows brothers' phantoms and loot valuable equipment from the crypts."
+      },
+      {
+        "name": "Moons of Peril",
+        "classification": "Dangerous",
+        "description": "Help Eyatlalli distract the three Moons of Peril for rewards."
+      },
+      {
+        "name": "Zalcano",
+        "classification": "Dangerous",
+        "skills": ["Mining", "Smithing", "Runecraft"],
+        "description": "Use skilling to defeat an ancient Zamorakian general cursed to turn into stone."
+      },
+      {
+        "name": "Wintertodt",
+        "classification": "Dangerous",
+        "skills": ["Firemaking", "Fletching"],
+        "description": "Help the Order of the Sacred Flame subdue an ancient storm of perpetual winter."
+      },
+      {
+        "name": "Tempoross",
+        "classification": "Non-combat",
+        "skills": ["Fishing", "Cooking"],
+        "description": "Help the Spirit Anglers subdue an ancient spirit of the sea causing severe storms."
+      }
+    ],
+    "other_activities": [
+      {
+        "name": "Blast Mine",
+        "classification": "Dangerous",
+        "description": "Use dynamite to mine for ores, allowing high-level ores at lower levels."
+      },
+      {
+        "name": "Camdozaal Vault",
+        "classification": "Non-combat",
+        "description": "Navigate the vault to find lockboxes of increasing value."
+      },
+      {
+        "name": "Chompy Bird Hunting",
+        "classification": "Dangerous",
+        "description": "Lure and kill chompies for cosmetic chompy bird hats."
+      },
+      {
+        "name": "Creature Creation",
+        "classification": "Dangerous",
+        "description": "Animate monsters that drop Herblore secondary ingredients, raw foods, and feathers."
+      },
+      {
+        "name": "Dorgesh-Kaan Market Trading",
+        "classification": "Non-combat",
+        "description": "Sell exotic surface food to Dorgeshuun gourmets for coins."
+      },
+      {
+        "name": "Keldagrim Tasks",
+        "classification": "Non-combat",
+        "description": "Complete tasks assigned by dwarves for coins."
+      },
+      {
+        "name": "Managing Miscellania",
+        "classification": "Non-combat",
+        "description": "Manage labourers on the islands of Miscellania and Etceteria for passive rewards."
+      },
+      {
+        "name": "Shayzien Combat Ring",
+        "classification": "Dangerous",
+        "description": "Challenge soldiers of Shayzien in melee matches for Shayzien armour."
+      },
+      {
+        "name": "Sled Racing",
+        "classification": "Non-combat",
+        "description": "Ride a sled down an icy timed course in Scrubfoot's cave."
+      },
+      {
+        "name": "Stealing Valuables",
+        "classification": "Dangerous",
+        "description": "Pickpocket wealthy citizens for house keys to burgle their houses."
+      },
+      {
+        "name": "Underwater Agility and Thieving",
+        "classification": "Non-combat",
+        "description": "Navigate underwater obstacles for Mermaid's tears and Glistening tears."
+      },
+      {
+        "name": "Werewolf Skullball",
+        "classification": "Non-combat",
+        "description": "Kick a human skull through goals to earn Agility XP."
+      },
+      {
+        "name": "Wise Old Man Tasks",
+        "classification": "Dangerous",
+        "description": "Complete tasks from the Wise Old Man for Prayer XP or items."
+      }
+    ]
+  },
+
+  "raids": [
+    {
+      "name": "Chambers of Xeric",
+      "also_known_as": "CoX",
+      "final_boss": "Great Olm",
+      "combat_level": 1043,
+      "sub_bosses": ["Tekton", "Vespula", "Vanguard", "Ice Demon", "Muttadiles", "Vasa Nistirio"],
+      "has_challenge_mode": true,
+      "description": "Large cave system underneath Mount Quidamortem. Scales to 1-100 players."
+    },
+    {
+      "name": "Theatre of Blood",
+      "also_known_as": "ToB",
+      "final_boss": "Verzik Vitur",
+      "sub_bosses": ["The Maiden of Sugadinti", "Pestilent Bloat", "Nylocas Vasilias", "Sotetseg", "Xarpus"],
+      "modes": ["Entry Mode", "Normal", "Hard Mode"],
+      "description": "A linear raid in Morytania with five boss encounters."
+    },
+    {
+      "name": "Tombs of Amascut",
+      "also_known_as": "ToA",
+      "final_bosses": ["Elidinis' Warden", "Tumeken's Warden"],
+      "sub_bosses": ["Akkha", "Ba-Ba", "Kephri", "Zebak"],
+      "modes": ["Entry Mode", "Normal", "Expert Mode"],
+      "description": "A raid in the Kharidian Desert with adjustable difficulty via invocations."
+    }
+  ],
+
+  "distractions_and_diversions": [
+    {
+      "name": "Champions' Challenge",
+      "description": "Defeat champion NPCs using specific combat restrictions."
+    },
+    {
+      "name": "Shooting Stars",
+      "description": "Mine fallen stars that crash around Gielinor for Mining XP and rewards."
+    },
+    {
+      "name": "Treasure Trails",
+      "description": "Complete clue scrolls of various difficulties for unique rewards."
+    }
+  ],
+
+  "bosses": {
+    "world_bosses": [
+      {
+        "name": "Barrows Brothers",
+        "combat_level": 115,
+        "location": "Morytania",
+        "members": ["Ahrim the Blighted", "Dharok the Wretched", "Guthan the Infested", "Karil the Tainted", "Torag the Corrupted", "Verac the Defiled"]
+      },
+      {
+        "name": "Corporeal Beast",
+        "combat_level": 785,
+        "location": "Wilderness (cave east of Graveyard of Shadows)"
+      },
+      {
+        "name": "Giant Mole",
+        "combat_level": 230,
+        "location": "Falador Park (underground)"
+      },
+      {
+        "name": "King Black Dragon",
+        "combat_level": 276,
+        "location": "Wilderness (lair)"
+      },
+      {
+        "name": "Chaos Elemental",
+        "combat_level": 305,
+        "location": "Deep Wilderness (west of Rogues' Castle)"
+      }
+    ],
+    "god_wars_dungeon": [
+      {
+        "name": "Commander Zilyana",
+        "combat_level": 596,
+        "faction": "Saradomin",
+        "requirements": ["70 Agility"]
+      },
+      {
+        "name": "General Graardor",
+        "combat_level": 624,
+        "faction": "Bandos",
+        "requirements": ["70 Strength"]
+      },
+      {
+        "name": "Kree'arra",
+        "combat_level": 580,
+        "faction": "Armadyl",
+        "requirements": ["70 Ranged"]
+      },
+      {
+        "name": "K'ril Tsutsaroth",
+        "combat_level": 650,
+        "faction": "Zamorak",
+        "requirements": ["70 Hitpoints"]
+      },
+      {
+        "name": "Nex",
+        "combat_level": 1001,
+        "faction": "Zaros",
+        "requirements": ["Frozen Key"]
+      }
+    ],
+    "slayer_bosses": [
+      {
+        "name": "Abyssal Sire",
+        "combat_level": 350,
+        "slayer_level": 85,
+        "slayer_category": "Abyssal Demon"
+      },
+      {
+        "name": "Alchemical Hydra",
+        "combat_level": 426,
+        "slayer_level": 95,
+        "slayer_category": "Hydra"
+      },
+      {
+        "name": "Cerberus",
+        "combat_level": 318,
+        "slayer_level": 91,
+        "slayer_category": "Hellhound"
+      },
+      {
+        "name": "Grotesque Guardians",
+        "combat_level": 328,
+        "slayer_level": 75,
+        "slayer_category": "Gargoyle"
+      },
+      {
+        "name": "Kraken",
+        "combat_level": 291,
+        "slayer_level": 87,
+        "slayer_category": "Cave Kraken"
+      },
+      {
+        "name": "Thermonuclear Smoke Devil",
+        "combat_level": 301,
+        "slayer_level": 93,
+        "slayer_category": "Smoke Devil"
+      },
+      {
+        "name": "Araxxor",
+        "combat_level": 890,
+        "slayer_level": 92,
+        "slayer_category": "Araxyte / Spider"
+      }
+    ],
+    "wilderness_bosses": [
+      {
+        "name": "Callisto",
+        "combat_level": 470,
+        "location": "South of Demonic Ruins",
+        "slayer_category": "Bear"
+      },
+      {
+        "name": "Chaos Fanatic",
+        "combat_level": 202,
+        "location": "West of Lava Maze"
+      },
+      {
+        "name": "Crazy Archaeologist",
+        "combat_level": 204,
+        "location": "Ruins south of Forgotten Cemetery"
+      },
+      {
+        "name": "Scorpia",
+        "combat_level": 225,
+        "location": "Scorpia's Den (Wilderness)"
+      },
+      {
+        "name": "Venenatis",
+        "combat_level": 464,
+        "location": "East of Bone Yard",
+        "slayer_category": "Spider"
+      },
+      {
+        "name": "Vet'ion",
+        "combat_level": 454,
+        "location": "South of Lava Maze",
+        "slayer_category": "Skeleton"
+      }
+    ],
+    "dagannoth_kings": [
+      {
+        "name": "Dagannoth Prime",
+        "combat_level": 303,
+        "attack_style": "Magic",
+        "location": "Waterbirth Island Dungeon"
+      },
+      {
+        "name": "Dagannoth Rex",
+        "combat_level": 303,
+        "attack_style": "Melee",
+        "location": "Waterbirth Island Dungeon"
+      },
+      {
+        "name": "Dagannoth Supreme",
+        "combat_level": 303,
+        "attack_style": "Ranged",
+        "location": "Waterbirth Island Dungeon"
+      }
+    ],
+    "desert_treasure_2_bosses": [
+      {
+        "name": "Duke Sucellus",
+        "combat_level": 758,
+        "location": "Ghorrock Prison (beneath Weiss)"
+      },
+      {
+        "name": "The Leviathan",
+        "combat_level": 0,
+        "location": "Beneath the Scar"
+      },
+      {
+        "name": "The Whisperer",
+        "combat_level": 0,
+        "location": "Lassar Undercity"
+      },
+      {
+        "name": "Vardorvis",
+        "combat_level": 0,
+        "location": "Ancient Vault (south of Lovakengj)"
+      }
+    ],
+    "quest_and_other_bosses": [
+      {
+        "name": "Amoxliatl",
+        "combat_level": 263,
+        "location": "Ruins of Tapoyauik, Varlamore",
+        "requirement": "The Heart of Darkness"
+      },
+      {
+        "name": "Bryophyta",
+        "combat_level": 128,
+        "location": "Varrock Sewers",
+        "f2p": true,
+        "requirement": "Mossy key"
+      },
+      {
+        "name": "Brutus",
+        "combat_level": 0,
+        "location": "Cow boss",
+        "f2p": true
+      },
+      {
+        "name": "Deranged Archaeologist",
+        "combat_level": 276,
+        "location": "Fossil Island (Tar Swamp)"
+      },
+      {
+        "name": "Doom of Mokhaiotl",
+        "combat_level": 558,
+        "location": "Crypt of Tonali, Varlamore",
+        "requirement": "The Final Dawn"
+      },
+      {
+        "name": "Hespori",
+        "combat_level": 284,
+        "location": "Farming Guild"
+      },
+      {
+        "name": "The Hueycoatl",
+        "combat_level": 0,
+        "location": "Varlamore"
+      },
+      {
+        "name": "Kalphite Queen",
+        "combat_level": 333,
+        "location": "Kalphite Lair"
+      },
+      {
+        "name": "The Mimic",
+        "combat_level": 0,
+        "location": "Watson's house (via Treasure Trails)"
+      },
+      {
+        "name": "Moons of Peril",
+        "combat_level": 0,
+        "location": "Varlamore"
+      },
+      {
+        "name": "The Nightmare / Phosani's Nightmare",
+        "combat_level": 814,
+        "location": "Slepe"
+      },
+      {
+        "name": "Obor",
+        "combat_level": 106,
+        "location": "Edgeville Dungeon",
+        "f2p": true,
+        "requirement": "Giant key"
+      },
+      {
+        "name": "Phantom Muspah",
+        "combat_level": 0,
+        "location": "Weiss"
+      },
+      {
+        "name": "The Royal Titans",
+        "combat_level": 0,
+        "location": "Varlamore"
+      },
+      {
+        "name": "Sarachnis",
+        "combat_level": 318,
+        "location": "Forthos Dungeon"
+      },
+      {
+        "name": "Scurrius",
+        "combat_level": 0,
+        "location": "Varrock Sewers"
+      },
+      {
+        "name": "Shellbane Gryphon",
+        "combat_level": 0,
+        "location": "Varlamore"
+      },
+      {
+        "name": "Skotizo",
+        "combat_level": 321,
+        "location": "Catacombs of Kourend"
+      },
+      {
+        "name": "Sol Heredit",
+        "combat_level": 1563,
+        "location": "Fortis Colosseum, Varlamore",
+        "note": "Final boss of the Fortis Colosseum minigame"
+      },
+      {
+        "name": "Vorkath",
+        "combat_level": 732,
+        "location": "Ungael",
+        "requirement": "Dragon Slayer II"
+      },
+      {
+        "name": "Yama",
+        "combat_level": 0,
+        "location": "TBD (2026 content)"
+      },
+      {
+        "name": "Zulrah",
+        "combat_level": 725,
+        "location": "Zul-Andra"
+      }
+    ],
+    "skilling_bosses": [
+      {
+        "name": "Tempoross",
+        "combat_level": 0,
+        "skills": ["Fishing", "Cooking"],
+        "location": "Ruins of Unkah"
+      },
+      {
+        "name": "Wintertodt",
+        "combat_level": 0,
+        "skills": ["Firemaking", "Fletching"],
+        "location": "Great Kourend (north)"
+      },
+      {
+        "name": "Zalcano",
+        "combat_level": 0,
+        "skills": ["Mining", "Smithing", "Runecraft"],
+        "location": "Prifddinas"
+      }
+    ],
+    "gauntlet_bosses": [
+      {
+        "name": "Crystalline Hunllef",
+        "combat_level": 674,
+        "location": "The Gauntlet (Prifddinas)"
+      },
+      {
+        "name": "Corrupted Hunllef",
+        "combat_level": 894,
+        "location": "The Corrupted Gauntlet (Prifddinas)"
+      }
+    ],
+    "inferno_and_fight_cave": [
+      {
+        "name": "TzTok-Jad",
+        "combat_level": 702,
+        "location": "TzHaar Fight Cave",
+        "reward": "Fire cape"
+      },
+      {
+        "name": "TzKal-Zuk",
+        "combat_level": 1400,
+        "location": "Inferno",
+        "reward": "Infernal cape"
+      }
+    ]
+  }
+}

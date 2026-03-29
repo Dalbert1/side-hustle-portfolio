@@ -69,6 +69,18 @@ jobs:
         run: npm run build
         working-directory: haughhoney
 
+      # ── Build OSRS Activity Helper ──
+      - name: Install OSRS Activity Helper deps
+        run: npm ci
+        working-directory: osrs-inv-tracker
+
+      - name: Build OSRS Activity Helper
+        run: npm run build
+        working-directory: osrs-inv-tracker
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
         run: |
@@ -77,6 +89,7 @@ jobs:
           cp -r tulsahomehelp/dist _site/tulsahomehelp
           cp -r heelerconstruction/dist _site/heelerconstruction
           cp -r haughhoney/dist _site/haughhoney
+          cp -r osrs-inv-tracker/dist _site/osrs-inv-tracker
 
       # ── Root landing page ──
       - name: Generate index
@@ -109,6 +122,7 @@ jobs:
                 <a href="./tulsahomehelp/">TulsaHomeHelp <span class="tag">- Home & Property Services</span></a>
                 <a href="./heelerconstruction/">Heeler Construction <span class="tag">- Construction Services</span></a>
                 <a href="./haughhoney/">Haugh Honey <span class="tag">- Local Raw Honey</span></a>
+                <a href="./osrs-inv-tracker/">OSRS Activity Helper <span class="tag">- Gear & Inventory Tracker</span></a>
               </div>
             </div>
           </body>

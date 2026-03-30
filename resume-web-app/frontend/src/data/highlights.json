@@ -1,0 +1,42 @@
+[
+  {
+    "id": "rag-accuracy",
+    "title": "RAG Accuracy Overhaul",
+    "metric": "+30%",
+    "metricLabel": "Answer Correctness",
+    "icon": "TrendingUp",
+    "problem": "Existing RAG API had ~50% answer correctness across global Oracle support queries.",
+    "approach": "Redesigned chunking mechanisms, integrated new data sources, and tuned retrieval to better align context with query intent.",
+    "result": "Answer correctness improved from 50% to ~80% — a 30-point gain impacting enterprise support quality globally."
+  },
+  {
+    "id": "km-app",
+    "title": "Knowledge Management AI App",
+    "metric": "0 → Prod",
+    "metricLabel": "Built Solo",
+    "icon": "Layers",
+    "problem": "Support teams lacked a scalable way to convert interaction history into reusable, structured knowledge.",
+    "approach": "Built from scratch — structured output pipeline (Pydantic models) generating KB articles with title, cause, symptoms, and solution fields. Added summarization for agent handoffs.",
+    "result": "Production application powering a customer-facing portal, directly accelerating support workflows and reducing resolution time."
+  },
+  {
+    "id": "eval-framework",
+    "title": "RAG Evaluation Framework",
+    "metric": "5",
+    "metricLabel": "Quality Dimensions",
+    "icon": "ClipboardCheck",
+    "problem": "No systematic, repeatable way to measure RAG quality across the product surface.",
+    "approach": "Sole engineer. Built a golden-dataset testing framework producing relevancy, correctness, completeness, context faithfulness, and hallucination rate metrics across multiple RAG APIs and OCI-hosted LLMs.",
+    "result": "Repeatable, data-driven quality baseline enabling ongoing RAG improvement with measurable benchmarks."
+  },
+  {
+    "id": "open-web-ui",
+    "title": "Custom Open Web UI Deployment",
+    "metric": "Multi-BU",
+    "metricLabel": "Platform Reach",
+    "icon": "Globe",
+    "problem": "Multiple Oracle business units needed a unified, configurable AI chat interface integrated with internal RAG services.",
+    "approach": "Forked and deeply customized Open Web UI with Oracle DB integration, custom pipe class implementing SSE streaming, query rewriting, and per-product routing with tailored system prompts.",
+    "result": "Internal AI platform serving multiple Oracle business units and products, enabling self-serve AI experimentation at scale."
+  }
+]

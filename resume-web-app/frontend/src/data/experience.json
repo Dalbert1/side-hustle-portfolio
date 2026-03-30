@@ -1,0 +1,76 @@
+[
+  {
+    "id": "ixopay",
+    "title": "AI Engineer",
+    "company": "IXOPAY",
+    "team": null,
+    "period": "Mar 2026 – Present",
+    "location": "Remote",
+    "current": true,
+    "summary": "Bringing AI engineering expertise to the fintech and payments space.",
+    "bullets": [
+      "Role details coming soon — first week on the job."
+    ],
+    "tags": ["AI Engineering", "Fintech"]
+  },
+  {
+    "id": "oracle-ai",
+    "title": "Cloud Software Developer",
+    "company": "Oracle",
+    "team": "Data Intelligence Services — AI Services Team",
+    "period": "Oct 2024 – Mar 2026",
+    "location": "Remote",
+    "current": false,
+    "summary": "Led AI application development, RAG pipeline engineering, and LLM evaluation for Oracle's global support and data intelligence products.",
+    "bullets": [
+      "Designed and delivered a Knowledge Management AI application that transforms customer-support interactions into structured knowledge base articles (title, cause, symptoms, solution) for a customer-facing portal. Built from the ground up with summarization for agent handoffs.",
+      "Boosted existing RAG API answer correctness by ~30% (50% → 80%) by redesigning chunking mechanisms and integrating new data sources, significantly improving response quality across global support queries.",
+      "Developed a RAG evaluation framework to test queries against golden datasets, producing detailed metrics (relevancy, correctness, completeness, context faithfulness, hallucination rate). Sole engineer — designed and implemented integrations across multiple RAG APIs and OCI-hosted LLMs.",
+      "Deployed a customized fork of Open Web UI on internal platforms with custom pipe class, SSE streaming, query rewriting, and per-product routing/system prompts — integrating Oracle Database and RAG services to support multiple business units.",
+      "Built embedding pipelines using Cohere Embed 4 with multi-source data ingestion, hashing-based sync strategies, and staging into RAG tables backed by Oracle ADW/ADB using cosine similarity.",
+      "Integrated Langfuse and Langsmith for APM tracing; built evaluation frameworks supporting both bring-your-own-data mapping and LLM-as-judge trace-based evaluation.",
+      "Implemented IAM, identity domain, and OAuth2 authentication; configured OCI Vault/secret service, VCN, ACLs, and security lists for secure AI service deployment.",
+      "Served as acting interim manager, coordinating a globally distributed team to deliver multiple projects in parallel.",
+      "Led onboarding for 10 engineers (including 3 new hires), providing technical guidance and accelerating ramp-up.",
+      "Provisioned AI infrastructure with Terraform, rapidly onboarding partners to OCI for AI experimentation and deployment."
+    ],
+    "tags": ["RAG", "LLM Evaluation", "Python", "FastAPI", "OCI", "Open Web UI", "Cohere", "Langfuse", "Langsmith", "Terraform", "Redis", "Kubernetes"]
+  },
+  {
+    "id": "oracle-gbu",
+    "title": "Cloud Software Developer",
+    "company": "Oracle",
+    "team": "GBU Application Engineering Services — Shared Services Team",
+    "period": "Apr 2022 – Oct 2024",
+    "location": "Remote",
+    "current": false,
+    "summary": "Designed and maintained Java backend APIs and cloud-native services powering shared infrastructure across Oracle's Global Business Units.",
+    "bullets": [
+      "Designed and maintained Java + Micronaut backend APIs powering shared services across Oracle's Global Business Units.",
+      "Developed GitLab CI/CD pipelines automating builds, testing, scanning, deployments, and release notes — reducing manual intervention between releases.",
+      "Integrated OCI services (Oracle DB, Object Storage, Events, Streams, Distributed Tracing, APM) to deliver scalable, cloud-native services.",
+      "Enhanced test coverage with unit, integration, and performance tests.",
+      "Mentored junior developers and interns, providing guidance in debugging, clean code practices, and application development.",
+      "Deployed and maintained containerized applications via Kubernetes and Docker, ensuring uptime and scalability."
+    ],
+    "tags": ["Java", "Micronaut", "OCI", "Kubernetes", "Docker", "GitLab CI/CD", "Terraform"]
+  },
+  {
+    "id": "tcc",
+    "title": "Full-Stack Application Developer",
+    "company": "Tulsa Community College",
+    "team": "Office of Information Services",
+    "period": "Jul 2019 – Apr 2022",
+    "location": "Tulsa, OK (Hybrid)",
+    "current": false,
+    "summary": "Built and modernized web applications serving thousands of students and faculty, dramatically reducing administrative manual workload.",
+    "bullets": [
+      "Built web applications and dynamic forms that streamlined student services and internal operations, drastically reducing manual workload for administrative staff.",
+      "Delivered full-stack applications using Python, PHP, and Java with complex SQL integrations across Oracle, MySQL, and Postgres databases.",
+      "Refactored and modernized legacy codebases, improving maintainability and performance.",
+      "Designed and deployed public-facing apps serving thousands of students and faculty, ensuring high availability and user-friendly experiences.",
+      "Provisioned and administered virtual machines to host Python applications."
+    ],
+    "tags": ["Python", "PHP", "Java", "SQL", "Oracle DB", "MySQL", "PostgreSQL"]
+  }
+]

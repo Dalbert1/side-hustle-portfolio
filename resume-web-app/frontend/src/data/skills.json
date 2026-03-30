@@ -1,0 +1,74 @@
+[
+  {
+    "category": "AI / LLM Engineering",
+    "icon": "Brain",
+    "skills": [
+      { "name": "RAG Pipelines & Architecture", "context": "Redesigned chunking and retrieval at Oracle, 50%→80% accuracy" },
+      { "name": "LLM Evaluation", "context": "Built golden-dataset eval framework measuring relevancy, correctness, hallucination rate" },
+      { "name": "Structured Output / Pydantic", "context": "Used for KM article generation and API response contracts" },
+      { "name": "OpenAI Responses API", "context": "Built production integrations with the latest OpenAI API surface" },
+      { "name": "Tool Chaining & Binding", "context": "Composed multi-step agentic tool chains" },
+      { "name": "Agentic Workflows", "context": "Designed and deployed autonomous AI agents for support workflows" },
+      { "name": "LangChain / LangGraph", "context": "Built pre-built REACT agents and stateful graph workflows" },
+      { "name": "Knowledge Management Generation", "context": "Production KM app transforming support interactions into structured KB articles" },
+      { "name": "Guardrails / PII Redaction", "context": "Implemented input/output guardrails for enterprise AI services" },
+      { "name": "Cohere Embed 4", "context": "Embedding pipeline for multi-source RAG data ingestion" },
+      { "name": "Langfuse / Langsmith", "context": "APM tracing and observability for LLM pipelines" },
+      { "name": "LLM-as-Judge Evaluation", "context": "Trace-based and BYOD mapping evaluation frameworks" },
+      { "name": "Open Web UI", "context": "Custom fork with pipe class, SSE, query rewriting, per-product routing" }
+    ]
+  },
+  {
+    "category": "Cloud & Infrastructure",
+    "icon": "Cloud",
+    "skills": [
+      { "name": "Oracle Cloud Infrastructure (OCI)", "context": "Generative AI, Oracle DB, ADW/ADB, Object Storage, Events, Streams" },
+      { "name": "RAG w/ Oracle ADW (Cosine Similarity)", "context": "Vector search over Oracle Autonomous Data Warehouse" },
+      { "name": "OCI Compute & Resource Principal Auth", "context": "Secure service-to-service auth without credentials" },
+      { "name": "IAM / Identity Domains / OAuth2", "context": "Configured enterprise identity and access management" },
+      { "name": "OCI Vault & Secret Service", "context": "Secrets management for production AI services" },
+      { "name": "VCN / ACLs / Security Lists", "context": "Network isolation and access control configuration" },
+      { "name": "Terraform", "context": "AI infrastructure provisioning and partner onboarding on OCI" },
+      { "name": "Managed Kubernetes / App Platform", "context": "Hosted deployment and orchestration" },
+      { "name": "AWS", "context": "Cloud services exposure across projects" }
+    ]
+  },
+  {
+    "category": "Backend Development",
+    "icon": "Server",
+    "skills": [
+      { "name": "Python", "context": "Primary language — AI services, APIs, data pipelines" },
+      { "name": "FastAPI", "context": "Async Python APIs for AI service backends" },
+      { "name": "Flask / Django", "context": "Python web frameworks across multiple projects" },
+      { "name": "Java + Micronaut", "context": "Enterprise API development at Oracle GBU" },
+      { "name": "SQL (Oracle, MySQL, PostgreSQL)", "context": "Complex query design across multiple DB engines" },
+      { "name": "Redis", "context": "Caching and rate limiting for AI services" },
+      { "name": "PHP", "context": "Full-stack web development at Tulsa Community College" },
+      { "name": "C#/.NET", "context": "Backend development language and framework at IXOPAY" }
+    ]
+  },
+  {
+    "category": "DevOps & Tooling",
+    "icon": "GitBranch",
+    "skills": [
+      { "name": "Docker / Kubernetes", "context": "Containerized deployments across Oracle and personal projects" },
+      { "name": "GitLab CI/CD", "context": "Automated build, test, scan, deploy, release notes pipelines" },
+      { "name": "Terraform (IaC)", "context": "Infrastructure as code for OCI provisioning" },
+      { "name": "API-driven & CLI Provisioning", "context": "Programmatic cloud resource management" },
+      { "name": "git / git lfs", "context": "Version control including large file storage" },
+      { "name": "Cline", "context": "AI-assisted development workflows" },
+      { "name": "Claude", "context": "AI-assisted development workflows" },
+      { "name": "OpenAI Codex", "context": "AI-assisted development workflows" }
+    ]
+  },
+  {
+    "category": "Observability & Evaluation",
+    "icon": "BarChart",
+    "skills": [
+      { "name": "Langfuse & Langsmith", "context": "LLM pipeline tracing and experiment tracking" },
+      { "name": "APM / Distributed Tracing", "context": "OCI APM and distributed tracing for cloud services" },
+      { "name": "Evaluation Frameworks", "context": "BYOD mapping and LLM-as-judge trace-based evaluation" },
+      { "name": "Data Sync & Hashing Strategies", "context": "Multi-source ingestion and deduplication for RAG pipelines" }
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "school": "Auburn University",
+    "degree": "B.S. Computer Science",
+    "year": "2020",
+    "gpa": "3.9",
+    "honors": "Summa Cum Laude"
+  },
+  {
+    "school": "University of Central Oklahoma",
+    "degree": "B.S. Occupational Health & Safety",
+    "year": "2015",
+    "gpa": "3.5",
+    "honors": null
+  }
+]

@@ -81,6 +81,15 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
+      # ── Build Resume Web App ──
+      - name: Install Resume deps
+        run: npm ci
+        working-directory: resume-web-app/frontend
+
+      - name: Build Resume
+        run: npm run build
+        working-directory: resume-web-app/frontend
+
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
         run: |
@@ -90,6 +99,7 @@ jobs:
           cp -r heelerconstruction/dist _site/heelerconstruction
           cp -r haughhoney/dist _site/haughhoney
           cp -r osrs-inv-tracker/dist _site/osrs-inv-tracker
+          cp -r resume-web-app/frontend/dist _site/resume
 
       # ── Root landing page ──
       - name: Generate index
@@ -123,6 +133,7 @@ jobs:
                 <a href="./heelerconstruction/">Heeler Construction <span class="tag">- Construction Services</span></a>
                 <a href="./haughhoney/">Haugh Honey <span class="tag">- Local Raw Honey</span></a>
                 <a href="./osrs-inv-tracker/">OSRS Activity Helper <span class="tag">- Gear & Inventory Tracker</span></a>
+                <a href="./resume/">Dylan Albert Resume <span class="tag">- Interactive Digital Resume</span></a>
               </div>
             </div>
           </body>

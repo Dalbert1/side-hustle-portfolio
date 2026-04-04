@@ -18,7 +18,7 @@ export default function Navbar() {
       <nav className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between" aria-label="Main navigation">
         <Link to="/" className="font-serif text-lg text-bark tracking-tight flex items-center gap-2">
           <BookOpen size={20} className="text-sage" />
-          My Recipe Box
+          The Forking Good Club
         </Link>
 
         {user && (

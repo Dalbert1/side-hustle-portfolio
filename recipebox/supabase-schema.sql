@@ -1,5 +1,5 @@
 -- ============================================================
--- My Recipe Box - Full Supabase Schema (Multi-user)
+-- The Forking Good Club - Full Supabase Schema (Multi-user)
 -- Run this in the Supabase SQL Editor
 -- ============================================================
 

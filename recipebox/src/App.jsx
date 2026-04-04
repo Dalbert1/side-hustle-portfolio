@@ -1,5 +1,7 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { HashRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
+import { supabase } from './lib/supabase'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Feed from './pages/Feed'
@@ -19,6 +21,16 @@ function ProtectedRoute({ children }) {
 
 function AppRoutes() {
   const { user, loading } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        navigate('/reset-password')
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [navigate])
 
   if (loading) return <div className="text-center py-20 text-warm-gray text-sm">Loading...</div>
 

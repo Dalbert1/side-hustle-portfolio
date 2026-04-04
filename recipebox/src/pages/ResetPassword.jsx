@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function ResetPassword() {
@@ -7,8 +7,28 @@ export default function ResetPassword() {
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { updatePassword } = useAuth()
+  const { user, updatePassword } = useAuth()
   const navigate = useNavigate()
+
+  // No active session means the reset link didn't establish auth
+  if (!user) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center px-5">
+        <div className="w-full max-w-sm text-center">
+          <h1 className="font-serif text-2xl text-bark mb-4">Reset Link Expired</h1>
+          <p className="text-sm text-warm-gray mb-6">
+            Your password reset session could not be found. This can happen if the link expired or was opened in a different browser than where you requested it.
+          </p>
+          <Link
+            to="/forgot-password"
+            className="inline-block px-5 py-2.5 bg-sage text-white font-semibold text-sm rounded-lg hover:bg-sage-dark transition-colors"
+          >
+            Request a New Reset Link
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()

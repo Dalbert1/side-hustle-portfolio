@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { Search, Plus, SlidersHorizontal } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { useAuth } from '../contexts/AuthContext'
 import RecipeCard from '../components/RecipeCard'
 
 const CATEGORIES = ['all', 'breakfast', 'lunch', 'dinner', 'snack', 'dessert', 'other']
 
 export default function Home() {
+  const { user } = useAuth()
   const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -14,13 +16,14 @@ export default function Home() {
   const [sortBy, setSortBy] = useState('newest')
 
   useEffect(() => {
-    loadRecipes()
-  }, [])
+    if (user) loadRecipes()
+  }, [user])
 
   async function loadRecipes() {
     const { data } = await supabase
       .from('recipes')
       .select('*')
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
     setRecipes(data || [])
     setLoading(false)

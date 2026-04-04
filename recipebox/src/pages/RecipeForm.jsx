@@ -23,6 +23,7 @@ const EMPTY_RECIPE = {
   steps: [{ instruction: '', image_url: null }],
   nutrition: { calories: '', protein: '', carbs: '', fat: '', fiber: '', sugar: '', sodium: '' },
   notes: '',
+  made_on: '',
 }
 
 export default function RecipeForm({ isEdit = false }) {
@@ -53,6 +54,7 @@ export default function RecipeForm({ isEdit = false }) {
         nutrition: data.nutrition || EMPTY_RECIPE.nutrition,
         notes: data.notes || '',
         rating_notes: data.rating_notes || '',
+        made_on: data.made_on || '',
       })
     }
     setLoading(false)
@@ -147,6 +149,7 @@ export default function RecipeForm({ isEdit = false }) {
       steps,
       nutrition: hasNutrition ? nutrition : null,
       notes: form.notes.trim() || null,
+      made_on: form.made_on || null,
     }
 
     let result
@@ -217,8 +220,8 @@ export default function RecipeForm({ isEdit = false }) {
           </label>
         </div>
 
-        {/* Category + Times + Servings */}
-        <div className="grid sm:grid-cols-4 gap-4">
+        {/* Category + Times + Servings + Date */}
+        <div className="grid sm:grid-cols-5 gap-4">
           <label className="flex flex-col gap-1.5">
             <span className="text-xs font-medium text-warm-gray uppercase tracking-wider">Category</span>
             <select
@@ -256,6 +259,15 @@ export default function RecipeForm({ isEdit = false }) {
               value={form.servings}
               onChange={e => update('servings', e.target.value)}
               min="1"
+              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+            />
+          </label>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs font-medium text-warm-gray uppercase tracking-wider">Date Made</span>
+            <input
+              type="date"
+              value={form.made_on}
+              onChange={e => update('made_on', e.target.value)}
               className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>

@@ -2,10 +2,13 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import Feed from './pages/Feed'
 import Recipe from './pages/Recipe'
 import RecipeForm from './pages/RecipeForm'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth()
@@ -23,7 +26,10 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
       <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
       <Route path="/recipe/:id" element={<ProtectedRoute><Recipe /></ProtectedRoute>} />
       <Route path="/add" element={<ProtectedRoute><RecipeForm /></ProtectedRoute>} />
       <Route path="/edit/:id" element={<ProtectedRoute><RecipeForm isEdit /></ProtectedRoute>} />

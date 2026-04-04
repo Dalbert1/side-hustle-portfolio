@@ -111,6 +111,15 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
+      # ── Build WW3 Electric Boogaloo ──
+      - name: Install WW3 deps
+        run: npm ci
+        working-directory: ww3electricboogaloo
+
+      - name: Build WW3
+        run: npm run build
+        working-directory: ww3electricboogaloo
+
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
         run: |
@@ -123,6 +132,7 @@ jobs:
           cp -r resume-web-app/frontend/dist _site/resume
           cp -r handyrandys/dist _site/handyrandys
           cp -r recipebox/dist _site/recipebox
+          cp -r ww3electricboogaloo/dist _site/ww3
 
       # ── Root landing page ──
       - name: Generate index
@@ -159,6 +169,7 @@ jobs:
                 <a href="./resume/">Dylan Albert Resume <span class="tag">- Interactive Digital Resume</span></a>
                 <a href="./handyrandys/">Handy Randy's <span class="tag">- Home & Pet Care Services</span></a>
                 <a href="./recipebox/">The Forking Good Club <span class="tag">- Recipe Sharing & Social Feed</span></a>
+                <a href="./ww3/">WW3 Electric Boogaloo <span class="tag">- Turn-Based Strategy Game</span></a>
               </div>
             </div>
           </body>

@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-cream: oklch(96.5% 0.01 85);
+  --color-cream-dark: oklch(93% 0.015 85);
+  --color-sage: oklch(52% 0.08 155);
+  --color-sage-light: oklch(58% 0.07 155);
+  --color-sage-dark: oklch(42% 0.08 155);
+  --color-sage-muted: oklch(92% 0.03 155);
+  --color-terra: oklch(55% 0.14 35);
+  --color-terra-light: oklch(62% 0.12 35);
+  --color-bark: oklch(22% 0.015 60);
+  --color-bark-light: oklch(30% 0.015 60);
+  --color-warm-gray: oklch(55% 0.01 60);
+  --color-warm-gray-light: oklch(72% 0.01 60);
+  --color-border: oklch(88% 0.01 85);
+
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-bark);
+  background-color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--font-serif); }
+
+::selection { background-color: oklch(52% 0.08 155 / 0.2); }
+
+:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

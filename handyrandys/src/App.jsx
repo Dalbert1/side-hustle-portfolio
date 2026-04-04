@@ -28,8 +28,8 @@ const SERVICES_SECONDARY = [
   {
     icon: Wrench,
     title: 'Small Home Repairs',
-    desc: "Squeaky doors, running toilets, sticky locks - the fixes that make a house feel right.",
-    features: ['Faucet & toilet repairs', 'Door & cabinet fixes', 'Drywall patching', 'General maintenance'],
+    desc: "Squeaky doors, sticky locks, loose handles - the small fixes that make a house feel right.",
+    features: ['Door & cabinet fixes', 'Drywall patching', 'Shelf & curtain rod mounting', 'General maintenance'],
   },
   {
     icon: Droplets,
@@ -54,7 +54,7 @@ const SERVICES_SECONDARY = [
 const REVIEWS = [
   {
     name: 'Margaret T.',
-    text: "Randy watched our house and two dogs for two weeks while we were in Florida. Came home to a clean house, happy pups, and he even fixed the leaky faucet we'd been putting off. Can't recommend him enough.",
+    text: "Randy watched our house and two dogs for two weeks while we were in Florida. Came home to a clean house, happy pups, and he even fixed the squeaky back door we'd been putting off. Can't recommend him enough.",
   },
   {
     name: 'Jim & Carol W.',
@@ -240,7 +240,7 @@ function Hero() {
             </h1>
 
             <p className="text-warm-gray text-lg leading-relaxed max-w-lg">
-              House sitting, pet care, and handyman services from someone you can trust.
+              House sitting, pet care, and small home repairs from someone you can trust.
               Honest work, fair prices, and the peace of mind you deserve.
             </p>
 

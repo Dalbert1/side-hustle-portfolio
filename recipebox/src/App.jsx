@@ -49,8 +49,8 @@ export default function App() {
         <CartProvider>
           <div className="min-h-screen text-bark font-sans">
             <Navbar />
-            <main className="max-w-5xl mx-auto px-4 sm:px-6">
-              <div className="bg-cream rounded-xl min-h-[calc(100vh-3.5rem)] mt-4 px-1 sm:px-2 shadow-lg shadow-black/20">
+            <main className="max-w-5xl mx-auto px-0 sm:px-6">
+              <div className="bg-cream sm:rounded-xl min-h-[calc(100vh-3.5rem)] sm:mt-4 px-1 sm:px-2 shadow-lg shadow-black/20">
                 <AppRoutes />
               </div>
             </main>

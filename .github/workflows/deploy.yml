@@ -111,14 +111,7 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
-      # ── Build WW3 Electric Boogaloo ──
-      - name: Install WW3 deps
-        run: npm ci
-        working-directory: ww3electricboogaloo
-
-      - name: Build WW3
-        run: npm run build
-        working-directory: ww3electricboogaloo
+      # ── WW3 is a single HTML file, no build needed ──
 
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
@@ -132,7 +125,8 @@ jobs:
           cp -r resume-web-app/frontend/dist _site/resume
           cp -r handyrandys/dist _site/handyrandys
           cp -r recipebox/dist _site/recipebox
-          cp -r ww3electricboogaloo/dist _site/ww3
+          mkdir -p _site/ww3
+          cp ww3electricboogaloo/index.html _site/ww3/index.html
           cp games/*.html _site/games/
           cp index.html _site/index.html
 

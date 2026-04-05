@@ -2,20 +2,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: oklch(13% 0.01 260);
-  --color-cream-dark: oklch(17% 0.015 260);
-  --color-surface: oklch(20% 0.012 260);
-  --color-sage: oklch(62% 0.10 155);
-  --color-sage-light: oklch(70% 0.09 155);
-  --color-sage-dark: oklch(52% 0.10 155);
-  --color-sage-muted: oklch(20% 0.04 155);
-  --color-terra: oklch(65% 0.16 35);
-  --color-terra-light: oklch(72% 0.14 35);
-  --color-bark: oklch(92% 0.01 60);
-  --color-bark-light: oklch(80% 0.01 60);
-  --color-warm-gray: oklch(60% 0.01 60);
-  --color-warm-gray-light: oklch(45% 0.01 60);
-  --color-border: oklch(24% 0.01 260);
+  /* Dark feminine palette - warm plum/rose tones */
+  --color-cream: oklch(14% 0.015 320);
+  --color-cream-dark: oklch(18% 0.02 320);
+  --color-surface: oklch(21% 0.015 320);
+  --color-sage: oklch(68% 0.12 350);
+  --color-sage-light: oklch(76% 0.10 350);
+  --color-sage-dark: oklch(58% 0.12 350);
+  --color-sage-muted: oklch(22% 0.04 350);
+  --color-terra: oklch(72% 0.14 55);
+  --color-terra-light: oklch(78% 0.12 55);
+  --color-bark: oklch(93% 0.01 350);
+  --color-bark-light: oklch(82% 0.01 350);
+  --color-warm-gray: oklch(62% 0.01 350);
+  --color-warm-gray-light: oklch(45% 0.01 350);
+  --color-border: oklch(25% 0.015 320);
 
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-sans: 'DM Sans', system-ui, sans-serif;
@@ -27,12 +28,13 @@ body {
   font-family: var(--font-sans);
   color: var(--color-bark);
   background-color: var(--color-cream);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.03'%3E%3C!-- fork --%3E%3Cpath d='M40 20v25M35 20v12M45 20v12M35 32a5 5 0 0 0 10 0M40 45v20'/%3E%3C!-- knife --%3E%3Cpath d='M120 25c0-5 8-5 8 0v30h-4v15M124 25v30'/%3E%3C!-- tomato --%3E%3Ccircle cx='220' cy='45' r='14'/%3E%3Cpath d='M210 38c4-6 16-6 20 0M218 31c2-4 6-4 6 0'/%3E%3C!-- spoon --%3E%3Cellipse cx='50' cy='140' rx='8' ry='12'/%3E%3Cpath d='M50 152v20'/%3E%3C!-- lemon --%3E%3Cellipse cx='160' cy='135' rx='16' ry='12'/%3E%3Cpath d='M148 128c6-4 18-4 24 0'/%3E%3C!-- whisk --%3E%3Cpath d='M260 120v25M255 120c0 12 10 12 10 0M260 120c0 12 10 12 10 0M250 120c0 12 10 12 10 0'/%3E%3C!-- pepper --%3E%3Cpath d='M40 230c0-8 6-15 6-22M46 208c3-4 3-8 0-12M40 230c-4 1-6-2-4-6M44 228c4 1 6-2 4-6'/%3E%3C!-- herb leaf --%3E%3Cpath d='M140 230c12-10 20-5 16 8-10 4-18-2-16-8zM140 230l16 8M148 226l-4 8'/%3E%3C!-- rolling pin --%3E%3Cpath d='M230 220h40M225 220a5 5 0 0 1 5-5v10a5 5 0 0 1-5-5zM270 220a5 5 0 0 0-5-5v10a5 5 0 0 0 5-5z'/%3E%3C!-- cherry --%3E%3Ccircle cx='85' cy='280' r='7'/%3E%3Ccircle cx='97' cy='282' r='7'/%3E%3Cpath d='M85 273c2-8 8-10 12-6M97 275c-1-8 3-12 8-10'/%3E%3C!-- fork 2 --%3E%3Cpath d='M190 265v25M185 265v12M195 265v12M185 277a5 5 0 0 0 10 0M190 290v10'/%3E%3C/g%3E%3C/svg%3E");
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3 { font-family: var(--font-serif); }
 
-::selection { background-color: oklch(62% 0.10 155 / 0.3); }
+::selection { background-color: oklch(68% 0.12 350 / 0.3); }
 
 input, textarea, select, button, a {
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);

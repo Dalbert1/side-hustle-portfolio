@@ -15,7 +15,7 @@ export default function Recipe() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [recipe, setRecipe] = useState(null)
-  const [author, setAuthor] = useState({ name: '', avatar_url: null })
+  const [author, setAuthor] = useState({ name: '' })
   const [loading, setLoading] = useState(true)
   const [showNotes, setShowNotes] = useState(false)
   const [editingNotes, setEditingNotes] = useState(false)
@@ -46,12 +46,11 @@ export default function Recipe() {
       // Load author name + avatar
       const { data: profile } = await supabase
         .from('user_profiles')
-        .select('email, rsn, display_name, avatar_url')
+        .select('email, rsn, display_name')
         .eq('id', data.user_id)
         .single()
       setAuthor({
         name: profile?.display_name || profile?.rsn || profile?.email?.split('@')[0] || 'User',
-        avatar_url: profile?.avatar_url || null,
       })
 
       // Check if current user liked it
@@ -81,13 +80,12 @@ export default function Recipe() {
       if (userIds.length > 0) {
         const { data: profiles } = await supabase
           .from('user_profiles')
-          .select('id, email, rsn, display_name, avatar_url')
+          .select('id, email, rsn, display_name')
           .in('id', userIds)
         const map = {}
         profiles?.forEach(p => {
           map[p.id] = {
             name: p.display_name || p.rsn || p.email?.split('@')[0] || 'User',
-            avatar_url: p.avatar_url,
           }
         })
         setCommentProfiles(map)
@@ -409,15 +407,11 @@ export default function Recipe() {
           <div className="flex flex-col gap-4">
             {comments.map(c => (
               <div key={c.id} className="flex gap-3">
-                {commentProfiles[c.user_id]?.avatar_url ? (
-                  <img src={commentProfiles[c.user_id].avatar_url} alt="" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
-                ) : (
-                  <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center flex-shrink-0">
-                    <span className="text-[10px] font-semibold text-sage-light uppercase">
-                      {(commentProfiles[c.user_id]?.name || 'U')[0]}
-                    </span>
-                  </div>
-                )}
+                <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center flex-shrink-0">
+                  <span className="text-[10px] font-semibold text-sage-light uppercase">
+                    {(commentProfiles[c.user_id]?.name || 'U')[0]}
+                  </span>
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold text-bark">{commentProfiles[c.user_id]?.name || 'User'}</span>

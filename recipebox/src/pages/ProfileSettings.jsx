@@ -1,44 +1,14 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Camera, Loader2, User } from 'lucide-react'
-import { supabase } from '../lib/supabase'
+import { ArrowLeft } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function ProfileSettings() {
   const { user, profile, displayName, updateProfile } = useAuth()
   const [name, setName] = useState(profile?.display_name || profile?.rsn || '')
-  const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || null)
-  const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
-  const fileRef = useRef(null)
-
-  async function handleAvatarUpload(e) {
-    const file = e.target.files?.[0]
-    if (!file || !user) return
-
-    setUploading(true)
-    try {
-      const ext = file.name.split('.').pop()
-      const filePath = `${user.id}/avatar.${ext}`
-
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file, { upsert: true })
-
-      if (uploadError) throw uploadError
-
-      const { data } = supabase.storage.from('avatars').getPublicUrl(filePath)
-      const url = data.publicUrl + '?t=' + Date.now()
-      setAvatarUrl(url)
-    } catch (err) {
-      setError('Upload failed: ' + err.message)
-    } finally {
-      setUploading(false)
-      if (fileRef.current) fileRef.current.value = ''
-    }
-  }
 
   async function handleSave(e) {
     e.preventDefault()
@@ -48,7 +18,6 @@ export default function ProfileSettings() {
 
     const { error } = await updateProfile({
       display_name: name.trim() || null,
-      avatar_url: avatarUrl,
     })
 
     if (error) {
@@ -77,27 +46,14 @@ export default function ProfileSettings() {
           <p className="text-sm text-sage bg-sage/5 border border-sage/20 rounded-lg px-4 py-2.5">{message}</p>
         )}
 
-        {/* Avatar */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="relative group">
-            {avatarUrl ? (
-              <img src={avatarUrl} alt="" className="w-24 h-24 rounded-full object-cover border-2 border-border" />
-            ) : (
-              <div className="w-24 h-24 rounded-full bg-surface border-2 border-border flex items-center justify-center">
-                <User size={36} className="text-warm-gray-light" />
-              </div>
-            )}
-            <button
-              type="button"
-              onClick={() => fileRef.current?.click()}
-              disabled={uploading}
-              className="absolute bottom-0 right-0 w-8 h-8 bg-sage text-white rounded-full flex items-center justify-center hover:bg-sage-dark transition-colors shadow-lg"
-              aria-label="Change avatar"
-            >
-              {uploading ? <Loader2 size={14} className="animate-spin" /> : <Camera size={14} />}
-            </button>
+        {/* Avatar preview */}
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-20 h-20 rounded-full bg-sage-muted flex items-center justify-center">
+            <span className="text-2xl font-semibold text-sage-light uppercase">
+              {(name.trim() || displayName)[0]}
+            </span>
           </div>
-          <p className="text-[11px] text-warm-gray">Click the camera to upload a photo</p>
+          <p className="text-[11px] text-warm-gray">Your avatar is your display name initial</p>
         </div>
 
         {/* Display Name */}
@@ -131,14 +87,6 @@ export default function ProfileSettings() {
           {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </form>
-
-      <input
-        ref={fileRef}
-        type="file"
-        accept="image/*"
-        onChange={handleAvatarUpload}
-        className="hidden"
-      />
     </div>
   )
 }

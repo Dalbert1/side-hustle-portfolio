@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom'
 import { Clock, Star, UtensilsCrossed } from 'lucide-react'
 
 const CATEGORY_COLORS = {
-  breakfast: 'bg-amber-900/40 text-amber-300',
-  lunch: 'bg-green-900/40 text-green-300',
-  dinner: 'bg-blue-900/40 text-blue-300',
-  snack: 'bg-purple-900/40 text-purple-300',
-  dessert: 'bg-pink-900/40 text-pink-300',
-  other: 'bg-gray-800/40 text-gray-300',
+  breakfast: 'bg-amber-900/30 text-amber-200',
+  lunch: 'bg-emerald-900/30 text-emerald-200',
+  dinner: 'bg-rose-900/30 text-rose-200',
+  snack: 'bg-violet-900/30 text-violet-200',
+  dessert: 'bg-pink-900/30 text-pink-200',
+  other: 'bg-stone-800/30 text-stone-300',
 }
 
 export default function RecipeCard({ recipe }) {

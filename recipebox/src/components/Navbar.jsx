@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, X, Plus, LogOut, Newspaper, ShoppingCart, UtensilsCrossed, User, BookOpen } from 'lucide-react'
+import { Menu, X, Plus, LogOut, ShoppingCart, UtensilsCrossed, User, BookOpen } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 
 export default function Navbar() {
-  const { user, profile, displayName, signOut } = useAuth()
+  const { user, displayName, signOut } = useAuth()
   const { cartCount } = useCart()
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
@@ -45,13 +45,9 @@ export default function Navbar() {
               </Link>
               <div className="flex items-center gap-3 pl-3 border-l border-border">
                 <Link to="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                  {profile?.avatar_url ? (
-                    <img src={profile.avatar_url} alt="" className="w-6 h-6 rounded-full object-cover" />
-                  ) : (
-                    <div className="w-6 h-6 rounded-full bg-sage-muted flex items-center justify-center">
-                      <span className="text-[9px] font-bold text-sage uppercase">{displayName[0]}</span>
-                    </div>
-                  )}
+                  <div className="w-6 h-6 rounded-full bg-sage-muted flex items-center justify-center">
+                    <span className="text-[9px] font-bold text-sage-light uppercase">{displayName[0]}</span>
+                  </div>
                   <span className="text-xs text-warm-gray">{displayName}</span>
                 </Link>
                 <button

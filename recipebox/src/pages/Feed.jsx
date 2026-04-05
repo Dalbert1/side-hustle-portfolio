@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { Heart, MessageCircle, Clock, UtensilsCrossed, Star } from 'lucide-react'
+import { Heart, MessageCircle, Clock, UtensilsCrossed, Star, ChevronDown } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
+
+const PAGE_SIZE = 10
 
 export default function Feed() {
   const { user } = useAuth()
@@ -11,58 +13,81 @@ export default function Feed() {
   const [myLikes, setMyLikes] = useState(new Set())
   const [commentCounts, setCommentCounts] = useState({})
   const [loading, setLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+  const [page, setPage] = useState(0)
 
-  useEffect(() => { loadFeed() }, [])
+  // Load likes once on mount
+  useEffect(() => {
+    if (user) {
+      supabase
+        .from('recipe_likes')
+        .select('recipe_id')
+        .eq('user_id', user.id)
+        .then(({ data }) => setMyLikes(new Set(data?.map(l => l.recipe_id) || [])))
+    }
+  }, [user])
 
-  async function loadFeed() {
-    // Load all recipes, newest first
+  const loadPage = useCallback(async (pageNum, append = false) => {
+    if (pageNum > 0) setLoadingMore(true)
+    else setLoading(true)
+
+    const from = pageNum * PAGE_SIZE
+    const to = from + PAGE_SIZE - 1
+
     const { data: recipesData } = await supabase
       .from('recipes')
-      .select('*')
+      .select('id, user_id, title, description, hero_image_url, category, prep_minutes, cook_minutes, servings, rating, tags, like_count, made_on, created_at')
       .order('created_at', { ascending: false })
+      .range(from, to)
 
-    if (!recipesData) { setLoading(false); return }
-    setRecipes(recipesData)
+    if (!recipesData) {
+      setLoading(false)
+      setLoadingMore(false)
+      return
+    }
 
-    // Load profiles for display names
-    const userIds = [...new Set(recipesData.map(r => r.user_id))]
-    if (userIds.length > 0) {
+    if (recipesData.length < PAGE_SIZE) setHasMore(false)
+
+    const allRecipes = append ? [...recipes, ...recipesData] : recipesData
+
+    // Load profiles for new recipes
+    const newUserIds = [...new Set(recipesData.map(r => r.user_id))].filter(id => !profiles[id])
+    if (newUserIds.length > 0) {
       const { data: profilesData } = await supabase
         .from('user_profiles')
-        .select('id, email, rsn, display_name, avatar_url')
-        .in('id', userIds)
-      const map = {}
+        .select('id, email, rsn, display_name')
+        .in('id', newUserIds)
+      const map = { ...profiles }
       profilesData?.forEach(p => {
-        map[p.id] = {
-          name: p.display_name || p.rsn || p.email?.split('@')[0] || 'User',
-          avatar_url: p.avatar_url,
-        }
+        map[p.id] = { name: p.display_name || p.rsn || p.email?.split('@')[0] || 'User' }
       })
       setProfiles(map)
     }
 
-    // Load my likes
-    if (user) {
-      const { data: likesData } = await supabase
-        .from('recipe_likes')
-        .select('recipe_id')
-        .eq('user_id', user.id)
-      setMyLikes(new Set(likesData?.map(l => l.recipe_id) || []))
-    }
-
-    // Load comment counts
-    const recipeIds = recipesData.map(r => r.id)
-    if (recipeIds.length > 0) {
+    // Load comment counts for new recipes
+    const newIds = recipesData.map(r => r.id)
+    if (newIds.length > 0) {
       const { data: comments } = await supabase
         .from('recipe_comments')
         .select('recipe_id')
-        .in('recipe_id', recipeIds)
-      const counts = {}
+        .in('recipe_id', newIds)
+      const counts = append ? { ...commentCounts } : {}
       comments?.forEach(c => { counts[c.recipe_id] = (counts[c.recipe_id] || 0) + 1 })
       setCommentCounts(counts)
     }
 
+    setRecipes(allRecipes)
     setLoading(false)
+    setLoadingMore(false)
+  }, [recipes, profiles, commentCounts])
+
+  useEffect(() => { loadPage(0) }, [])
+
+  function loadMore() {
+    const nextPage = page + 1
+    setPage(nextPage)
+    loadPage(nextPage, true)
   }
 
   async function toggleLike(recipeId) {
@@ -86,23 +111,43 @@ export default function Feed() {
 
       {recipes.length === 0 ? (
         <div className="text-center py-16">
+          <UtensilsCrossed size={40} className="text-warm-gray-light mx-auto mb-4" />
           <p className="text-warm-gray mb-4">No recipes posted yet.</p>
           <Link to="/add" className="text-sm text-sage font-medium hover:underline">Be the first to add one</Link>
         </div>
       ) : (
-        <div className="flex flex-col gap-6">
-          {recipes.map(recipe => (
-            <FeedCard
-              key={recipe.id}
-              recipe={recipe}
-              author={profiles[recipe.user_id] || { name: 'User', avatar_url: null }}
-              isOwn={recipe.user_id === user?.id}
-              liked={myLikes.has(recipe.id)}
-              commentCount={commentCounts[recipe.id] || 0}
-              onLike={() => toggleLike(recipe.id)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="flex flex-col gap-6">
+            {recipes.map(recipe => (
+              <FeedCard
+                key={recipe.id}
+                recipe={recipe}
+                author={profiles[recipe.user_id] || { name: 'User' }}
+                isOwn={recipe.user_id === user?.id}
+                liked={myLikes.has(recipe.id)}
+                commentCount={commentCounts[recipe.id] || 0}
+                onLike={() => toggleLike(recipe.id)}
+              />
+            ))}
+          </div>
+
+          {hasMore && (
+            <div className="text-center mt-8">
+              <button
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="px-6 py-2.5 text-sm font-medium text-bark border border-border rounded-lg hover:bg-cream-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5 mx-auto"
+              >
+                {loadingMore ? 'Loading...' : (
+                  <>
+                    <ChevronDown size={15} />
+                    Load More
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
@@ -119,15 +164,11 @@ function FeedCard({ recipe, author, isOwn, liked, commentCount, onLike }) {
       {/* Author bar */}
       <div className="px-5 py-3 flex items-center justify-between border-b border-border/50">
         <div className="flex items-center gap-2">
-          {author.avatar_url ? (
-            <img src={author.avatar_url} alt="" className="w-7 h-7 rounded-full object-cover" />
-          ) : (
-            <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center">
-              <span className="text-[10px] font-semibold text-sage-light uppercase">
-                {author.name[0]}
-              </span>
-            </div>
-          )}
+          <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center">
+            <span className="text-[10px] font-semibold text-sage-light uppercase">
+              {author.name[0]}
+            </span>
+          </div>
           <span className="text-sm font-medium text-bark">{author.name}</span>
           {isOwn && <span className="text-[9px] font-medium text-sage bg-sage-muted px-1.5 py-0.5 rounded-full">You</span>}
         </div>
@@ -137,7 +178,7 @@ function FeedCard({ recipe, author, isOwn, liked, commentCount, onLike }) {
       {/* Image */}
       <Link to={`/recipe/${recipe.id}`}>
         {recipe.hero_image_url ? (
-          <div className="aspect-[16/10] overflow-hidden">
+          <div className="aspect-[16/10] overflow-hidden bg-cream-dark">
             <img src={recipe.hero_image_url} alt={recipe.title} className="w-full h-full object-cover hover:scale-[1.02] transition-transform duration-300" loading="lazy" />
           </div>
         ) : (

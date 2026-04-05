@@ -123,7 +123,7 @@ jobs:
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
         run: |
-          mkdir -p _site
+          mkdir -p _site/games
           cp -r partyplug/dist _site/partyplug
           cp -r tulsahomehelp/dist _site/tulsahomehelp
           cp -r heelerconstruction/dist _site/heelerconstruction
@@ -133,48 +133,8 @@ jobs:
           cp -r handyrandys/dist _site/handyrandys
           cp -r recipebox/dist _site/recipebox
           cp -r ww3electricboogaloo/dist _site/ww3
-
-      # ── Root landing page ──
-      - name: Generate index
-        run: |
-          cat > _site/index.html << 'HTMLEOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Side Hustle Portfolio</title>
-            <style>
-              * { margin: 0; padding: 0; box-sizing: border-box; }
-              body { font-family: system-ui, sans-serif; background: #0f0a1a; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-              .container { max-width: 600px; padding: 2rem; text-align: center; }
-              h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-              p { color: #a0a0b0; margin-bottom: 2rem; }
-              .grid { display: grid; gap: 1rem; }
-              a { display: block; padding: 1.25rem; background: #1a1230; border: 1px solid #2a2045; border-radius: 12px; color: #fff; text-decoration: none; font-weight: 600; transition: border-color 0.2s; }
-              a:hover { border-color: #7c3aed; }
-              .tag { font-size: 0.75rem; color: #a78bfa; font-weight: 400; }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <h1>Side Hustle Portfolio</h1>
-              <p>Tulsa-focused digital products</p>
-              <div class="grid">
-                <a href="./partyplug/">918 Party Co. <span class="tag">- Event Services Marketplace</span></a>
-                <a href="./tulsahomehelp/">TulsaHomeHelp <span class="tag">- Home & Property Services</span></a>
-                <a href="./heelerconstruction/">Heeler Construction <span class="tag">- Construction Services</span></a>
-                <a href="./haughhoney/">Haugh Honey <span class="tag">- Local Raw Honey</span></a>
-                <a href="./osrs-inv-tracker/">OSRS Activity Helper <span class="tag">- Gear & Inventory Tracker</span></a>
-                <a href="./resume/">Dylan Albert Resume <span class="tag">- Interactive Digital Resume</span></a>
-                <a href="./handyrandys/">Handy Randy's <span class="tag">- Home & Pet Care Services</span></a>
-                <a href="./recipebox/">The Forking Good Club <span class="tag">- Recipe Sharing & Social Feed</span></a>
-                <a href="./ww3/">WW3 Electric Boogaloo <span class="tag">- Turn-Based Strategy Game</span></a>
-              </div>
-            </div>
-          </body>
-          </html>
-          HTMLEOF
+          cp games/*.html _site/games/
+          cp index.html _site/index.html
 
       - uses: actions/configure-pages@v4
 

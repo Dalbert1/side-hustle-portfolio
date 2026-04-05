@@ -22,17 +22,17 @@
   --danger: #ff1744;
   --nuke-glow: #ffe000;
   --usa: #42a5f5;
-  --usa-bg: rgba(33,150,243,0.18);
+  --usa-bg: rgba(33,150,243,0.22);
   --israel: #66bb6a;
-  --israel-bg: rgba(76,175,80,0.18);
+  --israel-bg: rgba(76,175,80,0.22);
   --gulf: #ffca28;
-  --gulf-bg: rgba(255,193,7,0.18);
+  --gulf-bg: rgba(255,193,7,0.22);
   --iran: #ef5350;
-  --iran-bg: rgba(244,67,54,0.18);
+  --iran-bg: rgba(244,67,54,0.22);
   --russia: #ab47bc;
-  --russia-bg: rgba(156,39,176,0.18);
+  --russia-bg: rgba(156,39,176,0.22);
   --china: #ff7043;
-  --china-bg: rgba(255,87,34,0.18);
+  --china-bg: rgba(255,87,34,0.22);
   --neutral-c: #78909c;
   --neutral-bg: rgba(96,125,139,0.15);
   --sea-c: #1565c0;
@@ -145,35 +145,37 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 .log-entry.income{color:var(--accent);}
 
 /* Territory Nodes */
-.territory-node{position:absolute;width:105px;padding:4px 6px;border-radius:5px;cursor:pointer;
+.territory-node{position:absolute;width:105px;padding:5px 7px;border-radius:6px;cursor:pointer;
   border:1.5px solid var(--border);background:var(--surface-light);transition:all 0.15s;z-index:2;
-  transform:translate(-50%,-50%);}
-.territory-node:hover{z-index:3;transform:translate(-50%,-50%) scale(1.06);border-color:var(--border-light);}
-.territory-node.selected{z-index:4;border-color:var(--accent);box-shadow:0 0 16px var(--accent-dim),inset 0 0 12px var(--accent-dim);}
-.territory-node.valid-dest{border-color:var(--warning);box-shadow:0 0 12px rgba(255,171,0,0.2);animation:destPulse 1.2s ease-in-out infinite;}
-@keyframes destPulse{0%,100%{box-shadow:0 0 8px rgba(255,171,0,0.15);}50%{box-shadow:0 0 18px rgba(255,171,0,0.35);}}
-.territory-node.combat-zone{border-color:var(--danger);animation:combatFlash 0.6s ease-in-out infinite;}
-@keyframes combatFlash{0%,100%{box-shadow:0 0 8px rgba(255,23,68,0.2);}50%{box-shadow:0 0 20px rgba(255,23,68,0.5);}}
+  transform:translate(-50%,-50%);backdrop-filter:blur(2px);}
+.territory-node:hover{z-index:3;transform:translate(-50%,-50%) scale(1.08);border-color:var(--text-dim);
+  box-shadow:0 4px 16px rgba(0,0,0,0.4);}
+.territory-node.selected{z-index:4;border-color:var(--accent);border-width:2px;
+  box-shadow:0 0 20px var(--accent-dim),inset 0 0 15px var(--accent-dim);}
+.territory-node.valid-dest{border-color:var(--warning);border-width:2px;
+  box-shadow:0 0 14px rgba(255,171,0,0.25);animation:destPulse 1.2s ease-in-out infinite;}
+@keyframes destPulse{0%,100%{box-shadow:0 0 10px rgba(255,171,0,0.15);}50%{box-shadow:0 0 22px rgba(255,171,0,0.4);}}
+.territory-node.combat-zone{border-color:var(--danger);border-width:2px;animation:combatFlash 0.6s ease-in-out infinite;}
+@keyframes combatFlash{0%,100%{box-shadow:0 0 10px rgba(255,23,68,0.2);}50%{box-shadow:0 0 24px rgba(255,23,68,0.5);}}
 .territory-node.nuked{background:rgba(80,20,0,0.4)!important;border-color:#662200!important;opacity:0.6;}
-.territory-node.current-faction{animation:factionPulse 2s ease-in-out infinite;}
-@keyframes factionPulse{0%,100%{box-shadow:0 0 6px rgba(255,255,255,0.05);}50%{box-shadow:0 0 14px rgba(255,255,255,0.12);}}
+.territory-node.current-faction{box-shadow:0 0 8px rgba(255,255,255,0.06);}
 
-.territory-node.sea{border-style:dashed;border-color:rgba(21,101,192,0.3);background:rgba(10,25,50,0.6);}
-.territory-node.offmap{border-style:dashed;border-color:var(--border-light);border-width:2px;width:120px;}
+.territory-node.sea{border-style:dashed;border-color:rgba(21,101,192,0.35);background:rgba(8,20,45,0.7);}
+.territory-node.offmap{border-style:dashed;border-color:var(--border-light);border-width:2px;width:120px;
+  background:linear-gradient(135deg,var(--surface-light),var(--surface));}
 
 .t-name{font-size:10.5px;font-weight:700;letter-spacing:0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   color:var(--text-bright);line-height:1.3;}
-.t-row{display:flex;align-items:center;justify-content:space-between;margin-top:2px;}
-.t-ipc{font-size:9px;font-weight:700;color:var(--warning);background:rgba(255,171,0,0.12);padding:0 4px;border-radius:2px;}
-.t-terrain{font-size:8px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;}
+.t-row{display:flex;align-items:center;gap:4px;margin-top:2px;}
+.t-ipc{font-size:9px;font-weight:700;color:var(--warning);background:rgba(255,171,0,0.15);padding:1px 5px;border-radius:3px;}
 .t-units{display:flex;gap:4px;margin-top:3px;flex-wrap:wrap;}
-.t-unit-badge{font-size:9px;font-weight:700;padding:1px 4px;border-radius:2px;line-height:1.3;
-  background:rgba(255,255,255,0.06);}
+.t-unit-badge{font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:3px;line-height:1.3;
+  background:rgba(255,255,255,0.07);}
 .t-unit-badge.land{color:#8bc34a;}
 .t-unit-badge.air{color:#29b6f6;}
-.t-unit-badge.naval{color:#7e57c2;}
-.t-factory{font-size:8px;color:var(--accent);margin-left:2px;}
-.t-capital{font-size:9px;color:var(--warning);}
+.t-unit-badge.naval{color:#ab47bc;}
+.t-factory{font-size:9px;color:var(--accent);margin-left:2px;}
+.t-capital{font-size:10px;color:var(--warning);}
 .t-nuke-icon{font-size:10px;color:var(--nuke-glow);}
 
 /* Territory nodes container */
@@ -1029,7 +1031,7 @@ function renderMap() {
     // Background color based on owner
     let bgStyle = '';
     if (owner && !isSea) {
-      bgStyle = `background:${FACTION_BGS[owner]};border-color:${FACTION_COLORS[owner]}40;`;
+      bgStyle = `background:${FACTION_BGS[owner]};border-color:${FACTION_COLORS[owner]}50;border-left:3px solid ${FACTION_COLORS[owner]};`;
     } else if (isSea) {
       bgStyle = `background:var(--sea-bg);`;
     }
@@ -1056,7 +1058,7 @@ function renderMap() {
       <div class="t-name">${t.name}${extras}</div>
       <div class="t-row">
         ${!isSea && t.ipc !== undefined ? `<span class="t-ipc">${t.ipc} IPC</span>` : ''}
-        ${t.terrain && t.terrain!=='offmap' && t.terrain!=='sea' ? `<span class="t-terrain">${t.terrain}</span>` : ''}
+        ${''}
       </div>
       ${unitBadges ? `<div class="t-units">${unitBadges}</div>` : ''}
     </div>`;

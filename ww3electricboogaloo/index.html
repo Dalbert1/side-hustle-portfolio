@@ -145,7 +145,7 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 .log-entry.income{color:var(--accent);}
 
 /* Territory Nodes */
-.territory-node{position:absolute;width:108px;padding:5px 7px;border-radius:6px;cursor:pointer;
+.territory-node{position:absolute;width:105px;padding:4px 6px;border-radius:5px;cursor:pointer;
   border:1.5px solid var(--border);background:var(--surface-light);transition:all 0.15s;z-index:2;
   transform:translate(-50%,-50%);}
 .territory-node:hover{z-index:3;transform:translate(-50%,-50%) scale(1.06);border-color:var(--border-light);}
@@ -181,8 +181,8 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 
 /* SVG adjacency lines */
 #adj-svg{position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%;}
-.adj-line{stroke:var(--border);stroke-width:1;stroke-dasharray:4,4;opacity:0.3;transition:opacity 0.2s;}
-.adj-line.highlight{stroke:var(--accent);opacity:0.5;stroke-dasharray:none;stroke-width:1.5;}
+.adj-line{stroke:var(--border-light);stroke-width:1;stroke-dasharray:6,4;opacity:0.45;transition:opacity 0.2s;}
+.adj-line.highlight{stroke:var(--accent);opacity:0.7;stroke-dasharray:none;stroke-width:1.5;}
 
 /* Left Panel Content */
 .panel-title{font-family:'Teko',sans-serif;font-size:17px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
@@ -463,13 +463,20 @@ const ADJ = {
 
 // Territory positions (% of map container)
 const MAP_POS = {
-  usa_staging:{x:8,y:5}, russia_staging:{x:44,y:5}, china_staging:{x:82,y:5},
-  turkey:{x:27,y:19}, northern_iran:{x:57,y:21}, afghanistan:{x:74,y:23},
-  east_med:{x:9,y:33}, syria:{x:24,y:32}, iraq_north:{x:38,y:31}, tehran:{x:55,y:34}, eastern_iran:{x:70,y:36}, pakistan:{x:84,y:38},
-  lebanon:{x:14,y:42}, israel:{x:18,y:50}, iraq_south:{x:38,y:44}, western_iran:{x:50,y:44}, southern_iran:{x:64,y:50},
-  jordan:{x:25,y:55}, kuwait:{x:40,y:55}, persian_gulf_west:{x:46,y:62}, persian_gulf_east:{x:56,y:58}, uae:{x:63,y:62},
-  red_sea:{x:8,y:67}, saudi_north:{x:28,y:65}, bahrain:{x:44,y:69}, qatar:{x:52,y:72},
-  saudi_south:{x:26,y:78}, arabian_sea:{x:68,y:76}, indian_ocean:{x:82,y:84},
+  // Off-map staging (top row)
+  usa_staging:{x:8,y:5}, russia_staging:{x:44,y:5}, china_staging:{x:84,y:5},
+  // Northern tier
+  turkey:{x:28,y:17}, northern_iran:{x:58,y:19}, afghanistan:{x:76,y:21},
+  // Upper middle
+  east_med:{x:8,y:30}, syria:{x:24,y:29}, iraq_north:{x:38,y:28}, tehran:{x:56,y:31}, eastern_iran:{x:72,y:33}, pakistan:{x:86,y:35},
+  // Middle
+  lebanon:{x:14,y:39}, israel:{x:18,y:47}, iraq_south:{x:38,y:41}, western_iran:{x:52,y:41}, southern_iran:{x:66,y:47},
+  // Gulf tier
+  jordan:{x:26,y:53}, kuwait:{x:40,y:53}, persian_gulf_east:{x:60,y:53}, uae:{x:72,y:57},
+  // Lower gulf
+  red_sea:{x:6,y:62}, saudi_north:{x:26,y:62}, persian_gulf_west:{x:44,y:60}, bahrain:{x:52,y:64}, qatar:{x:60,y:68},
+  // Bottom
+  saudi_south:{x:24,y:73}, arabian_sea:{x:72,y:72}, indian_ocean:{x:86,y:80},
 };
 
 const FACTIONS = {

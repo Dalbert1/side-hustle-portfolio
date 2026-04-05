@@ -184,8 +184,8 @@ export default function Recipe() {
 
       {/* Hero image */}
       {recipe.hero_image_url && (
-        <div className="rounded-xl overflow-hidden mb-6 aspect-[16/9]">
-          <img src={recipe.hero_image_url} alt={recipe.title} className="w-full h-full object-cover" />
+        <div className="rounded-xl overflow-hidden mb-6 aspect-[16/9] bg-cream-dark">
+          <img src={recipe.hero_image_url} alt={recipe.title} className="w-full h-full object-cover" loading="lazy" />
         </div>
       )}
 
@@ -264,7 +264,7 @@ export default function Recipe() {
       {recipe.tags?.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-6">
           {recipe.tags.map(tag => (
-            <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-sage-muted text-sage-dark font-medium">{tag}</span>
+            <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-sage-muted text-sage-light font-medium">{tag}</span>
           ))}
         </div>
       )}
@@ -395,7 +395,7 @@ export default function Recipe() {
           <button
             type="submit"
             disabled={!newComment.trim() || submittingComment}
-            className="px-4 py-2.5 bg-sage text-white rounded-lg hover:bg-sage-dark disabled:opacity-40 transition-colors"
+            className="px-4 py-2.5 bg-sage text-white rounded-lg hover:bg-sage-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             aria-label="Post comment"
           >
             <Send size={15} />
@@ -413,7 +413,7 @@ export default function Recipe() {
                   <img src={commentProfiles[c.user_id].avatar_url} alt="" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
                 ) : (
                   <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center flex-shrink-0">
-                    <span className="text-[10px] font-semibold text-sage-dark uppercase">
+                    <span className="text-[10px] font-semibold text-sage-light uppercase">
                       {(commentProfiles[c.user_id]?.name || 'U')[0]}
                     </span>
                   </div>

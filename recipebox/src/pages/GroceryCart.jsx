@@ -55,7 +55,7 @@ export default function GroceryCart() {
           <h2 className="text-xs font-medium text-warm-gray uppercase tracking-wider mb-2">Recipes in cart</h2>
           <div className="flex flex-wrap gap-2">
             {recipes.map(r => (
-              <div key={r.id} className="flex items-center gap-1.5 text-xs bg-sage-muted text-sage-dark font-medium px-2.5 py-1.5 rounded-full">
+              <div key={r.id} className="flex items-center gap-1.5 text-xs bg-sage-muted text-sage-light font-medium px-2.5 py-1.5 rounded-full">
                 <Link to={`/recipe/${r.id}`} className="hover:underline">{r.title}</Link>
                 <button
                   onClick={() => { if (confirm(`Remove all ingredients from "${r.title}"?`)) removeRecipeFromCart(r.id) }}
@@ -75,7 +75,7 @@ export default function GroceryCart() {
         <div className="text-center py-16">
           <ShoppingCart size={40} className="text-warm-gray-light mx-auto mb-4" />
           <p className="text-warm-gray mb-2">Your cart is empty</p>
-          <p className="text-sm text-warm-gray-light mb-6">Open a recipe and tap "Add to Cart" to get started.</p>
+          <p className="text-sm text-warm-gray mb-6">Open a recipe and tap "Add to Cart" to get started.</p>
           <Link
             to="/"
             className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-sage text-white font-semibold text-sm rounded-lg hover:bg-sage-dark transition-colors"
@@ -94,7 +94,7 @@ export default function GroceryCart() {
           {checkedItems.length > 0 && uncheckedItems.length > 0 && (
             <div className="flex items-center gap-2 my-3">
               <div className="flex-1 h-px bg-border" />
-              <span className="text-[10px] text-warm-gray uppercase tracking-wider">checked off</span>
+              <span className="text-[10px] text-warm-gray uppercase tracking-wider">Checked Off</span>
               <div className="flex-1 h-px bg-border" />
             </div>
           )}
@@ -116,7 +116,7 @@ function CartItem({ item, onToggle, onRemove }) {
     >
       <button
         onClick={() => onToggle(item.id)}
-        className={`mt-0.5 flex-shrink-0 transition-colors ${item.checked ? 'text-sage' : 'text-warm-gray-light hover:text-sage'}`}
+        className={`p-1 -ml-1 mt-px flex-shrink-0 transition-colors ${item.checked ? 'text-sage' : 'text-warm-gray-light hover:text-sage'}`}
         aria-label={item.checked ? 'Uncheck' : 'Check'}
       >
         {item.checked ? <CheckCircle2 size={20} /> : <Circle size={20} />}
@@ -148,7 +148,7 @@ function CartItem({ item, onToggle, onRemove }) {
 
       <button
         onClick={() => onRemove(item.id)}
-        className="p-1 text-warm-gray-light opacity-0 group-hover:opacity-100 hover:text-terra transition-all flex-shrink-0"
+        className="p-2 -mr-1 text-warm-gray-light opacity-0 group-hover:opacity-100 hover:text-terra transition-all flex-shrink-0"
         aria-label="Remove item"
       >
         <X size={14} />

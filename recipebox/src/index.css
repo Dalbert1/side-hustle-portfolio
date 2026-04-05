@@ -14,7 +14,7 @@
   --color-bark: oklch(92% 0.01 60);
   --color-bark-light: oklch(80% 0.01 60);
   --color-warm-gray: oklch(60% 0.01 60);
-  --color-warm-gray-light: oklch(38% 0.01 60);
+  --color-warm-gray-light: oklch(45% 0.01 60);
   --color-border: oklch(24% 0.01 260);
 
   --font-serif: 'DM Serif Display', Georgia, serif;
@@ -33,6 +33,10 @@ body {
 h1, h2, h3 { font-family: var(--font-serif); }
 
 ::selection { background-color: oklch(62% 0.10 155 / 0.3); }
+
+input, textarea, select, button, a {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
 
 :focus-visible {
   outline: 2px solid var(--color-sage);

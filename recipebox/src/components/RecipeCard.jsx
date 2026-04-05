@@ -53,7 +53,7 @@ export default function RecipeCard({ recipe }) {
           )}
         </div>
 
-        <h3 className="font-serif text-base text-bark leading-snug mb-2 group-hover:text-sage-dark transition-colors">
+        <h3 className="font-serif text-base text-bark leading-snug mb-2 group-hover:text-sage-light transition-colors">
           {recipe.title}
         </h3>
 
@@ -74,7 +74,7 @@ export default function RecipeCard({ recipe }) {
         {recipe.tags?.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2.5">
             {recipe.tags.slice(0, 3).map(tag => (
-              <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-sage-muted text-sage-dark font-medium">
+              <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-sage-muted text-sage-light font-medium">
                 {tag}
               </span>
             ))}

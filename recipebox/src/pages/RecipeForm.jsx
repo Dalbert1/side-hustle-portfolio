@@ -278,7 +278,7 @@ export default function RecipeForm({ isEdit = false }) {
           <label className="text-xs font-medium text-warm-gray uppercase tracking-wider mb-2 block">Tags</label>
           <div className="flex flex-wrap gap-1.5 mb-2">
             {form.tags.map(tag => (
-              <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-sage-muted text-sage-dark font-medium flex items-center gap-1">
+              <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-sage-muted text-sage-light font-medium flex items-center gap-1">
                 {tag}
                 <button type="button" onClick={() => removeTag(tag)} className="hover:text-terra" aria-label={`Remove tag ${tag}`}>
                   <X size={12} />
@@ -432,7 +432,7 @@ export default function RecipeForm({ isEdit = false }) {
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 bg-sage text-white font-semibold text-sm rounded-lg hover:bg-sage-dark disabled:opacity-50 transition-colors"
+            className="px-6 py-2.5 bg-sage text-white font-semibold text-sm rounded-lg hover:bg-sage-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {saving ? 'Saving...' : isEdit ? 'Update Recipe' : 'Save Recipe'}
           </button>

@@ -29,7 +29,7 @@ export default function ImageUpload({ value, onChange, path, label = 'Upload Pho
 
       onChange(data.publicUrl + '?t=' + Date.now())
     } catch (err) {
-      console.error('Upload failed:', err)
+      // silently handled - user sees no image change
     } finally {
       setUploading(false)
       if (inputRef.current) inputRef.current.value = ''

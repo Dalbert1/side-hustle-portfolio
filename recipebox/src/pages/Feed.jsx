@@ -123,7 +123,7 @@ function FeedCard({ recipe, author, isOwn, liked, commentCount, onLike }) {
             <img src={author.avatar_url} alt="" className="w-7 h-7 rounded-full object-cover" />
           ) : (
             <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center">
-              <span className="text-[10px] font-semibold text-sage-dark uppercase">
+              <span className="text-[10px] font-semibold text-sage-light uppercase">
                 {author.name[0]}
               </span>
             </div>
@@ -174,7 +174,7 @@ function FeedCard({ recipe, author, isOwn, liked, commentCount, onLike }) {
 
         {/* Title + description */}
         <Link to={`/recipe/${recipe.id}`}>
-          <h2 className="font-serif text-lg text-bark hover:text-sage-dark transition-colors leading-snug">
+          <h2 className="font-serif text-lg text-bark hover:text-sage-light transition-colors leading-snug">
             {recipe.title}
           </h2>
         </Link>
@@ -194,7 +194,7 @@ function FeedCard({ recipe, author, isOwn, liked, commentCount, onLike }) {
           {recipe.tags?.length > 0 && (
             <div className="flex gap-1">
               {recipe.tags.slice(0, 2).map(tag => (
-                <span key={tag} className="px-2 py-0.5 rounded-full bg-sage-muted text-sage-dark font-medium">{tag}</span>
+                <span key={tag} className="px-2 py-0.5 rounded-full bg-sage-muted text-sage-light font-medium">{tag}</span>
               ))}
             </div>
           )}

@@ -6,6 +6,9 @@
 <title>WW3: Electric Boogaloo</title>
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   CSS VARIABLES & RESET
+   ============================================================ */
 :root {
   --bg: #060a12;
   --surface: #0c1220;
@@ -22,21 +25,21 @@
   --danger: #ff1744;
   --nuke-glow: #ffe000;
   --usa: #42a5f5;
-  --usa-bg: rgba(33,150,243,0.22);
+  --usa-fill: #1a3a5c;
   --israel: #66bb6a;
-  --israel-bg: rgba(76,175,80,0.22);
+  --israel-fill: #1a3c2a;
   --gulf: #ffca28;
-  --gulf-bg: rgba(255,193,7,0.22);
+  --gulf-fill: #3c3518;
   --iran: #ef5350;
-  --iran-bg: rgba(244,67,54,0.22);
+  --iran-fill: #4a1a1a;
   --russia: #ab47bc;
-  --russia-bg: rgba(156,39,176,0.22);
+  --russia-fill: #2e1a3c;
   --china: #ff7043;
-  --china-bg: rgba(255,87,34,0.22);
+  --china-fill: #3c2218;
   --neutral-c: #78909c;
-  --neutral-bg: rgba(96,125,139,0.15);
-  --sea-c: #1565c0;
-  --sea-bg: rgba(21,101,192,0.1);
+  --neutral-fill: #1a2230;
+  --sea-fill: #0a1628;
+  --sea-stroke: #152040;
   --coalition-c: #29b6f6;
   --alliance-c: #ef5350;
 }
@@ -44,14 +47,15 @@
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;height:100vh;overflow:hidden;user-select:none;}
 h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;}
 
-/* Screens */
+/* ============================================================
+   SCREENS
+   ============================================================ */
 .screen{display:none;position:fixed;inset:0;flex-direction:column;align-items:center;justify-content:center;z-index:10;}
 .screen.active{display:flex;}
 
-/* Game Screen */
-#game-screen{align-items:stretch;justify-content:stretch;}
-
-/* Title Screen */
+/* ============================================================
+   TITLE SCREEN
+   ============================================================ */
 #title-screen{background:radial-gradient(ellipse at 50% 40%,#0e1a2e 0%,#060a12 70%);overflow:hidden;}
 #title-screen::before{content:'';position:absolute;inset:0;background:
   repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,230,118,0.02) 40px,rgba(0,230,118,0.02) 41px),
@@ -73,7 +77,9 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 .title-btn:hover::after{transform:translateX(100%);}
 .title-version{position:absolute;bottom:20px;font-size:12px;color:var(--text-dim);letter-spacing:0.1em;}
 
-/* Setup Screen */
+/* ============================================================
+   SETUP SCREEN
+   ============================================================ */
 #setup-screen{background:var(--bg);padding:40px;}
 .setup-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:40px;max-width:600px;width:100%;}
 .setup-box h2{font-size:28px;color:var(--accent);margin-bottom:24px;text-align:center;}
@@ -91,8 +97,10 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
   border:none;border-radius:6px;cursor:pointer;transition:all 0.2s;}
 .setup-start:hover{box-shadow:0 4px 20px rgba(0,230,118,0.3);transform:translateY(-1px);}
 
-/* Game Screen */
-#game-screen{flex-direction:column;background:var(--bg);}
+/* ============================================================
+   GAME SCREEN LAYOUT
+   ============================================================ */
+#game-screen{flex-direction:column;align-items:stretch;justify-content:stretch;background:var(--bg);}
 .top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:46px;
   background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;z-index:5;}
 .top-bar-left{display:flex;align-items:center;gap:16px;}
@@ -123,73 +131,70 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 .btn-rewind:hover{border-color:var(--warning);color:var(--warning);}
 .btn-rewind:disabled{opacity:0.3;cursor:not-allowed;}
 
-/* Main Layout */
-.main-area{display:flex;flex:1;overflow:hidden;}
-.left-panel{width:270px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;padding:12px;
+/* Main Area: side panel + map (no right panel, log is at bottom) */
+.main-area{display:flex;flex:1;overflow:hidden;flex-direction:column;}
+.main-content{display:flex;flex:1;overflow:hidden;}
+.left-panel{width:260px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;padding:12px;
   background:var(--surface);scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
 .map-container{flex:1;position:relative;overflow:hidden;
   background:radial-gradient(ellipse at 50% 50%,#0c1628 0%,#060a12 100%);}
-.map-container::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 50px,rgba(0,230,118,0.015) 50px,rgba(0,230,118,0.015) 51px),
-  repeating-linear-gradient(90deg,transparent,transparent 50px,rgba(0,230,118,0.015) 50px,rgba(0,230,118,0.015) 51px);}
-.right-panel{width:220px;flex-shrink:0;border-left:1px solid var(--border);display:flex;flex-direction:column;
-  background:var(--surface);}
-.log-header{padding:10px 12px 8px;font-family:'Teko',sans-serif;font-size:15px;font-weight:600;letter-spacing:0.1em;
-  text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);}
-.log-body{flex:1;overflow-y:auto;padding:8px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
-.log-entry{font-size:11px;padding:3px 6px;border-radius:3px;margin-bottom:2px;line-height:1.4;color:var(--text-dim);}
-.log-entry.round-marker{color:var(--accent);font-weight:600;margin-top:8px;border-top:1px solid var(--border);padding-top:8px;}
+
+/* Bottom Log Strip */
+.log-strip{height:90px;flex-shrink:0;border-top:1px solid var(--border);background:var(--surface);
+  display:flex;flex-direction:column;}
+.log-header{padding:4px 12px;font-family:'Teko',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);flex-shrink:0;}
+.log-body{flex:1;overflow-y:auto;padding:4px 12px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+  display:flex;flex-direction:column-reverse;}
+.log-entry{font-size:11px;padding:2px 6px;border-radius:3px;margin-bottom:1px;line-height:1.4;color:var(--text-dim);}
+.log-entry.round-marker{color:var(--accent);font-weight:600;margin-top:4px;border-top:1px solid var(--border);padding-top:4px;}
 .log-entry.combat{color:var(--danger);}
 .log-entry.capture{color:var(--warning);}
 .log-entry.purchase{color:var(--text);}
 .log-entry.income{color:var(--accent);}
 
-/* Territory Nodes */
-.territory-node{position:absolute;width:105px;padding:5px 7px;border-radius:6px;cursor:pointer;
-  border:1.5px solid var(--border);background:var(--surface-light);transition:all 0.15s;z-index:2;
-  transform:translate(-50%,-50%);backdrop-filter:blur(2px);}
-.territory-node:hover{z-index:3;transform:translate(-50%,-50%) scale(1.08);border-color:var(--text-dim);
-  box-shadow:0 4px 16px rgba(0,0,0,0.4);}
-.territory-node.selected{z-index:4;border-color:var(--accent);border-width:2px;
-  box-shadow:0 0 20px var(--accent-dim),inset 0 0 15px var(--accent-dim);}
-.territory-node.valid-dest{border-color:var(--warning);border-width:2px;
-  box-shadow:0 0 14px rgba(255,171,0,0.25);animation:destPulse 1.2s ease-in-out infinite;}
-@keyframes destPulse{0%,100%{box-shadow:0 0 10px rgba(255,171,0,0.15);}50%{box-shadow:0 0 22px rgba(255,171,0,0.4);}}
-.territory-node.combat-zone{border-color:var(--danger);border-width:2px;animation:combatFlash 0.6s ease-in-out infinite;}
-@keyframes combatFlash{0%,100%{box-shadow:0 0 10px rgba(255,23,68,0.2);}50%{box-shadow:0 0 24px rgba(255,23,68,0.5);}}
-.territory-node.nuked{background:rgba(80,20,0,0.4)!important;border-color:#662200!important;opacity:0.6;}
-.territory-node.current-faction{box-shadow:0 0 8px rgba(255,255,255,0.06);}
+/* ============================================================
+   SVG MAP STYLES
+   ============================================================ */
+.territory-poly{stroke:#1e3050;stroke-width:1.5;cursor:pointer;transition:fill 0.2s, stroke 0.2s, filter 0.2s;}
+.territory-poly:hover{stroke:#4a6a90;stroke-width:2;filter:brightness(1.2);}
+.territory-poly.selected{stroke:var(--accent);stroke-width:2.5;filter:brightness(1.3) drop-shadow(0 0 6px rgba(0,230,118,0.4));}
+.territory-poly.valid-dest{stroke:var(--warning);stroke-width:2.5;animation:destGlow 1.2s ease-in-out infinite;}
+.territory-poly.combat-zone{stroke:var(--danger);stroke-width:2.5;animation:combatGlow 0.6s ease-in-out infinite;}
+@keyframes destGlow{0%,100%{filter:brightness(1.1);}50%{filter:brightness(1.4) drop-shadow(0 0 8px rgba(255,171,0,0.5));}}
+@keyframes combatGlow{0%,100%{filter:brightness(1.1);}50%{filter:brightness(1.4) drop-shadow(0 0 8px rgba(255,23,68,0.5));}}
 
-.territory-node.sea{border-style:dashed;border-color:rgba(21,101,192,0.35);background:rgba(8,20,45,0.7);}
-.territory-node.offmap{border-style:dashed;border-color:var(--border-light);border-width:2px;width:120px;
-  background:linear-gradient(135deg,var(--surface-light),var(--surface));}
+.territory-label{font-family:'Teko',sans-serif;font-size:13px;font-weight:600;fill:var(--text-bright);
+  pointer-events:none;text-anchor:middle;letter-spacing:0.5px;dominant-baseline:central;
+  text-shadow:0 1px 3px rgba(0,0,0,0.8);}
+.territory-label.small{font-size:11px;}
+.territory-label.sea-label{fill:rgba(100,160,220,0.6);font-size:11px;font-weight:400;}
+.ipc-badge{pointer-events:none;}
+.ipc-badge rect{fill:rgba(255,171,0,0.2);rx:3;}
+.ipc-badge text{font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:700;fill:var(--warning);text-anchor:middle;dominant-baseline:central;}
+.factory-icon{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;fill:var(--accent);pointer-events:none;text-anchor:middle;}
+.capital-icon{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;fill:var(--warning);pointer-events:none;text-anchor:middle;}
 
-.t-name{font-size:10.5px;font-weight:700;letter-spacing:0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  color:var(--text-bright);line-height:1.3;}
-.t-row{display:flex;align-items:center;gap:4px;margin-top:2px;}
-.t-ipc{font-size:9px;font-weight:700;color:var(--warning);background:rgba(255,171,0,0.15);padding:1px 5px;border-radius:3px;}
-.t-units{display:flex;gap:4px;margin-top:3px;flex-wrap:wrap;}
-.t-unit-badge{font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:3px;line-height:1.3;
-  background:rgba(255,255,255,0.07);}
-.t-unit-badge.land{color:#8bc34a;}
-.t-unit-badge.air{color:#29b6f6;}
-.t-unit-badge.naval{color:#ab47bc;}
-.t-factory{font-size:9px;color:var(--accent);margin-left:2px;}
-.t-capital{font-size:10px;color:var(--warning);}
-.t-nuke-icon{font-size:10px;color:var(--nuke-glow);}
+/* Unit token overlays on map */
+.unit-overlay{position:absolute;pointer-events:none;z-index:3;display:flex;flex-wrap:wrap;gap:2px;
+  transform:translate(-50%,-50%);max-width:120px;justify-content:center;}
+.unit-token{font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:700;padding:1px 4px;border-radius:2px;
+  line-height:1.2;white-space:nowrap;pointer-events:auto;cursor:pointer;transition:all 0.15s;
+  border:1px solid rgba(255,255,255,0.1);}
+.unit-token:hover{transform:scale(1.1);z-index:5;}
+.unit-token.grabbed{outline:2px solid var(--accent);outline-offset:1px;animation:grabbed 0.5s ease-in-out infinite;}
+@keyframes grabbed{0%,100%{outline-color:var(--accent);}50%{outline-color:transparent;}}
+.unit-token.land{background:rgba(139,195,74,0.25);color:#aed581;}
+.unit-token.air{background:rgba(41,182,246,0.25);color:#4fc3f7;}
+.unit-token.naval{background:rgba(171,71,188,0.25);color:#ce93d8;}
 
-/* Territory nodes container */
-#territory-nodes{position:absolute;inset:0;z-index:2;}
-
-/* SVG adjacency lines */
-#adj-svg{position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%;}
-.adj-line{stroke:var(--border-light);stroke-width:1;stroke-dasharray:6,4;opacity:0.45;transition:opacity 0.2s;}
-.adj-line.highlight{stroke:var(--accent);opacity:0.7;stroke-dasharray:none;stroke-width:1.5;}
-
-/* Left Panel Content */
+/* ============================================================
+   LEFT PANEL CONTENT
+   ============================================================ */
 .panel-title{font-family:'Teko',sans-serif;font-size:17px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
   color:var(--accent);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
 .panel-subtitle{font-size:12px;color:var(--text-dim);margin-bottom:12px;font-weight:600;}
+.phase-help{font-size:11px;color:var(--text-dim);padding:8px;background:var(--surface-light);border-radius:4px;margin-bottom:12px;line-height:1.4;}
 
 /* Purchase Panel */
 .purchase-cat{margin-bottom:12px;}
@@ -205,7 +210,6 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 .pu-stat.atk{color:#ef5350;}
 .pu-stat.def{color:#42a5f5;}
 .pu-stat.mov{color:#66bb6a;}
-
 .cart-section{margin-top:16px;padding-top:12px;border-top:1px solid var(--border);}
 .cart-item{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;font-size:12px;
   background:var(--accent-dim);border-radius:4px;margin-bottom:3px;}
@@ -238,12 +242,21 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 .move-target-btn.attack{border-color:rgba(239,83,80,0.3);}
 .move-target-btn.attack:hover{border-color:var(--danger);background:rgba(255,23,68,0.08);color:var(--danger);}
 
-/* Combat Overlay */
+/* Place Units Panel */
+.place-factory{padding:8px;background:var(--surface-light);border:1px solid var(--border);border-radius:6px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;}
+.place-factory:hover{border-color:var(--accent);}
+.place-factory.selected{border-color:var(--accent);background:var(--accent-dim);}
+.place-factory h4{font-size:13px;color:var(--text-bright);margin-bottom:4px;}
+.place-factory .pf-units{font-size:10px;color:var(--text-dim);}
+
+/* ============================================================
+   COMBAT OVERLAY
+   ============================================================ */
 #combat-overlay{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.85);
   flex-direction:column;align-items:center;justify-content:center;}
 #combat-overlay.active{display:flex;}
 .combat-box{background:var(--surface);border:2px solid var(--danger);border-radius:12px;padding:24px;
-  max-width:500px;width:90%;max-height:80vh;overflow-y:auto;}
+  max-width:550px;width:90%;max-height:80vh;overflow-y:auto;}
 .combat-title{font-family:'Teko',sans-serif;font-size:24px;color:var(--danger);text-align:center;margin-bottom:16px;}
 .combat-sides{display:flex;gap:16px;margin-bottom:16px;}
 .combat-side{flex:1;padding:12px;border-radius:8px;border:1px solid var(--border);}
@@ -261,11 +274,12 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
   border-radius:4px;cursor:pointer;transition:all 0.2s;}
 .combat-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-/* Game Over */
+/* ============================================================
+   GAME OVER
+   ============================================================ */
 #gameover-screen{background:rgba(6,10,18,0.95);z-index:60;}
 .gameover-box{text-align:center;}
-.gameover-title{font-family:'Teko',sans-serif;font-size:clamp(48px,10vw,80px);font-weight:700;letter-spacing:0.1em;
-  margin-bottom:8px;}
+.gameover-title{font-family:'Teko',sans-serif;font-size:clamp(48px,10vw,80px);font-weight:700;letter-spacing:0.1em;margin-bottom:8px;}
 .gameover-title.coalition{color:var(--coalition-c);}
 .gameover-title.alliance{color:var(--alliance-c);}
 .gameover-sub{font-size:20px;color:var(--text-dim);margin-bottom:30px;letter-spacing:0.1em;}
@@ -274,41 +288,38 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
   border:none;border-radius:4px;cursor:pointer;transition:all 0.2s;}
 .gameover-btn:hover{box-shadow:0 4px 20px rgba(0,230,118,0.3);}
 
-/* Canvas overlays */
-#fx-canvas{position:fixed;inset:0;z-index:55;pointer-events:none;}
+/* AI turn indicator */
+.ai-indicator{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;
+  background:rgba(6,10,18,0.85);padding:16px 32px;border-radius:8px;border:1px solid var(--border);
+  font-family:'Teko',sans-serif;font-size:20px;letter-spacing:0.1em;color:var(--text-dim);display:none;}
+.ai-indicator.visible{display:block;animation:fadeIn 0.3s ease;}
 
 /* Scrollbar */
-::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--border-light);}
 
-/* Fade in animation */
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .fade-in{animation:fadeIn 0.3s ease;}
-
-/* AI turn indicator */
-.ai-indicator{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;
-  background:rgba(6,10,18,0.8);padding:16px 32px;border-radius:8px;border:1px solid var(--border);
-  font-family:'Teko',sans-serif;font-size:20px;letter-spacing:0.1em;color:var(--text-dim);display:none;}
-.ai-indicator.visible{display:block;animation:fadeIn 0.3s ease;}
-
-/* Phase help text */
-.phase-help{font-size:11px;color:var(--text-dim);padding:8px;background:var(--surface-light);border-radius:4px;margin-bottom:12px;line-height:1.4;}
 </style>
 </head>
 <body>
 
-<!-- Title Screen -->
+<!-- ============================================================
+     TITLE SCREEN
+     ============================================================ -->
 <div class="screen active" id="title-screen">
   <div class="title-logo">WW3</div>
   <div class="title-sub">Electric Boogaloo</div>
   <div class="title-tagline">A Modern Theater Strategy Game</div>
   <button class="title-btn" onclick="showSetup()">START GAME</button>
-  <div class="title-version">v2.0 - Single Player vs AI</div>
+  <div class="title-version">v3.0 - Single Player vs AI</div>
 </div>
 
-<!-- Setup Screen -->
+<!-- ============================================================
+     SETUP SCREEN
+     ============================================================ -->
 <div class="screen" id="setup-screen">
   <div class="setup-box fade-in">
     <h2>Mission Briefing</h2>
@@ -346,7 +357,9 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
   </div>
 </div>
 
-<!-- Game Screen -->
+<!-- ============================================================
+     GAME SCREEN
+     ============================================================ -->
 <div class="screen" id="game-screen">
   <div class="top-bar">
     <div class="top-bar-left">
@@ -361,25 +374,31 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
   </div>
   <div class="phase-bar" id="phase-bar"></div>
   <div class="main-area">
-    <div class="left-panel" id="left-panel"></div>
-    <div class="map-container" id="map-container">
-      <svg id="adj-svg"></svg>
-      <div id="territory-nodes"></div>
-      <div class="ai-indicator" id="ai-indicator">AI IS THINKING...</div>
+    <div class="main-content">
+      <div class="left-panel" id="left-panel"></div>
+      <div class="map-container" id="map-container">
+        <svg id="game-map" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;"></svg>
+        <div id="unit-overlays"></div>
+        <div class="ai-indicator" id="ai-indicator">AI IS THINKING...</div>
+      </div>
     </div>
-    <div class="right-panel">
+    <div class="log-strip">
       <div class="log-header">Intel Feed</div>
       <div class="log-body" id="log-body"></div>
     </div>
   </div>
 </div>
 
-<!-- Combat Overlay -->
+<!-- ============================================================
+     COMBAT OVERLAY
+     ============================================================ -->
 <div id="combat-overlay">
   <div class="combat-box" id="combat-box"></div>
 </div>
 
-<!-- Game Over Screen -->
+<!-- ============================================================
+     GAME OVER SCREEN
+     ============================================================ -->
 <div class="screen" id="gameover-screen">
   <div class="gameover-box">
     <div class="gameover-title" id="gameover-title">COALITION VICTORY</div>
@@ -388,1002 +407,1602 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
   </div>
 </div>
 
-<!-- FX Canvas -->
-<canvas id="fx-canvas"></canvas>
-
 <script>
 // ============================================================
-//  SECTION 1: CONSTANTS
+//  SECTION 1: CONSTANTS & DATA
 // ============================================================
 
 const TERRAIN = { DESERT:'desert', MOUNTAIN:'mountain', URBAN:'urban', ISLAND:'island', MIXED:'mixed', SEA:'sea', OFFMAP:'offmap' };
 const TERRAIN_DEF_BONUS = { mountain:1, urban:1, desert:0, island:0, mixed:0, sea:0, offmap:0 };
 
+// ---- UNIT DEFINITIONS ----
+const UNIT_TYPES = {
+  INFANTRY:     {id:'INFANTRY',     name:'Infantry',      cost:3,  attack:1, defense:2, move:1, type:'land',  abbr:'INF', special:'inf_tank_bonus'},
+  TANK:         {id:'TANK',         name:'Tank',          cost:6,  attack:3, defense:3, move:3, type:'land',  abbr:'TNK'},
+  THAAD:        {id:'THAAD',        name:'THAAD',         cost:8,  attack:0, defense:0, move:0, type:'land',  abbr:'THD', special:'intercept'},
+  FIGHTER_F35:  {id:'FIGHTER_F35',  name:'F-35',          cost:10, attack:3, defense:4, move:4, type:'air',   abbr:'F35', factionReq:'coalition'},
+  FIGHTER_SU57: {id:'FIGHTER_SU57', name:'SU-57',         cost:9,  attack:3, defense:3, move:4, type:'air',   abbr:'SU5', factionReq:'alliance'},
+  DRONE:        {id:'DRONE',        name:'Drone',         cost:4,  attack:2, defense:1, move:5, type:'air',   abbr:'DRN'},
+  BOMBER:       {id:'BOMBER',       name:'Bomber',        cost:12, attack:4, defense:1, move:6, type:'air',   abbr:'BMB'},
+  NUC_BOMBER:   {id:'NUC_BOMBER',   name:'Nuclear Bomber',cost:30, attack:0, defense:1, move:8, type:'air',   abbr:'NUK', buildTime:3, special:'nuke'},
+  DESTROYER:    {id:'DESTROYER',    name:'Destroyer',     cost:8,  attack:2, defense:2, move:2, type:'naval', abbr:'DD'},
+  CRUISER:      {id:'CRUISER',      name:'Cruiser',       cost:12, attack:3, defense:3, move:2, type:'naval', abbr:'CA'},
+  CARRIER:      {id:'CARRIER',      name:'Carrier',       cost:16, attack:1, defense:2, move:2, type:'naval', abbr:'CV'},
+  SUBMARINE:    {id:'SUBMARINE',    name:'Submarine',     cost:7,  attack:2, defense:1, move:2, type:'naval', abbr:'SS',  special:'first_strike'},
+  NUC_SUB:      {id:'NUC_SUB',      name:'Nuclear Sub',   cost:25, attack:3, defense:2, move:3, type:'naval', abbr:'NSB', buildTime:3, special:'nuke_sub'},
+  TRANSPORT:    {id:'TRANSPORT',    name:'Transport',     cost:7,  attack:0, defense:0, move:2, type:'naval', abbr:'TP'},
+};
+
+// ---- TERRITORIES ----
 const TERRITORIES = {
-  israel:{id:'israel',name:'Israel',ipc:6,startFaction:'ISRAEL',factory:true,terrain:TERRAIN.URBAN,capital:true,type:'land'},
-  jordan:{id:'jordan',name:'Jordan',ipc:1,startFaction:'ISRAEL',factory:false,terrain:TERRAIN.DESERT,type:'land'},
-  saudi_north:{id:'saudi_north',name:'Saudi Arabia (N)',ipc:3,startFaction:'GULF',factory:false,terrain:TERRAIN.DESERT,type:'land'},
-  saudi_south:{id:'saudi_south',name:'Saudi Arabia (S)',ipc:4,startFaction:'GULF',factory:true,terrain:TERRAIN.DESERT,type:'land'},
-  kuwait:{id:'kuwait',name:'Kuwait',ipc:3,startFaction:'GULF',factory:true,terrain:TERRAIN.DESERT,type:'land'},
-  uae:{id:'uae',name:'UAE',ipc:4,startFaction:'GULF',factory:true,terrain:TERRAIN.DESERT,type:'land'},
-  qatar:{id:'qatar',name:'Qatar',ipc:3,startFaction:'GULF',factory:true,terrain:TERRAIN.DESERT,type:'land'},
-  bahrain:{id:'bahrain',name:'Bahrain',ipc:1,startFaction:'GULF',factory:false,terrain:TERRAIN.ISLAND,type:'land'},
-  iraq_south:{id:'iraq_south',name:'Iraq (South)',ipc:2,startFaction:'NEUTRAL',factory:false,terrain:TERRAIN.DESERT,type:'land'},
-  iraq_north:{id:'iraq_north',name:'Iraq (North)',ipc:2,startFaction:'NEUTRAL',factory:false,terrain:TERRAIN.MOUNTAIN,type:'land'},
-  turkey:{id:'turkey',name:'Turkey',ipc:0,startFaction:'NEUTRAL',factory:false,terrain:TERRAIN.MOUNTAIN,type:'land'},
-  afghanistan:{id:'afghanistan',name:'Afghanistan',ipc:1,startFaction:'NEUTRAL',factory:false,terrain:TERRAIN.MOUNTAIN,type:'land'},
-  syria:{id:'syria',name:'Syria',ipc:2,startFaction:'IRAN',factory:false,terrain:TERRAIN.MIXED,type:'land'},
-  lebanon:{id:'lebanon',name:'Lebanon',ipc:1,startFaction:'IRAN',factory:false,terrain:TERRAIN.MOUNTAIN,type:'land'},
-  tehran:{id:'tehran',name:'Tehran',ipc:6,startFaction:'IRAN',factory:true,terrain:TERRAIN.URBAN,capital:true,type:'land'},
-  western_iran:{id:'western_iran',name:'Western Iran',ipc:3,startFaction:'IRAN',factory:true,terrain:TERRAIN.MOUNTAIN,type:'land'},
-  southern_iran:{id:'southern_iran',name:'Southern Iran',ipc:2,startFaction:'IRAN',factory:false,terrain:TERRAIN.DESERT,type:'land'},
-  eastern_iran:{id:'eastern_iran',name:'Eastern Iran',ipc:2,startFaction:'IRAN',factory:false,terrain:TERRAIN.DESERT,type:'land'},
-  northern_iran:{id:'northern_iran',name:'Northern Iran',ipc:2,startFaction:'IRAN',factory:false,terrain:TERRAIN.MOUNTAIN,type:'land'},
-  pakistan:{id:'pakistan',name:'Pakistan',ipc:2,startFaction:'CHINA',factory:false,terrain:TERRAIN.MIXED,type:'land'},
-  russia_staging:{id:'russia_staging',name:'Russia',ipc:8,startFaction:'RUSSIA',factory:true,terrain:TERRAIN.OFFMAP,offmap:true,type:'land'},
-  china_staging:{id:'china_staging',name:'China',ipc:10,startFaction:'CHINA',factory:true,terrain:TERRAIN.OFFMAP,offmap:true,type:'land'},
-  usa_staging:{id:'usa_staging',name:'USA (Off-Map)',ipc:15,startFaction:'USA',factory:true,terrain:TERRAIN.OFFMAP,offmap:true,type:'land'},
-  east_med:{id:'east_med',name:'E. Mediterranean',type:'sea'},
-  red_sea:{id:'red_sea',name:'Red Sea',type:'sea'},
-  persian_gulf_west:{id:'persian_gulf_west',name:'Persian Gulf (W)',type:'sea'},
-  persian_gulf_east:{id:'persian_gulf_east',name:'Persian Gulf (E)',type:'sea'},
-  arabian_sea:{id:'arabian_sea',name:'Arabian Sea',type:'sea'},
-  indian_ocean:{id:'indian_ocean',name:'Indian Ocean',type:'sea'},
+  turkey:       {id:'turkey',       name:'Turkey',        ipc:0,  startFaction:'NEUTRAL', factory:false, terrain:'mountain', type:'land'},
+  syria:        {id:'syria',        name:'Syria',         ipc:2,  startFaction:'IRAN',    factory:false, terrain:'mixed',    type:'land'},
+  lebanon:      {id:'lebanon',      name:'Lebanon',       ipc:1,  startFaction:'IRAN',    factory:false, terrain:'mountain', type:'land'},
+  israel:       {id:'israel',       name:'Israel',        ipc:6,  startFaction:'ISRAEL',  factory:true,  terrain:'urban',    type:'land', capital:'coalition'},
+  jordan:       {id:'jordan',       name:'Jordan',        ipc:1,  startFaction:'ISRAEL',  factory:false, terrain:'desert',   type:'land'},
+  iraq:         {id:'iraq',         name:'Iraq',          ipc:4,  startFaction:'NEUTRAL', factory:false, terrain:'desert',   type:'land'},
+  kuwait:       {id:'kuwait',       name:'Kuwait',        ipc:3,  startFaction:'GULF',    factory:true,  terrain:'desert',   type:'land'},
+  saudi_arabia: {id:'saudi_arabia', name:'Saudi Arabia',  ipc:7,  startFaction:'GULF',    factory:true,  terrain:'desert',   type:'land'},
+  qatar:        {id:'qatar',        name:'Qatar',         ipc:3,  startFaction:'GULF',    factory:true,  terrain:'desert',   type:'land'},
+  bahrain:      {id:'bahrain',      name:'Bahrain',       ipc:1,  startFaction:'GULF',    factory:false, terrain:'island',   type:'land'},
+  uae:          {id:'uae',          name:'UAE',           ipc:4,  startFaction:'GULF',    factory:true,  terrain:'desert',   type:'land'},
+  iran:         {id:'iran',         name:'Iran',          ipc:15, startFaction:'IRAN',    factory:true,  terrain:'urban',    type:'land', capital:'alliance'},
+  afghanistan:  {id:'afghanistan',  name:'Afghanistan',   ipc:1,  startFaction:'NEUTRAL', factory:false, terrain:'mountain', type:'land'},
+  pakistan:      {id:'pakistan',     name:'Pakistan',      ipc:2,  startFaction:'CHINA',   factory:false, terrain:'mixed',    type:'land'},
+  usa:          {id:'usa',          name:'USA',           ipc:15, startFaction:'USA',     factory:true,  terrain:'offmap',   type:'land', offmap:true},
+  russia:       {id:'russia',       name:'Russia',        ipc:8,  startFaction:'RUSSIA',  factory:true,  terrain:'offmap',   type:'land', offmap:true},
+  china:        {id:'china',        name:'China',         ipc:10, startFaction:'CHINA',   factory:true,  terrain:'offmap',   type:'land', offmap:true},
+  east_med:     {id:'east_med',     name:'E. Mediterranean', type:'sea'},
+  red_sea:      {id:'red_sea',      name:'Red Sea',          type:'sea'},
+  persian_gulf: {id:'persian_gulf', name:'Persian Gulf',     type:'sea'},
+  arabian_sea:  {id:'arabian_sea',  name:'Arabian Sea',      type:'sea'},
+  indian_ocean: {id:'indian_ocean', name:'Indian Ocean',     type:'sea'},
 };
 
+// ---- ADJACENCY ----
 const ADJ = {
-  israel:['jordan','lebanon','syria','east_med'],
-  jordan:['israel','saudi_north','iraq_south'],
-  saudi_north:['jordan','kuwait','iraq_south','saudi_south','persian_gulf_west'],
-  saudi_south:['saudi_north','uae','qatar','red_sea'],
-  kuwait:['saudi_north','iraq_south','persian_gulf_west'],
-  uae:['saudi_south','southern_iran','persian_gulf_east','arabian_sea'],
-  qatar:['saudi_south','persian_gulf_west'],
-  bahrain:['persian_gulf_west'],
-  iraq_south:['iraq_north','jordan','saudi_north','kuwait','western_iran'],
-  iraq_north:['iraq_south','syria','turkey','northern_iran'],
-  syria:['iraq_north','lebanon','turkey','east_med'],
-  lebanon:['israel','syria','east_med'],
-  tehran:['western_iran','northern_iran','eastern_iran'],
-  western_iran:['tehran','iraq_south','northern_iran','southern_iran'],
-  southern_iran:['western_iran','eastern_iran','uae','persian_gulf_east','arabian_sea'],
-  eastern_iran:['tehran','southern_iran','afghanistan','pakistan','arabian_sea'],
-  northern_iran:['tehran','western_iran','iraq_north','turkey','afghanistan'],
-  turkey:['iraq_north','syria','northern_iran','east_med'],
-  afghanistan:['eastern_iran','northern_iran','pakistan'],
-  pakistan:['eastern_iran','afghanistan','arabian_sea'],
-  usa_staging:['east_med','arabian_sea'],
-  russia_staging:['syria','northern_iran'],
-  china_staging:['pakistan','indian_ocean'],
-  east_med:['israel','lebanon','syria','turkey','red_sea'],
-  red_sea:['saudi_south','east_med'],
-  persian_gulf_west:['kuwait','saudi_north','bahrain','qatar','persian_gulf_east'],
-  persian_gulf_east:['uae','southern_iran','persian_gulf_west','arabian_sea'],
-  arabian_sea:['uae','southern_iran','eastern_iran','pakistan','persian_gulf_east','indian_ocean'],
-  indian_ocean:['arabian_sea','china_staging'],
+  israel:       ['jordan','lebanon','syria','east_med'],
+  lebanon:      ['israel','syria','east_med'],
+  syria:        ['israel','lebanon','turkey','iraq','east_med'],
+  turkey:       ['syria','iraq','iran','east_med'],
+  jordan:       ['israel','iraq','saudi_arabia'],
+  iraq:         ['syria','turkey','iran','jordan','saudi_arabia','kuwait'],
+  kuwait:       ['iraq','saudi_arabia','persian_gulf'],
+  saudi_arabia: ['jordan','iraq','kuwait','qatar','uae','red_sea','persian_gulf'],
+  qatar:        ['saudi_arabia','persian_gulf'],
+  bahrain:      ['persian_gulf'],
+  uae:          ['saudi_arabia','iran','persian_gulf','arabian_sea'],
+  iran:         ['turkey','iraq','uae','afghanistan','pakistan','persian_gulf','arabian_sea'],
+  afghanistan:  ['iran','pakistan'],
+  pakistan:      ['iran','afghanistan','arabian_sea'],
+  usa:          ['east_med','arabian_sea'],
+  russia:       ['syria','iran'],
+  china:        ['pakistan','indian_ocean'],
+  east_med:     ['israel','lebanon','syria','turkey','red_sea'],
+  red_sea:      ['saudi_arabia','east_med'],
+  persian_gulf: ['kuwait','saudi_arabia','qatar','bahrain','uae','iran','arabian_sea'],
+  arabian_sea:  ['uae','iran','pakistan','persian_gulf','indian_ocean'],
+  indian_ocean: ['arabian_sea'],
 };
 
-// Territory positions (% of map container)
-const MAP_POS = {
-  // Off-map staging (top row)
-  usa_staging:{x:8,y:5}, russia_staging:{x:44,y:5}, china_staging:{x:84,y:5},
-  // Northern tier
-  turkey:{x:28,y:17}, northern_iran:{x:58,y:19}, afghanistan:{x:76,y:21},
-  // Upper middle
-  east_med:{x:8,y:30}, syria:{x:24,y:29}, iraq_north:{x:38,y:28}, tehran:{x:56,y:31}, eastern_iran:{x:72,y:33}, pakistan:{x:86,y:35},
-  // Middle
-  lebanon:{x:14,y:39}, israel:{x:18,y:47}, iraq_south:{x:38,y:41}, western_iran:{x:52,y:41}, southern_iran:{x:66,y:47},
-  // Gulf tier
-  jordan:{x:26,y:53}, kuwait:{x:40,y:53}, persian_gulf_east:{x:60,y:53}, uae:{x:72,y:57},
-  // Lower gulf
-  red_sea:{x:6,y:62}, saudi_north:{x:26,y:62}, persian_gulf_west:{x:44,y:60}, bahrain:{x:52,y:64}, qatar:{x:60,y:68},
-  // Bottom
-  saudi_south:{x:24,y:73}, arabian_sea:{x:72,y:72}, indian_ocean:{x:86,y:80},
+// ---- SVG POLYGON PATHS (board-game style, viewBox 0 0 1000 700) ----
+// Land territories - approximate geographic shapes
+const TERRITORY_SHAPES = {
+  // Off-map staging areas (rectangles at top)
+  usa:          {points:'20,20 180,20 180,70 20,70', cx:100, cy:45},
+  russia:       {points:'380,20 560,20 560,70 380,70', cx:470, cy:45},
+  china:        {points:'780,20 960,20 960,70 780,70', cx:870, cy:45},
+
+  // Turkey - wide strip across northern portion
+  turkey:       {points:'185,100 220,88 290,85 360,90 410,100 440,120 430,148 390,160 340,155 280,148 230,140 195,130 185,115', cx:310, cy:120},
+
+  // Syria - between Turkey, Iraq, and coast
+  syria:        {points:'185,130 230,140 280,148 310,155 290,178 260,195 230,200 195,190 170,175 165,155', cx:230, cy:168},
+
+  // Lebanon - small coastal strip
+  lebanon:      {points:'155,155 170,150 175,175 170,195 155,200 145,190 140,175', cx:158, cy:175},
+
+  // Israel - small territory on coast
+  israel:       {points:'140,200 160,195 175,200 180,220 175,250 165,265 148,268 132,260 128,235 130,215', cx:155, cy:232},
+
+  // Jordan - east of Israel
+  jordan:       {points:'175,200 210,195 240,205 260,220 265,250 250,275 220,290 195,280 175,265 175,250 180,220', cx:220, cy:240},
+
+  // Iraq - large central territory
+  iraq:         {points:'260,195 290,178 340,155 390,160 430,148 450,160 460,190 455,225 440,260 415,280 380,290 340,285 300,270 270,250 260,220', cx:365, cy:220},
+
+  // Kuwait - small territory at top of gulf
+  kuwait:       {points:'380,290 415,280 430,290 435,310 420,325 390,320 375,310', cx:405, cy:305},
+
+  // Saudi Arabia - large territory in the south
+  saudi_arabia: {points:'195,280 220,290 250,275 300,270 340,285 380,290 375,310 390,330 380,370 360,420 320,470 270,500 210,490 170,460 150,410 155,360 165,320 180,300', cx:270, cy:390},
+
+  // Qatar - small peninsula
+  qatar:        {points:'405,370 420,365 430,380 428,405 415,415 402,400 400,382', cx:415, cy:390},
+
+  // Bahrain - tiny island
+  bahrain:      {points:'430,340 445,335 450,348 445,360 430,358 425,348', cx:438, cy:348},
+
+  // UAE - along the coast
+  uae:          {points:'430,380 455,365 490,360 530,370 545,395 535,420 500,430 460,425 435,410 428,395', cx:485, cy:395},
+
+  // Iran - large territory
+  iran:         {points:'440,120 470,110 530,105 590,110 650,120 690,140 720,170 730,210 725,260 710,300 690,330 660,355 620,370 580,375 545,370 530,370 490,360 460,350 445,320 440,290 450,260 460,225 460,190 450,160', cx:590, cy:230},
+
+  // Afghanistan - mountainous eastern territory
+  afghanistan:  {points:'690,140 730,130 770,135 800,150 810,180 800,210 780,235 750,245 720,240 700,220 690,195 685,170', cx:745, cy:185},
+
+  // Pakistan - southeastern territory
+  pakistan:      {points:'750,245 780,235 800,210 830,220 860,250 870,290 860,340 840,380 800,400 760,390 730,365 720,330 720,300 725,270', cx:790, cy:310},
+
+  // Sea zones
+  east_med:     {points:'20,90 80,85 140,95 155,120 155,155 140,200 130,215 100,230 60,220 30,200 15,170 15,130', cx:85, cy:155},
+  red_sea:      {points:'60,220 100,230 130,260 140,300 150,360 140,420 120,460 90,480 60,460 50,400 40,340 35,280 40,240', cx:90, cy:360},
+  persian_gulf: {points:'420,290 435,290 445,295 455,310 460,330 460,350 455,365 445,355 430,340 425,348 430,358 435,370 430,380 420,365 405,370 402,355 395,340 390,330 395,320 405,310', cx:430, cy:335},
+  arabian_sea:  {points:'535,420 560,430 620,450 700,460 760,460 800,440 800,400 760,390 730,400 680,430 620,440 570,445 545,440', cx:670, cy:440},
+  indian_ocean: {points:'800,440 830,420 870,400 920,420 950,460 950,540 920,580 860,590 800,570 770,530 770,480', cx:870, cy:500},
 };
 
+// Label offset adjustments for territories where the centroid doesn't look right
+const LABEL_OFFSETS = {
+  lebanon: {dy: -5},
+  bahrain: {dy: -3},
+  qatar: {dy: -3},
+  persian_gulf: {dx: 5, dy: 5},
+};
+
+// ---- FACTIONS ----
 const FACTIONS = {
-  USA:{id:'USA',name:'United States',alliance:'coalition',color:'var(--usa)',bg:'var(--usa-bg)',baseIncome:15,fighter:'FIGHTER_F35'},
-  ISRAEL:{id:'ISRAEL',name:'Israel',alliance:'coalition',color:'var(--israel)',bg:'var(--israel-bg)',baseIncome:0,fighter:'FIGHTER_F35'},
-  GULF:{id:'GULF',name:'Gulf States',alliance:'coalition',color:'var(--gulf)',bg:'var(--gulf-bg)',baseIncome:0,fighter:'FIGHTER_F35'},
-  IRAN:{id:'IRAN',name:'Iran',alliance:'alliance',color:'var(--iran)',bg:'var(--iran-bg)',baseIncome:0,fighter:'FIGHTER_SU57'},
-  RUSSIA:{id:'RUSSIA',name:'Russia',alliance:'alliance',color:'var(--russia)',bg:'var(--russia-bg)',baseIncome:0,fighter:'FIGHTER_SU57'},
-  CHINA:{id:'CHINA',name:'China',alliance:'alliance',color:'var(--china)',bg:'var(--china-bg)',baseIncome:0,fighter:'FIGHTER_SU57'},
+  USA:    {id:'USA',    name:'United States', alliance:'coalition', color:'var(--usa)',    fill:'var(--usa-fill)',    baseIncome:15, fighter:'FIGHTER_F35'},
+  ISRAEL: {id:'ISRAEL', name:'Israel',        alliance:'coalition', color:'var(--israel)', fill:'var(--israel-fill)', baseIncome:0,  fighter:'FIGHTER_F35'},
+  GULF:   {id:'GULF',   name:'Gulf States',   alliance:'coalition', color:'var(--gulf)',   fill:'var(--gulf-fill)',   baseIncome:0,  fighter:'FIGHTER_F35'},
+  IRAN:   {id:'IRAN',   name:'Iran',          alliance:'alliance',  color:'var(--iran)',   fill:'var(--iran-fill)',   baseIncome:0,  fighter:'FIGHTER_SU57'},
+  RUSSIA: {id:'RUSSIA', name:'Russia',        alliance:'alliance',  color:'var(--russia)', fill:'var(--russia-fill)', baseIncome:0,  fighter:'FIGHTER_SU57'},
+  CHINA:  {id:'CHINA',  name:'China',         alliance:'alliance',  color:'var(--china)',  fill:'var(--china-fill)',  baseIncome:0,  fighter:'FIGHTER_SU57'},
 };
-const FACTION_COLORS = {USA:'var(--usa)',ISRAEL:'var(--israel)',GULF:'var(--gulf)',IRAN:'var(--iran)',RUSSIA:'var(--russia)',CHINA:'var(--china)'};
-const FACTION_BGS = {USA:'var(--usa-bg)',ISRAEL:'var(--israel-bg)',GULF:'var(--gulf-bg)',IRAN:'var(--iran-bg)',RUSSIA:'var(--russia-bg)',CHINA:'var(--china-bg)'};
+
+const FACTION_FILLS_RAW = {
+  USA:'#1a3a5c', ISRAEL:'#1a3c2a', GULF:'#3c3518', IRAN:'#4a1a1a', RUSSIA:'#2e1a3c', CHINA:'#3c2218', NEUTRAL:'#1a2230'
+};
 
 const TURN_ORDER = ['USA','ISRAEL','GULF','IRAN','RUSSIA','CHINA'];
 const PHASES = ['purchase','combatMove','combat','nonCombatMove','placeUnits','collectIncome'];
 const PHASE_LABELS = {purchase:'Purchase Units',combatMove:'Combat Move',combat:'Combat',nonCombatMove:'Non-Combat Move',placeUnits:'Place Units',collectIncome:'Collect Income'};
 
-const UNITS = {
-  INFANTRY:{id:'INFANTRY',name:'Infantry',cat:'land',cost:3,move:1,atk:1,def:2,special:'+1 atk with tank',icon:'INF'},
-  TANK:{id:'TANK',name:'Tank',cat:'land',cost:6,move:3,atk:3,def:3,special:'Blitz through empty territory',icon:'TNK'},
-  THAAD:{id:'THAAD',name:'THAAD Battery',cat:'land',cost:8,move:0,atk:0,def:0,special:'Intercepts nukes (d6 <= 3)',icon:'THD'},
-  FIGHTER_F35:{id:'FIGHTER_F35',name:'F-35',cat:'air',cost:10,move:4,atk:3,def:4,special:'Coalition only',restrict:'coalition',icon:'F35'},
-  FIGHTER_SU57:{id:'FIGHTER_SU57',name:'SU-57',cat:'air',cost:9,move:4,atk:3,def:3,special:'Alliance only',restrict:'alliance',icon:'S57'},
-  DRONE:{id:'DRONE',name:'Drone',cat:'air',cost:4,move:5,atk:2,def:1,special:'Cheap, fragile',icon:'DRN'},
-  BOMBER:{id:'BOMBER',name:'Bomber',cat:'air',cost:12,move:6,atk:4,def:1,special:'Strategic bombing',icon:'BMB'},
-  NUCLEAR_BOMBER:{id:'NUCLEAR_BOMBER',name:'Nuclear Bomber',cat:'air',cost:30,move:8,atk:0,def:1,special:'Nuclear payload, 3-round build',buildTime:3,nuke:true,icon:'NKB'},
-  DESTROYER:{id:'DESTROYER',name:'Destroyer',cat:'naval',cost:8,move:2,atk:2,def:2,special:'Detects submarines',icon:'DES'},
-  CRUISER:{id:'CRUISER',name:'Cruiser',cat:'naval',cost:12,move:2,atk:3,def:3,special:'Shore bombardment',icon:'CRS'},
-  CARRIER:{id:'CARRIER',name:'Carrier',cat:'naval',cost:16,move:2,atk:1,def:2,special:'Carries 2 air units',icon:'CVN'},
-  SUBMARINE:{id:'SUBMARINE',name:'Submarine',cat:'naval',cost:7,move:2,atk:2,def:1,special:'First strike',icon:'SUB'},
-  NUCLEAR_SUB:{id:'NUCLEAR_SUB',name:'Nuclear Sub',cat:'naval',cost:25,move:3,atk:3,def:2,special:'Nuclear payload, 3-round build',buildTime:3,nuke:true,icon:'NKS'},
-  TRANSPORT:{id:'TRANSPORT',name:'Transport',cat:'naval',cost:7,move:2,atk:0,def:0,special:'Carries land units',icon:'TRN'},
+// ---- STARTING FORCES ----
+const STARTING_FORCES = {
+  USA: {
+    kuwait:       {INFANTRY:3, TANK:1, FIGHTER_F35:1},
+    qatar:        {INFANTRY:2, BOMBER:1},
+    persian_gulf: {CARRIER:1, DESTROYER:1, TRANSPORT:1},
+    usa:          {INFANTRY:5, TANK:2, FIGHTER_F35:2, BOMBER:1, DESTROYER:2, CARRIER:1, TRANSPORT:2},
+  },
+  ISRAEL: {
+    israel:   {INFANTRY:5, TANK:2, FIGHTER_F35:2, BOMBER:1, THAAD:1},
+    east_med: {DESTROYER:1, SUBMARINE:1},
+  },
+  GULF: {
+    saudi_arabia: {INFANTRY:5, TANK:2},
+    uae:          {INFANTRY:2, FIGHTER_F35:1, DRONE:1},
+    persian_gulf: {DESTROYER:1},
+  },
+  IRAN: {
+    iran:         {INFANTRY:16, TANK:4, FIGHTER_SU57:1, THAAD:1, DRONE:4},
+    persian_gulf: {SUBMARINE:1, DESTROYER:1},
+    lebanon:      {INFANTRY:2, DRONE:1},
+    syria:        {INFANTRY:3, DRONE:1},
+  },
+  RUSSIA: {
+    syria:    {INFANTRY:2, TANK:1, FIGHTER_SU57:2, BOMBER:1},
+    russia:   {INFANTRY:5, TANK:3, FIGHTER_SU57:2, BOMBER:1},
+    east_med: {CRUISER:1, SUBMARINE:1},
+  },
+  CHINA: {
+    pakistan:      {INFANTRY:2, TANK:1},
+    china:        {INFANTRY:6, TANK:3, FIGHTER_SU57:2, BOMBER:1, DRONE:1},
+    indian_ocean: {CARRIER:1, DESTROYER:2, SUBMARINE:1, TRANSPORT:2},
+  },
 };
 
-const STARTING_FORCES = {
-  USA:{kuwait:{INFANTRY:3,TANK:1,FIGHTER_F35:1},qatar:{INFANTRY:2,BOMBER:1},persian_gulf_west:{CARRIER:1,DESTROYER:1,TRANSPORT:1},
-    usa_staging:{INFANTRY:5,TANK:2,FIGHTER_F35:2,BOMBER:1,DESTROYER:2,CARRIER:1,TRANSPORT:2}},
-  ISRAEL:{israel:{INFANTRY:5,TANK:2,FIGHTER_F35:2,BOMBER:1,THAAD:1},east_med:{DESTROYER:1,SUBMARINE:1}},
-  GULF:{saudi_south:{INFANTRY:3,TANK:1},uae:{INFANTRY:2,FIGHTER_F35:1,DRONE:1},saudi_north:{INFANTRY:2},persian_gulf_east:{DESTROYER:1}},
-  IRAN:{tehran:{INFANTRY:4,TANK:2,FIGHTER_SU57:1,THAAD:1},western_iran:{INFANTRY:4,TANK:2},southern_iran:{INFANTRY:3,DRONE:1},
-    northern_iran:{INFANTRY:3,DRONE:1},eastern_iran:{INFANTRY:2,DRONE:2},persian_gulf_east:{SUBMARINE:1,DESTROYER:1},
-    lebanon:{INFANTRY:2,DRONE:1},syria:{INFANTRY:3,DRONE:1}},
-  RUSSIA:{syria:{INFANTRY:2,TANK:1,FIGHTER_SU57:2,BOMBER:1},russia_staging:{INFANTRY:5,TANK:3,FIGHTER_SU57:2,BOMBER:1},east_med:{CRUISER:1,SUBMARINE:1}},
-  CHINA:{pakistan:{INFANTRY:2,TANK:1},china_staging:{INFANTRY:6,TANK:3,FIGHTER_SU57:2,BOMBER:1,DRONE:1},indian_ocean:{CARRIER:1,DESTROYER:2,SUBMARINE:1,TRANSPORT:2}},
-};
 
 // ============================================================
 //  SECTION 2: GAME STATE
 // ============================================================
 
-let G = null; // game state
+let G = null; // global game state
 let setupConfig = { playerAlliance:'coalition', difficulty:'medium' };
+let selectedTerritory = null;
+let selectedUnitsToMove = []; // array of unit IDs selected for movement
+let validDestinations = [];
+let combatQueue = []; // territories with pending combats
+let purchaseCart = [];
+let stateHistory = [];
 let unitIdCounter = 0;
-const genId = () => 'u'+(++unitIdCounter);
 
-function getAlliance(factionId) { return FACTIONS[factionId]?.alliance; }
-function areAllied(a,b) { return getAlliance(a)===getAlliance(b); }
-function isPlayerFaction(fId) { return FACTIONS[fId]?.alliance === setupConfig.playerAlliance; }
-function isAIFaction(fId) { return !isPlayerFaction(fId); }
+function newUnitId() { return 'u' + (++unitIdCounter); }
 
-function calcIncome(fId, ownership) {
-  let inc = FACTIONS[fId].baseIncome || 0;
-  Object.entries(ownership).forEach(([tid,owner]) => {
-    if (owner===fId && TERRITORIES[tid]?.ipc) inc += TERRITORIES[tid].ipc;
-  });
-  return inc;
-}
-
-function getUnitsIn(tid) { return Object.values(G.units).filter(u=>u.territory===tid); }
-function getUnitsFor(fId) { return Object.values(G.units).filter(u=>u.faction===fId); }
-function getAvailableUnits(alliance) { return Object.values(UNITS).filter(u=>!u.restrict||u.restrict===alliance); }
-
-function createInitialState() {
+function initGameState() {
   unitIdCounter = 0;
-  const ownership = {};
-  Object.values(TERRITORIES).forEach(t => {
-    ownership[t.id] = (t.startFaction && t.startFaction!=='NEUTRAL') ? t.startFaction : null;
-  });
-  const units = {};
-  Object.entries(STARTING_FORCES).forEach(([fId,territories]) => {
-    Object.entries(territories).forEach(([tid,counts]) => {
-      Object.entries(counts).forEach(([utype,count]) => {
-        for(let i=0;i<count;i++){
-          const id=genId();
-          units[id]={id,type:utype,faction:fId,territory:tid,hasMoved:false};
-        }
-      });
-    });
-  });
-  const econ = {};
-  Object.values(FACTIONS).forEach(f => {
-    const inc = calcIncome(f.id, ownership);
-    econ[f.id] = { ipcs:inc, income:inc };
-  });
-  return {
-    units, ownership, econ,
-    nuclearQueue:{}, nuked:{},
-    round:1, factionIdx:0, phase:PHASES[0], faction:TURN_ORDER[0],
-    purchases:[], pendingCombats:[], combatLog:[],
-    selectedTerritory:null, selectedUnits:[],
-    gameOver:false, winner:null,
-    log:['Game started. Round 1 - USA turn.']
+  const state = {
+    round: 1,
+    turnIndex: 0,
+    phaseIndex: 0,
+    playerAlliance: setupConfig.playerAlliance,
+    difficulty: setupConfig.difficulty,
+    territories: {},
+    units: {},   // unitId -> {id, type, faction, territory, moved}
+    factionData: {}, // faction -> {ipcs, income}
+    gameOver: false,
+    winner: null,
+    pendingPurchases: {}, // faction -> [{unitType, turnsLeft}]
+    log: [],
   };
-}
 
-// ============================================================
-//  SECTION 3: COMBAT
-// ============================================================
-
-const d6 = () => Math.floor(Math.random()*6)+1;
-
-function getEffAtk(unit, allAtk) {
-  let atk = UNITS[unit.type].atk;
-  if (unit.type==='INFANTRY' && allAtk.some(u=>u.type==='TANK'&&u.id!==unit.id)) atk = Math.min(atk+1,5);
-  return atk;
-}
-function getEffDef(unit, tid) {
-  let def = UNITS[unit.type].def;
-  const t = TERRITORIES[tid];
-  if (t?.terrain) def = Math.min(def + (TERRAIN_DEF_BONUS[t.terrain]||0), 5);
-  return def;
-}
-
-function resolveCombatRound(attackers, defenders, tid) {
-  const atkSubs = attackers.filter(u=>u.type==='SUBMARINE'||u.type==='NUCLEAR_SUB');
-  const defSubs = defenders.filter(u=>u.type==='SUBMARINE'||u.type==='NUCLEAR_SUB');
-  const hasDefDD = defenders.some(u=>u.type==='DESTROYER');
-  const hasAtkDD = attackers.some(u=>u.type==='DESTROYER');
-  let atkHits=0, defHits=0;
-
-  // Sub first strike
-  if(!hasDefDD) atkSubs.forEach(u=>{ if(d6()<=getEffAtk(u,attackers)) atkHits++; });
-  if(!hasAtkDD) defSubs.forEach(u=>{ if(d6()<=getEffDef(u,tid)) defHits++; });
-
-  // Regular
-  const regAtk = attackers.filter(u=>{
-    if((u.type==='SUBMARINE'||u.type==='NUCLEAR_SUB')&&!hasDefDD) return false; return true;
-  });
-  const regDef = defenders.filter(u=>{
-    if((u.type==='SUBMARINE'||u.type==='NUCLEAR_SUB')&&!hasAtkDD) return false; return true;
-  });
-  regAtk.forEach(u=>{ if(d6()<=getEffAtk(u,attackers)) atkHits++; });
-  regDef.forEach(u=>{ if(d6()<=getEffDef(u,tid)) defHits++; });
-
-  return {atkHits, defHits};
-}
-
-// ============================================================
-//  SECTION 4: GAME LOGIC
-// ============================================================
-
-function purchaseUnit(unitType) {
-  if (G.phase!=='purchase' || isAIFaction(G.faction)) return;
-  const uDef = UNITS[unitType];
-  const spent = G.purchases.reduce((s,p)=>s+UNITS[p].cost,0);
-  const remaining = G.econ[G.faction].ipcs - spent;
-  if (remaining < uDef.cost) return;
-  G.purchases.push(unitType);
-  addLog(`${FACTIONS[G.faction].name} purchased ${uDef.name} (${uDef.cost} IPCs)`, 'purchase');
-  render();
-}
-
-function cancelPurchase(idx) {
-  G.purchases.splice(idx,1);
-  render();
-}
-
-function selectTerritory(tid) {
-  if (G.gameOver) return;
-  if (G.selectedTerritory === tid) {
-    G.selectedTerritory = null;
-    G.selectedUnits = [];
-  } else {
-    G.selectedTerritory = tid;
-    G.selectedUnits = [];
-  }
-  render();
-}
-
-function moveUnits(unitIds, destination) {
-  unitIds.forEach(id => {
-    G.units[id] = {...G.units[id], territory:destination, hasMoved:true};
-  });
-  // Check for combat
-  const destUnits = Object.values(G.units).filter(u=>u.territory===destination);
-  const hasEnemies = destUnits.some(u=>!areAllied(u.faction,G.faction));
-  if (hasEnemies && !G.pendingCombats.includes(destination)) {
-    G.pendingCombats.push(destination);
-  }
-  G.selectedTerritory = null;
-  G.selectedUnits = [];
-  addLog(`Moved ${unitIds.length} unit(s) to ${TERRITORIES[destination].name}`);
-  render();
-}
-
-function advancePhase() {
-  if (G.gameOver) return;
-  const pi = PHASES.indexOf(G.phase);
-
-  // Last phase -> next faction
-  if (pi >= PHASES.length-1) {
-    // Collect income
-    const inc = calcIncome(G.faction, G.ownership);
-    G.econ[G.faction].ipcs += inc;
-    G.econ[G.faction].income = inc;
-    addLog(`${FACTIONS[G.faction].name} collected ${inc} IPCs`, 'income');
-
-    const nextFI = (G.factionIdx+1)%TURN_ORDER.length;
-    if (nextFI===0) G.round++;
-    const nextF = TURN_ORDER[nextFI];
-
-    // Reset movement for next faction
-    Object.keys(G.units).forEach(id => {
-      const u = G.units[id];
-      if (u.faction===nextF) G.units[id] = {...u, hasMoved:false};
-    });
-
-    // Advance nuclear queue
-    Object.entries(G.nuclearQueue).forEach(([uid,left])=>{
-      if(G.units[uid]?.faction===G.faction) G.nuclearQueue[uid]=left-1;
-    });
-
-    if (checkWin()) return;
-
-    G.factionIdx = nextFI;
-    G.faction = nextF;
-    G.phase = PHASES[0];
-    G.purchases = [];
-    G.pendingCombats = [];
-    G.selectedTerritory = null;
-    G.selectedUnits = [];
-    addLog(`--- Round ${G.round} - ${FACTIONS[nextF].name} turn ---`, 'round-marker');
-    render();
-
-    if (isAIFaction(nextF)) setTimeout(()=>runAITurn(),600);
-    return;
+  // Init territories
+  for (const [tid, tdef] of Object.entries(TERRITORIES)) {
+    state.territories[tid] = {
+      id: tid,
+      owner: tdef.startFaction || null,
+      factory: tdef.factory || false,
+      nuked: false,
+    };
   }
 
-  // Resolve combat when leaving combat phase
-  if (G.phase==='combat' && G.pendingCombats.length>0) {
-    resolvePendingCombats();
-    if (G.gameOver) return;
-  }
-
-  // Place units when leaving place phase
-  if (G.phase==='placeUnits' && G.purchases.length>0) {
-    placeUnits();
-  }
-
-  G.phase = PHASES[pi+1];
-  G.selectedTerritory = null;
-  G.selectedUnits = [];
-  addLog(`${FACTIONS[G.faction].name}: ${PHASE_LABELS[G.phase]}`, '');
-  render();
-}
-
-function placeUnits() {
-  const factories = Object.entries(G.ownership)
-    .filter(([tid,own])=>own===G.faction && TERRITORIES[tid]?.factory)
-    .map(([tid])=>tid);
-  const factory = factories[0];
-  if (!factory) return;
-  let totalCost = 0;
-  G.purchases.forEach(utype => {
-    const id = genId();
-    G.units[id] = {id,type:utype,faction:G.faction,territory:factory,hasMoved:false};
-    totalCost += UNITS[utype].cost;
-  });
-  G.econ[G.faction].ipcs -= totalCost;
-  addLog(`${FACTIONS[G.faction].name} deployed ${G.purchases.length} unit(s) at ${TERRITORIES[factory].name}`, 'purchase');
-  G.purchases = [];
-}
-
-function resolvePendingCombats() {
-  const combatResults = [];
-  G.pendingCombats.forEach(tid => {
-    const allUnits = Object.values(G.units).filter(u=>u.territory===tid);
-    let attackers = allUnits.filter(u=>areAllied(u.faction,G.faction) && u.hasMoved);
-    let defenders = allUnits.filter(u=>!areAllied(u.faction,G.faction));
-    if (!attackers.length||!defenders.length) return;
-
-    const tName = TERRITORIES[tid].name;
-    const result = {territory:tName,tid,rounds:[],outcome:''};
-
-    for(let round=0;round<10&&attackers.length>0&&defenders.length>0;round++){
-      const r = resolveCombatRound(attackers,defenders,tid);
-      result.rounds.push({atkHits:r.atkHits,defHits:r.defHits,atkCount:attackers.length,defCount:defenders.length});
-
-      // Remove casualties (cheapest first)
-      let defCas = r.atkHits;
-      const sortedDef = [...defenders].sort((a,b)=>(UNITS[a.type]?.cost||0)-(UNITS[b.type]?.cost||0));
-      for(let i=0;i<defCas&&i<sortedDef.length;i++) delete G.units[sortedDef[i].id];
-
-      let atkCas = r.defHits;
-      const sortedAtk = [...attackers].sort((a,b)=>(UNITS[a.type]?.cost||0)-(UNITS[b.type]?.cost||0));
-      for(let i=0;i<atkCas&&i<sortedAtk.length;i++) delete G.units[sortedAtk[i].id];
-
-      const surviving = Object.values(G.units).filter(u=>u.territory===tid);
-      attackers = surviving.filter(u=>areAllied(u.faction,G.faction)&&u.hasMoved);
-      defenders = surviving.filter(u=>!areAllied(u.faction,G.faction));
+  // Init faction data
+  for (const fid of TURN_ORDER) {
+    let income = FACTIONS[fid].baseIncome;
+    for (const [tid, tdef] of Object.entries(TERRITORIES)) {
+      if (tdef.startFaction === fid && tdef.ipc) income += tdef.ipc;
     }
-
-    if (defenders.length===0 && attackers.length>0) {
-      G.ownership[tid] = G.faction;
-      result.outcome = 'captured';
-      addLog(`${FACTIONS[G.faction].name} captured ${tName}!`, 'capture');
-    } else if (attackers.length===0) {
-      result.outcome = 'repelled';
-      addLog(`Attack on ${tName} repelled!`, 'combat');
-    } else {
-      result.outcome = 'stalemate';
-      attackers.forEach(u=>{ if(G.units[u.id]) G.units[u.id].hasMoved=false; });
-      addLog(`Stalemate at ${tName}`, 'combat');
-    }
-    combatResults.push(result);
-  });
-  G.pendingCombats = [];
-  checkWin();
-
-  // Show combat results overlay
-  if (combatResults.length > 0) showCombatResults(combatResults);
-}
-
-function checkWin() {
-  const tehranOwner = G.ownership.tehran;
-  const israelOwner = G.ownership.israel;
-  if (tehranOwner && getAlliance(tehranOwner)==='coalition') { endGame('Coalition'); return true; }
-  if (israelOwner && getAlliance(israelOwner)==='alliance') { endGame('Alliance'); return true; }
-  if (G.nuked.tehran) { endGame('Coalition'); return true; }
-  if (G.nuked.israel) { endGame('Alliance'); return true; }
-  return false;
-}
-
-function endGame(winner) {
-  G.gameOver = true;
-  G.winner = winner;
-  addLog(`GAME OVER! ${winner} wins!`, 'round-marker');
-  render();
-  setTimeout(()=>showGameOver(winner),800);
-}
-
-function addLog(msg, cls='') {
-  G.log.push({text:msg,cls});
-}
-
-// ============================================================
-//  SECTION 5: AI
-// ============================================================
-
-function runAITurn() {
-  if (G.gameOver || !isAIFaction(G.faction)) return;
-  showAI(true);
-
-  // Purchase
-  const purchases = aiPurchase();
-  purchases.forEach(ut => {
-    G.purchases.push(ut);
-    addLog(`${FACTIONS[G.faction].name} purchased ${UNITS[ut].name}`, 'purchase');
-  });
-  render();
-
-  setTimeout(()=>{
-    // Advance to combat move
-    G.phase = 'combatMove';
-    addLog(`${FACTIONS[G.faction].name}: Combat Move`);
-    render();
-
-    setTimeout(()=>{
-      // Combat moves
-      const moves = aiCombatMoves();
-      moves.forEach(m => moveUnits(m.unitIds, m.destination));
-      render();
-
-      setTimeout(()=>{
-        // Advance to combat
-        G.phase = 'combat';
-        addLog(`${FACTIONS[G.faction].name}: Combat`);
-        if (G.pendingCombats.length>0) resolvePendingCombats();
-        if (G.gameOver) { showAI(false); return; }
-        render();
-
-        setTimeout(()=>{
-          // Skip non-combat move
-          G.phase = 'nonCombatMove';
-          // Place units
-          G.phase = 'placeUnits';
-          placeUnits();
-          render();
-
-          setTimeout(()=>{
-            // Collect income and advance
-            showAI(false);
-            G.phase = 'collectIncome';
-            advancePhase();
-          },400);
-        },400);
-      },600);
-    },500);
-  },500);
-}
-
-function aiPurchase() {
-  const faction = G.faction;
-  const alliance = FACTIONS[faction].alliance;
-  let remaining = G.econ[faction].ipcs;
-  const buys = [];
-  const fighterType = FACTIONS[faction].fighter;
-
-  // Difficulty scaling
-  const aggression = setupConfig.difficulty==='hard'?1.5:setupConfig.difficulty==='easy'?0.5:1;
-
-  if (remaining >= UNITS[fighterType].cost && Math.random()<0.7*aggression) {
-    buys.push(fighterType); remaining -= UNITS[fighterType].cost;
+    state.factionData[fid] = { ipcs: income, income: income };
   }
-  if (remaining >= UNITS.DRONE.cost && Math.random()<0.6) {
-    buys.push('DRONE'); remaining -= UNITS.DRONE.cost;
-  }
-  if (remaining >= UNITS.TANK.cost && Math.random()<0.7*aggression) {
-    buys.push('TANK'); remaining -= UNITS.TANK.cost;
-  }
-  while (remaining >= UNITS.INFANTRY.cost) {
-    buys.push('INFANTRY'); remaining -= UNITS.INFANTRY.cost;
-  }
-  return buys;
-}
 
-function aiCombatMoves() {
-  const faction = G.faction;
-  const moves = [];
-  const ourTerrs = {};
-
-  Object.values(G.units).forEach(u => {
-    if (u.faction===faction && !u.hasMoved) {
-      if (!ourTerrs[u.territory]) ourTerrs[u.territory]=[];
-      ourTerrs[u.territory].push(u);
-    }
-  });
-
-  const aggressionMult = setupConfig.difficulty==='hard'?1.2:setupConfig.difficulty==='easy'?3:2;
-
-  Object.entries(ourTerrs).forEach(([tid,units]) => {
-    const adjacent = ADJ[tid]||[];
-    adjacent.forEach(adjId => {
-      const at = TERRITORIES[adjId];
-      if (!at || at.type==='sea' || at.offmap) return;
-      const owner = G.ownership[adjId];
-      if (owner && areAllied(owner,faction)) return;
-
-      const enemies = getUnitsIn(adjId).filter(u=>!areAllied(u.faction,faction));
-      const landUnits = units.filter(u=>UNITS[u.type].cat==='land'&&!u.hasMoved);
-
-      if (enemies.length===0 || (landUnits.length >= enemies.length*aggressionMult && landUnits.length>=3)) {
-        const toSend = landUnits.slice(0,Math.max(1,Math.ceil(landUnits.length/2)));
-        if (toSend.length>0) {
-          moves.push({unitIds:toSend.map(u=>u.id),destination:adjId});
-          toSend.forEach(u=>u.hasMoved=true); // mark to prevent double-move
+  // Place starting forces
+  for (const [fid, territories] of Object.entries(STARTING_FORCES)) {
+    for (const [tid, forces] of Object.entries(territories)) {
+      for (const [unitType, count] of Object.entries(forces)) {
+        for (let i = 0; i < count; i++) {
+          const uid = newUnitId();
+          state.units[uid] = { id: uid, type: unitType, faction: fid, territory: tid, moved: false };
         }
       }
-    });
-  });
-  return moves;
+    }
+  }
+
+  // Init pending purchases
+  for (const fid of TURN_ORDER) {
+    state.pendingPurchases[fid] = [];
+  }
+
+  return state;
 }
 
+function currentFaction() { return TURN_ORDER[G.turnIndex]; }
+function currentPhase() { return PHASES[G.phaseIndex]; }
+function isPlayerFaction(fid) {
+  return FACTIONS[fid].alliance === G.playerAlliance;
+}
+function isCurrentPlayerTurn() { return isPlayerFaction(currentFaction()); }
+function getAlliance(fid) { return FACTIONS[fid].alliance; }
+function areFriendly(f1, f2) {
+  if (!f1 || !f2) return false;
+  if (f1 === 'NEUTRAL' || f2 === 'NEUTRAL') return false;
+  return getAlliance(f1) === getAlliance(f2);
+}
+function areEnemy(f1, f2) {
+  if (!f1 || !f2) return false;
+  if (f1 === 'NEUTRAL' || f2 === 'NEUTRAL') return false;
+  return getAlliance(f1) !== getAlliance(f2);
+}
+
+function getUnitsInTerritory(tid, faction) {
+  const units = [];
+  for (const u of Object.values(G.units)) {
+    if (u.territory === tid && (!faction || u.faction === faction)) units.push(u);
+  }
+  return units;
+}
+
+function getUnitsInTerritoryByAlliance(tid, alliance) {
+  const units = [];
+  for (const u of Object.values(G.units)) {
+    if (u.territory === tid && getAlliance(u.faction) === alliance) units.push(u);
+  }
+  return units;
+}
+
+function getFactionUnitsInTerritory(tid, fid) {
+  return Object.values(G.units).filter(u => u.territory === tid && u.faction === fid);
+}
+
+function getFriendlyUnitsInTerritory(tid, fid) {
+  return Object.values(G.units).filter(u => u.territory === tid && areFriendly(u.faction, fid));
+}
+
+function getEnemyUnitsInTerritory(tid, fid) {
+  return Object.values(G.units).filter(u => u.territory === tid && areEnemy(u.faction, fid));
+}
+
+function getTerritoryOwner(tid) { return G.territories[tid].owner; }
+
+function calcFactionIncome(fid) {
+  let income = FACTIONS[fid].baseIncome;
+  for (const [tid, tstate] of Object.entries(G.territories)) {
+    if (tstate.owner === fid && TERRITORIES[tid].ipc) {
+      income += TERRITORIES[tid].ipc;
+    }
+  }
+  return income;
+}
+
+function addLog(msg, type) {
+  G.log.push({ msg, type: type || 'info', round: G.round, faction: currentFaction() });
+}
+
+function saveStateSnapshot() {
+  stateHistory.push(JSON.parse(JSON.stringify(G)));
+  if (stateHistory.length > 50) stateHistory.shift();
+}
+
+function rewindState() {
+  if (stateHistory.length > 0) {
+    G = stateHistory.pop();
+    selectedTerritory = null;
+    selectedUnitsToMove = [];
+    validDestinations = [];
+    purchaseCart = [];
+    renderAll();
+  }
+}
+
+
 // ============================================================
-//  SECTION 6: RENDERING
+//  SECTION 3: SVG MAP RENDERING
 // ============================================================
 
-function render() {
+function buildSVGMap() {
+  const svg = document.getElementById('game-map');
+  svg.innerHTML = '';
+
+  // Background water
+  const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  bg.setAttribute('width','1000');
+  bg.setAttribute('height','700');
+  bg.setAttribute('fill','#060e1a');
+  svg.appendChild(bg);
+
+  // Draw sea zones first (behind land)
+  const seaIds = ['east_med','red_sea','persian_gulf','arabian_sea','indian_ocean'];
+  for (const tid of seaIds) {
+    drawTerritory(svg, tid);
+  }
+
+  // Draw land territories
+  for (const tid of Object.keys(TERRITORIES)) {
+    if (TERRITORIES[tid].type === 'sea') continue;
+    drawTerritory(svg, tid);
+  }
+}
+
+function drawTerritory(svg, tid) {
+  const tdef = TERRITORIES[tid];
+  const shape = TERRITORY_SHAPES[tid];
+  if (!shape) return;
+
+  const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.setAttribute('data-tid', tid);
+
+  // Polygon
+  const poly = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  poly.setAttribute('points', shape.points);
+  poly.classList.add('territory-poly');
+  poly.setAttribute('data-tid', tid);
+
+  // Set fill color based on owner
+  updateTerritoryFill(poly, tid);
+
+  if (tdef.type === 'sea') {
+    poly.style.stroke = '#152040';
+    poly.style.strokeWidth = '1';
+    poly.style.strokeDasharray = '4,3';
+  }
+
+  poly.addEventListener('click', () => onTerritoryClick(tid));
+  g.appendChild(poly);
+
+  // Label
+  const labelX = shape.cx + (LABEL_OFFSETS[tid]?.dx || 0);
+  const labelY = shape.cy + (LABEL_OFFSETS[tid]?.dy || 0) - (tdef.type === 'sea' ? 0 : 6);
+
+  const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+  label.setAttribute('x', labelX);
+  label.setAttribute('y', labelY);
+  label.classList.add('territory-label');
+  if (tdef.type === 'sea') label.classList.add('sea-label');
+  if (['lebanon','bahrain','qatar'].includes(tid)) label.classList.add('small');
+  label.textContent = tdef.name;
+  g.appendChild(label);
+
+  // IPC badge (for land territories with IPC > 0)
+  if (tdef.ipc > 0 && tdef.type !== 'sea') {
+    const badgeG = document.createElementNS('http://www.w3.org/2000/svg','g');
+    badgeG.classList.add('ipc-badge');
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x', labelX - 8);
+    rect.setAttribute('y', labelY + 4);
+    rect.setAttribute('width', '16');
+    rect.setAttribute('height', '12');
+    rect.setAttribute('rx', '3');
+    badgeG.appendChild(rect);
+    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x', labelX);
+    txt.setAttribute('y', labelY + 10);
+    txt.textContent = tdef.ipc;
+    badgeG.appendChild(txt);
+    g.appendChild(badgeG);
+  }
+
+  // Factory indicator
+  if (tdef.factory) {
+    const fIcon = document.createElementNS('http://www.w3.org/2000/svg','text');
+    fIcon.setAttribute('x', labelX + (tdef.ipc > 0 ? 16 : 0));
+    fIcon.setAttribute('y', labelY + 10);
+    fIcon.classList.add('factory-icon');
+    fIcon.textContent = '[F]';
+    g.appendChild(fIcon);
+  }
+
+  // Capital indicator
+  if (tdef.capital) {
+    const cIcon = document.createElementNS('http://www.w3.org/2000/svg','text');
+    cIcon.setAttribute('x', labelX - (tdef.ipc > 0 ? 18 : 0));
+    cIcon.setAttribute('y', labelY + 10);
+    cIcon.classList.add('capital-icon');
+    cIcon.textContent = '*';
+    g.appendChild(cIcon);
+  }
+
+  svg.appendChild(g);
+}
+
+function updateTerritoryFill(poly, tid) {
+  const tdef = TERRITORIES[tid];
+  if (tdef.type === 'sea') {
+    poly.style.fill = '#0a1628';
+    return;
+  }
+  const owner = G ? G.territories[tid].owner : tdef.startFaction;
+  if (owner && owner !== 'NEUTRAL' && FACTION_FILLS_RAW[owner]) {
+    poly.style.fill = FACTION_FILLS_RAW[owner];
+  } else {
+    poly.style.fill = FACTION_FILLS_RAW.NEUTRAL;
+  }
+  if (G && G.territories[tid].nuked) {
+    poly.style.fill = '#2a0a00';
+  }
+}
+
+function refreshMapColors() {
+  const polys = document.querySelectorAll('.territory-poly');
+  polys.forEach(poly => {
+    const tid = poly.getAttribute('data-tid');
+    updateTerritoryFill(poly, tid);
+  });
+}
+
+function setTerritoryClass(tid, cls, on) {
+  const poly = document.querySelector(`.territory-poly[data-tid="${tid}"]`);
+  if (poly) {
+    if (on) poly.classList.add(cls);
+    else poly.classList.remove(cls);
+  }
+}
+
+function clearAllTerritoryClasses() {
+  document.querySelectorAll('.territory-poly').forEach(p => {
+    p.classList.remove('selected','valid-dest','combat-zone');
+  });
+}
+
+
+// ============================================================
+//  SECTION 4: UNIT OVERLAYS ON MAP
+// ============================================================
+
+function renderUnitOverlays() {
+  const container = document.getElementById('unit-overlays');
+  container.innerHTML = '';
+
+  // Group units by territory
+  const grouped = {};
+  for (const u of Object.values(G.units)) {
+    if (!grouped[u.territory]) grouped[u.territory] = {};
+    const key = u.type + '_' + u.faction;
+    if (!grouped[u.territory][key]) grouped[u.territory][key] = { type: u.type, faction: u.faction, count: 0, ids: [] };
+    grouped[u.territory][key].count++;
+    grouped[u.territory][key].ids.push(u.id);
+  }
+
+  const mapContainer = document.getElementById('map-container');
+  const mapRect = mapContainer.getBoundingClientRect();
+  const svg = document.getElementById('game-map');
+  const svgRect = svg.getBoundingClientRect();
+
+  for (const [tid, units] of Object.entries(grouped)) {
+    const shape = TERRITORY_SHAPES[tid];
+    if (!shape) continue;
+
+    // Convert SVG coordinates to screen coordinates
+    const svgW = 1000, svgH = 700;
+    const scaleX = svgRect.width / svgW;
+    const scaleY = svgRect.height / svgH;
+    const offsetX = svgRect.left - mapRect.left;
+    const offsetY = svgRect.top - mapRect.top;
+
+    // Position unit tokens below the label
+    const screenX = offsetX + shape.cx * scaleX;
+    const screenY = offsetY + (shape.cy + 14) * scaleY;
+
+    const div = document.createElement('div');
+    div.className = 'unit-overlay';
+    div.style.left = screenX + 'px';
+    div.style.top = screenY + 'px';
+
+    for (const [key, info] of Object.entries(units)) {
+      const utype = UNIT_TYPES[info.type];
+      if (!utype) continue;
+      const token = document.createElement('div');
+      const typeClass = utype.type;
+      token.className = 'unit-token ' + typeClass;
+
+      // Color by faction
+      const fColor = getComputedStyle(document.documentElement).getPropertyValue('--' + info.faction.toLowerCase()).trim();
+      if (fColor) {
+        token.style.borderColor = fColor;
+        token.style.color = fColor;
+        token.style.background = fColor + '22';
+      }
+
+      token.textContent = utype.abbr + (info.count > 1 ? ' ' + info.count : '');
+      token.setAttribute('data-unit-key', key);
+      token.setAttribute('data-tid', tid);
+      token.setAttribute('data-faction', info.faction);
+      token.setAttribute('data-type', info.type);
+
+      // Click to select units for movement
+      token.addEventListener('click', (e) => {
+        e.stopPropagation();
+        onUnitTokenClick(tid, info.type, info.faction, info.ids);
+      });
+
+      div.appendChild(token);
+    }
+
+    container.appendChild(div);
+  }
+}
+
+
+// ============================================================
+//  SECTION 5: UI RENDERING
+// ============================================================
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showSetup() { showScreen('setup-screen'); }
+
+function selectSetup(group, el) {
+  const parent = el.parentElement;
+  parent.querySelectorAll('.setup-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  if (group === 'alliance') setupConfig.playerAlliance = el.dataset.value;
+  if (group === 'difficulty') setupConfig.difficulty = el.dataset.value;
+}
+
+function startGame() {
+  G = initGameState();
+  stateHistory = [];
+  purchaseCart = [];
+  selectedTerritory = null;
+  selectedUnitsToMove = [];
+  validDestinations = [];
+  combatQueue = [];
+  addLog('Game started. Round 1 begins.', 'round-marker');
+  showScreen('game-screen');
+  buildSVGMap();
+  renderAll();
+  // If first faction is AI, run their turn
+  if (!isCurrentPlayerTurn()) {
+    setTimeout(() => runAITurn(), 500);
+  }
+}
+
+function confirmNewGame() {
+  if (confirm('Abandon current game and start over?')) {
+    showScreen('title-screen');
+  }
+}
+
+function backToTitle() {
+  showScreen('title-screen');
+}
+
+function renderAll() {
   renderTopBar();
   renderPhaseBar();
-  renderMap();
   renderLeftPanel();
+  refreshMapColors();
+  renderUnitOverlays();
   renderLog();
+  highlightMap();
 }
 
 function renderTopBar() {
-  const f = FACTIONS[G.faction];
-  document.getElementById('round-badge').textContent = `Round ${G.round}`;
-  const fb = document.getElementById('faction-badge');
-  fb.textContent = f.name;
-  fb.style.background = f.bg;
-  fb.style.color = f.color;
-  const spent = G.purchases.reduce((s,p)=>s+UNITS[p].cost,0);
-  document.getElementById('ipc-amount').textContent = G.econ[G.faction].ipcs - spent;
+  const fid = currentFaction();
+  const fac = FACTIONS[fid];
+  document.getElementById('round-badge').textContent = 'Round ' + G.round;
+  const badge = document.getElementById('faction-badge');
+  badge.textContent = fac.name;
+  badge.style.color = getComputedStyle(document.documentElement).getPropertyValue('--' + fid.toLowerCase()).trim();
+  badge.style.background = FACTION_FILLS_RAW[fid];
+  document.getElementById('ipc-amount').textContent = G.factionData[fid].ipcs;
 }
 
 function renderPhaseBar() {
   const bar = document.getElementById('phase-bar');
-  const ci = PHASES.indexOf(G.phase);
   let html = '';
-  PHASES.forEach((p,i) => {
-    const cls = i===ci?'active':i<ci?'done':'';
-    html += `<div class="phase-tab ${cls}">${PHASE_LABELS[p]}</div>`;
-  });
+  for (let i = 0; i < PHASES.length; i++) {
+    let cls = 'phase-tab';
+    if (i === G.phaseIndex) cls += ' active';
+    else if (i < G.phaseIndex) cls += ' done';
+    html += `<div class="${cls}">${PHASE_LABELS[PHASES[i]]}</div>`;
+  }
   html += '<div class="phase-spacer"></div>';
-  const canRewind = ci>0 && isPlayerFaction(G.faction);
-  html += `<button class="btn-rewind" onclick="rewindPhase()" ${canRewind?'':'disabled'}>&#x21A9; Rewind</button>`;
-  const canAdvance = !G.gameOver && isPlayerFaction(G.faction);
-  html += `<button class="btn-phase" onclick="advancePhase()" ${canAdvance?'':'disabled'}>Next Phase &#x25B6;</button>`;
+  html += `<button class="btn-rewind" onclick="rewindState()" ${stateHistory.length === 0 ? 'disabled' : ''}>Rewind</button>`;
+  html += `<button class="btn-phase" onclick="advancePhase()" ${!isCurrentPlayerTurn() ? 'disabled' : ''}>NEXT</button>`;
   bar.innerHTML = html;
-}
-
-function renderMap() {
-  const container = document.getElementById('territory-nodes');
-  const svg = document.getElementById('adj-svg');
-  const mapW = document.getElementById('map-container').offsetWidth;
-  const mapH = document.getElementById('map-container').offsetHeight;
-
-  // Draw adjacency lines
-  let svgHtml = '';
-  const drawn = new Set();
-  Object.entries(ADJ).forEach(([tid,adjs]) => {
-    const pos1 = MAP_POS[tid];
-    if (!pos1) return;
-    adjs.forEach(adj => {
-      const key = [tid,adj].sort().join('-');
-      if (drawn.has(key)) return;
-      drawn.add(key);
-      const pos2 = MAP_POS[adj];
-      if (!pos2) return;
-      const hl = (G.selectedTerritory===tid||G.selectedTerritory===adj)?'highlight':'';
-      svgHtml += `<line class="adj-line ${hl}" x1="${pos1.x}%" y1="${pos1.y}%" x2="${pos2.x}%" y2="${pos2.y}%"/>`;
-    });
-  });
-  svg.innerHTML = svgHtml;
-
-  // Draw territory nodes
-  let nodesHtml = '';
-  Object.values(TERRITORIES).forEach(t => {
-    const pos = MAP_POS[t.id];
-    if (!pos) return;
-    const owner = G.ownership[t.id];
-    const isSea = t.type==='sea';
-    const isOffmap = t.offmap;
-    const isSelected = G.selectedTerritory===t.id;
-    const isNuked = G.nuked[t.id];
-    const isCombatZone = G.pendingCombats.includes(t.id);
-    const isCurrentFaction = owner===G.faction;
-    const isValidDest = getValidDestinations().includes(t.id);
-
-    let classes = 'territory-node';
-    if (isSea) classes += ' sea';
-    if (isOffmap) classes += ' offmap';
-    if (isSelected) classes += ' selected';
-    if (isNuked) classes += ' nuked';
-    if (isCombatZone) classes += ' combat-zone';
-    if (isCurrentFaction && !isSea && !isSelected) classes += ' current-faction';
-    if (isValidDest) classes += ' valid-dest';
-
-    // Background color based on owner
-    let bgStyle = '';
-    if (owner && !isSea) {
-      bgStyle = `background:${FACTION_BGS[owner]};border-color:${FACTION_COLORS[owner]}50;border-left:3px solid ${FACTION_COLORS[owner]};`;
-    } else if (isSea) {
-      bgStyle = `background:var(--sea-bg);`;
-    }
-
-    // Units in this territory
-    const units = getUnitsIn(t.id);
-    const landCount = units.filter(u=>UNITS[u.type].cat==='land').length;
-    const airCount = units.filter(u=>UNITS[u.type].cat==='air').length;
-    const navalCount = units.filter(u=>UNITS[u.type].cat==='naval').length;
-
-    let unitBadges = '';
-    if (landCount) unitBadges += `<span class="t-unit-badge land">&#x2694;${landCount}</span>`;
-    if (airCount) unitBadges += `<span class="t-unit-badge air">&#x2708;${airCount}</span>`;
-    if (navalCount) unitBadges += `<span class="t-unit-badge naval">&#x2693;${navalCount}</span>`;
-
-    let extras = '';
-    if (t.factory && !isSea) extras += '<span class="t-factory">&#x2699;</span>';
-    if (t.capital) extras += '<span class="t-capital">&#x2605;</span>';
-    if (isNuked) extras += '<span class="t-nuke-icon">&#x2622;</span>';
-
-    const onClick = isValidDest ? `moveSelectedUnits('${t.id}')` : `selectTerritory('${t.id}')`;
-
-    nodesHtml += `<div class="${classes}" style="left:${pos.x}%;top:${pos.y}%;${bgStyle}" onclick="${onClick}">
-      <div class="t-name">${t.name}${extras}</div>
-      <div class="t-row">
-        ${!isSea && t.ipc !== undefined ? `<span class="t-ipc">${t.ipc} IPC</span>` : ''}
-        ${''}
-      </div>
-      ${unitBadges ? `<div class="t-units">${unitBadges}</div>` : ''}
-    </div>`;
-  });
-  container.innerHTML = nodesHtml;
-}
-
-function getValidDestinations() {
-  if (!G.selectedTerritory || (G.phase!=='combatMove' && G.phase!=='nonCombatMove')) return [];
-  if (G.selectedUnits.length === 0) return [];
-  const adj = ADJ[G.selectedTerritory] || [];
-  if (G.phase === 'combatMove') return adj.filter(a => !TERRITORIES[a]?.offmap);
-  // Non-combat: only friendly or empty territories
-  return adj.filter(a => {
-    if (TERRITORIES[a]?.offmap) return false;
-    const owner = G.ownership[a];
-    return !owner || areAllied(owner, G.faction);
-  });
-}
-
-function moveSelectedUnits(destId) {
-  if (G.selectedUnits.length === 0) return;
-  moveUnits([...G.selectedUnits], destId);
-}
-
-function renderLeftPanel() {
-  const panel = document.getElementById('left-panel');
-  if (G.phase==='purchase' && isPlayerFaction(G.faction)) {
-    panel.innerHTML = renderPurchasePanel();
-  } else if (G.selectedTerritory) {
-    panel.innerHTML = renderTerritoryInfo(G.selectedTerritory);
-  } else {
-    panel.innerHTML = renderPhaseHelp();
-  }
-}
-
-function renderPhaseHelp() {
-  const helps = {
-    purchase: 'Buy units to deploy later. Click units in the list to add them to your cart.',
-    combatMove: 'Select a territory you control, check units to move, then click an adjacent territory to attack.',
-    combat: 'Combat will auto-resolve when you advance to the next phase. Review pending combats on the map (red borders).',
-    nonCombatMove: 'Move units that did not participate in combat to friendly territories.',
-    placeUnits: 'Purchased units will be deployed at your factories when you advance.',
-    collectIncome: 'Advance to collect income from your territories and end your turn.',
-  };
-  const fName = FACTIONS[G.faction].name;
-  const isAI = isAIFaction(G.faction);
-  return `
-    <div class="panel-title">${PHASE_LABELS[G.phase]}</div>
-    <div class="phase-help">${isAI ? `${fName} (AI) is taking their turn...` : (helps[G.phase]||'')}</div>
-    <div style="margin-top:16px;">
-      <div class="panel-subtitle">Faction Overview</div>
-      ${renderFactionOverview()}
-    </div>
-  `;
-}
-
-function renderFactionOverview() {
-  let html = '';
-  TURN_ORDER.forEach(fId => {
-    const f = FACTIONS[fId];
-    const unitCount = getUnitsFor(fId).length;
-    const inc = G.econ[fId].income;
-    const isActive = G.faction===fId;
-    html += `<div style="display:flex;align-items:center;gap:8px;padding:4px 6px;border-radius:4px;margin-bottom:3px;
-      ${isActive?'background:rgba(255,255,255,0.04);':''}">
-      <span style="width:8px;height:8px;border-radius:50%;background:${f.color};flex-shrink:0;${isActive?'box-shadow:0 0 6px '+f.color+';':''}"></span>
-      <span style="flex:1;font-size:12px;font-weight:600;color:${isActive?'var(--text-bright)':'var(--text-dim)'}">${f.name}</span>
-      <span style="font-size:10px;color:var(--text-dim)">${unitCount}u</span>
-      <span style="font-size:10px;color:var(--warning)">${inc}$</span>
-    </div>`;
-  });
-  return html;
-}
-
-function renderPurchasePanel() {
-  const alliance = FACTIONS[G.faction].alliance;
-  const available = getAvailableUnits(alliance);
-  const spent = G.purchases.reduce((s,p)=>s+UNITS[p].cost,0);
-  const remaining = G.econ[G.faction].ipcs - spent;
-
-  const cats = {land:'Land',air:'Air',naval:'Naval'};
-  let html = `<div class="panel-title">Purchase Units</div>
-    <div class="panel-subtitle">Available: <span style="color:var(--warning)">${remaining} IPCs</span></div>`;
-
-  Object.entries(cats).forEach(([cat,label]) => {
-    const catUnits = available.filter(u=>u.cat===cat);
-    html += `<div class="purchase-cat"><div class="purchase-cat-label">${label}</div>`;
-    catUnits.forEach(u => {
-      const canAfford = remaining >= u.cost;
-      html += `<div class="purchase-item ${canAfford?'':'disabled'}" onclick="${canAfford?`purchaseUnit('${u.id}')`:''}">
-        <div style="flex:1">
-          <div class="pu-name">${u.name}</div>
-          <div class="pu-stats">
-            <span class="pu-stat atk">A:${u.atk}</span>
-            <span class="pu-stat def">D:${u.def}</span>
-            <span class="pu-stat mov">M:${u.move}</span>
-          </div>
-        </div>
-        <div class="pu-cost">${u.cost}</div>
-      </div>`;
-    });
-    html += '</div>';
-  });
-
-  // Cart
-  if (G.purchases.length>0) {
-    html += '<div class="cart-section"><div class="purchase-cat-label">Cart</div>';
-    G.purchases.forEach((ut,i) => {
-      const u = UNITS[ut];
-      html += `<div class="cart-item">
-        <span class="cart-name">${u.name}</span>
-        <span class="cart-cost">${u.cost} IPC</span>
-        <span class="cart-x" onclick="cancelPurchase(${i})">&times;</span>
-      </div>`;
-    });
-    html += `<div class="cart-total">
-      <span>Spent: ${spent}</span>
-      <span class="remaining">Left: ${remaining}</span>
-    </div></div>`;
-  }
-  return html;
-}
-
-function renderTerritoryInfo(tid) {
-  const t = TERRITORIES[tid];
-  const owner = G.ownership[tid];
-  const units = getUnitsIn(tid);
-  const isSea = t.type==='sea';
-
-  let ownerLabel = 'Neutral';
-  let ownerColor = 'var(--neutral-c)';
-  let ownerBg = 'var(--neutral-bg)';
-  if (owner) {
-    ownerLabel = FACTIONS[owner].name;
-    ownerColor = FACTIONS[owner].color;
-    ownerBg = FACTIONS[owner].bg;
-  }
-  if (isSea) { ownerLabel = 'Sea Zone'; ownerColor = 'var(--sea-c)'; ownerBg = 'var(--sea-bg)'; }
-
-  let html = `<div class="panel-title">${t.name}</div>
-    <div class="info-owner" style="background:${ownerBg};color:${ownerColor}">${ownerLabel}</div>`;
-
-  if (!isSea) {
-    html += `<div class="info-detail"><span>IPC Value</span><span>${t.ipc||0}</span></div>`;
-    if (t.terrain) html += `<div class="info-detail"><span>Terrain</span><span style="text-transform:capitalize">${t.terrain}</span></div>`;
-    if (t.factory) html += `<div class="info-detail"><span>Factory</span><span style="color:var(--accent)">Yes</span></div>`;
-    if (t.capital) html += `<div class="info-detail"><span>Capital</span><span style="color:var(--warning)">&#x2605;</span></div>`;
-  }
-
-  if (units.length > 0) {
-    html += '<div class="info-units-section">';
-    const isMovable = (G.phase==='combatMove'||G.phase==='nonCombatMove') && isPlayerFaction(G.faction) &&
-      owner && areAllied(owner, G.faction);
-    const byFaction = {};
-    units.forEach(u => { if(!byFaction[u.faction]) byFaction[u.faction]=[]; byFaction[u.faction].push(u); });
-
-    Object.entries(byFaction).forEach(([fId,fUnits]) => {
-      html += `<div class="info-units-cat" style="color:${FACTIONS[fId].color}">${FACTIONS[fId].name}</div>`;
-      // Group by type
-      const byType = {};
-      fUnits.forEach(u => { if(!byType[u.type]) byType[u.type]=[]; byType[u.type].push(u); });
-      Object.entries(byType).forEach(([utype,typeUnits]) => {
-        const uDef = UNITS[utype];
-        const canMove = isMovable && fId===G.faction && !typeUnits[0].hasMoved;
-        html += `<div class="info-unit-row">
-          ${canMove ? typeUnits.map(u=>`<input type="checkbox" class="u-check" data-uid="${u.id}" onchange="toggleUnitSelect(this)" ${G.selectedUnits.includes(u.id)?'checked':''}>`).join('') : ''}
-          <span class="u-name">${uDef.name} ${typeUnits.length>1?'x'+typeUnits.length:''}</span>
-          <span class="u-stats">A:${uDef.atk} D:${uDef.def} M:${uDef.move}</span>
-        </div>`;
-      });
-    });
-    html += '</div>';
-
-    // Move targets
-    if (G.selectedUnits.length > 0) {
-      const dests = getValidDestinations();
-      if (dests.length > 0) {
-        html += '<div class="info-move-targets"><h4>Move To:</h4>';
-        dests.forEach(did => {
-          const dt = TERRITORIES[did];
-          const dOwner = G.ownership[did];
-          const hasEnemy = getUnitsIn(did).some(u=>!areAllied(u.faction,G.faction));
-          const cls = hasEnemy ? 'attack' : '';
-          html += `<button class="move-target-btn ${cls}" onclick="moveSelectedUnits('${did}')">
-            ${dt.name} ${hasEnemy ? '&#x2694; Attack' : ''}
-          </button>`;
-        });
-        html += '</div>';
-      }
-    }
-  }
-  return html;
-}
-
-function toggleUnitSelect(cb) {
-  const uid = cb.dataset.uid;
-  if (cb.checked) {
-    if (!G.selectedUnits.includes(uid)) G.selectedUnits.push(uid);
-  } else {
-    G.selectedUnits = G.selectedUnits.filter(id=>id!==uid);
-  }
-  render();
 }
 
 function renderLog() {
   const body = document.getElementById('log-body');
   let html = '';
-  const entries = G.log.slice(-100);
-  entries.forEach(entry => {
-    const e = typeof entry === 'string' ? {text:entry,cls:''} : entry;
-    html += `<div class="log-entry ${e.cls||''}">${e.text}</div>`;
-  });
+  // Show last 50 entries
+  const entries = G.log.slice(-50);
+  for (const entry of entries) {
+    html += `<div class="log-entry ${entry.type}">${entry.msg}</div>`;
+  }
   body.innerHTML = html;
-  body.scrollTop = body.scrollHeight;
 }
 
-// ============================================================
-//  SECTION 7: OVERLAYS & SCREENS
-// ============================================================
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function showSetup() { showScreen('setup-screen'); }
-function backToTitle() { showScreen('title-screen'); }
-
-function selectSetup(type, el) {
-  const parent = el.parentElement;
-  parent.querySelectorAll('.setup-opt').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  if (type==='alliance') setupConfig.playerAlliance = el.dataset.value;
-  if (type==='difficulty') setupConfig.difficulty = el.dataset.value;
-}
-
-function startGame() {
-  G = createInitialState();
-  showScreen('game-screen');
-  render();
-  // If AI goes first
-  if (isAIFaction(G.faction)) setTimeout(()=>runAITurn(),800);
-}
-
-function confirmNewGame() {
-  if (confirm('Start a new game? Current progress will be lost.')) {
-    showScreen('setup-screen');
+function highlightMap() {
+  clearAllTerritoryClasses();
+  if (selectedTerritory) {
+    setTerritoryClass(selectedTerritory, 'selected', true);
+  }
+  for (const tid of validDestinations) {
+    setTerritoryClass(tid, 'valid-dest', true);
   }
 }
 
-function showAI(show) {
-  const el = document.getElementById('ai-indicator');
-  if (show) {
-    el.textContent = `${FACTIONS[G.faction].name.toUpperCase()} IS THINKING...`;
-    el.classList.add('visible');
+// ============================================================
+//  SECTION 6: LEFT PANEL - CONTEXT-DEPENDENT
+// ============================================================
+
+function renderLeftPanel() {
+  const panel = document.getElementById('left-panel');
+  const phase = currentPhase();
+  const fid = currentFaction();
+
+  if (!isCurrentPlayerTurn()) {
+    panel.innerHTML = `<div class="panel-title">AI Turn</div>
+      <div class="phase-help">${FACTIONS[fid].name} is taking their turn...</div>`;
+    return;
+  }
+
+  switch (phase) {
+    case 'purchase': renderPurchasePanel(panel, fid); break;
+    case 'combatMove': renderMovePanel(panel, fid, true); break;
+    case 'combat': renderCombatPanel(panel); break;
+    case 'nonCombatMove': renderMovePanel(panel, fid, false); break;
+    case 'placeUnits': renderPlacePanel(panel, fid); break;
+    case 'collectIncome': renderIncomePanel(panel, fid); break;
+    default: panel.innerHTML = '';
+  }
+}
+
+function renderPurchasePanel(panel, fid) {
+  const fac = FACTIONS[fid];
+  const spent = purchaseCart.reduce((s, item) => s + UNIT_TYPES[item].cost, 0);
+  const remaining = G.factionData[fid].ipcs - spent;
+
+  let html = `<div class="panel-title">Purchase Units</div>`;
+  html += `<div class="phase-help">Buy units to deploy at your factories later this turn. Click a unit to add it to your cart.</div>`;
+
+  // Group units by type
+  const cats = { land: [], air: [], naval: [] };
+  for (const [uid, udef] of Object.entries(UNIT_TYPES)) {
+    // Filter by faction restriction
+    if (udef.factionReq && udef.factionReq !== fac.alliance) continue;
+    cats[udef.type].push(udef);
+  }
+
+  for (const [cat, units] of Object.entries(cats)) {
+    html += `<div class="purchase-cat"><div class="purchase-cat-label">${cat}</div>`;
+    for (const u of units) {
+      const disabled = u.cost > remaining ? 'disabled' : '';
+      html += `<div class="purchase-item ${disabled}" onclick="${disabled ? '' : `addToCart('${u.id}')`}">
+        <div class="pu-name">${u.name}</div>
+        <div class="pu-stats">
+          <span class="pu-stat atk">A${u.attack}</span>
+          <span class="pu-stat def">D${u.defense}</span>
+          <span class="pu-stat mov">M${u.move}</span>
+        </div>
+        <div class="pu-cost">${u.cost}</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  // Cart
+  if (purchaseCart.length > 0) {
+    html += `<div class="cart-section"><div class="panel-title">Cart</div>`;
+    for (let i = 0; i < purchaseCart.length; i++) {
+      const u = UNIT_TYPES[purchaseCart[i]];
+      html += `<div class="cart-item">
+        <span class="cart-name">${u.name}</span>
+        <span class="cart-cost">${u.cost} IPC</span>
+        <span class="cart-x" onclick="removeFromCart(${i})">x</span>
+      </div>`;
+    }
+    html += `<div class="cart-total">
+      <span>Spent: ${spent}</span>
+      <span class="remaining">Remaining: ${remaining}</span>
+    </div></div>`;
+  }
+
+  panel.innerHTML = html;
+}
+
+function addToCart(unitType) {
+  const fid = currentFaction();
+  const spent = purchaseCart.reduce((s, item) => s + UNIT_TYPES[item].cost, 0);
+  const remaining = G.factionData[fid].ipcs - spent;
+  if (UNIT_TYPES[unitType].cost <= remaining) {
+    purchaseCart.push(unitType);
+    renderLeftPanel();
+  }
+}
+
+function removeFromCart(index) {
+  purchaseCart.splice(index, 1);
+  renderLeftPanel();
+}
+
+function renderMovePanel(panel, fid, isCombatMove) {
+  let html = `<div class="panel-title">${isCombatMove ? 'Combat Move' : 'Non-Combat Move'}</div>`;
+  html += `<div class="phase-help">${isCombatMove
+    ? 'Select a territory you control to see your units. Check units to move, then click a destination. You can move into enemy territory.'
+    : 'Move remaining units to friendly territories. Cannot move into enemy territory.'}</div>`;
+
+  if (selectedTerritory) {
+    const tid = selectedTerritory;
+    const tdef = TERRITORIES[tid];
+    const tstate = G.territories[tid];
+    const owner = tstate.owner;
+
+    html += `<div style="font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:8px;">${tdef.name}</div>`;
+    if (owner) {
+      const ownerColor = getComputedStyle(document.documentElement).getPropertyValue('--' + owner.toLowerCase()).trim() || 'var(--text)';
+      html += `<div class="info-owner" style="background:${FACTION_FILLS_RAW[owner] || 'var(--surface-light)'};color:${ownerColor}">${FACTIONS[owner]?.name || owner}</div>`;
+    }
+
+    // Show units belonging to current faction
+    const myUnits = getFactionUnitsInTerritory(tid, fid);
+    const otherUnits = getUnitsInTerritory(tid).filter(u => u.faction !== fid);
+
+    if (myUnits.length > 0) {
+      html += `<div class="info-units-section"><div class="info-units-cat">Your Units</div>`;
+      for (const u of myUnits) {
+        const udef = UNIT_TYPES[u.type];
+        const checked = selectedUnitsToMove.includes(u.id);
+        const canMove = !u.moved && udef.move > 0;
+        html += `<div class="info-unit-row">
+          <input type="checkbox" class="u-check" ${checked ? 'checked' : ''} ${canMove ? '' : 'disabled'}
+            onchange="toggleUnitSelection('${u.id}')">
+          <span class="u-name">${udef.name}</span>
+          <span class="u-stats">A${udef.attack}/D${udef.defense}/M${udef.move}${u.moved ? ' (moved)' : ''}</span>
+        </div>`;
+      }
+      html += `</div>`;
+    }
+
+    if (otherUnits.length > 0) {
+      html += `<div class="info-units-section"><div class="info-units-cat">Other Forces</div>`;
+      for (const u of otherUnits) {
+        const udef = UNIT_TYPES[u.type];
+        html += `<div class="info-unit-row">
+          <span class="u-name" style="color:${getComputedStyle(document.documentElement).getPropertyValue('--' + u.faction.toLowerCase()).trim()}">${udef.name} (${FACTIONS[u.faction]?.name || u.faction})</span>
+          <span class="u-stats">A${udef.attack}/D${udef.defense}</span>
+        </div>`;
+      }
+      html += `</div>`;
+    }
+
+    // Show valid move targets
+    if (selectedUnitsToMove.length > 0) {
+      const targets = getValidMoveTargets(tid, fid, isCombatMove);
+      if (targets.length > 0) {
+        html += `<div class="info-move-targets"><h4>Move To:</h4>`;
+        for (const target of targets) {
+          const isAttack = areEnemy(getTerritoryOwner(target), fid) || getEnemyUnitsInTerritory(target, fid).length > 0;
+          html += `<button class="move-target-btn ${isAttack ? 'attack' : ''}" onclick="moveSelectedUnits('${target}')">
+            ${TERRITORIES[target].name} ${isAttack ? '(ATTACK)' : ''}
+          </button>`;
+        }
+        html += `</div>`;
+      }
+    }
   } else {
-    el.classList.remove('visible');
+    html += `<div style="font-size:12px;color:var(--text-dim);padding:8px;">Click a territory on the map to select it.</div>`;
+  }
+
+  panel.innerHTML = html;
+}
+
+function renderCombatPanel(panel) {
+  let html = `<div class="panel-title">Combat Phase</div>`;
+  if (combatQueue.length > 0) {
+    html += `<div class="phase-help">${combatQueue.length} battle(s) to resolve. Click NEXT to auto-resolve.</div>`;
+    for (const tid of combatQueue) {
+      html += `<div style="font-size:12px;padding:4px 8px;margin-bottom:4px;background:rgba(255,23,68,0.1);border-radius:4px;color:var(--danger);">
+        Battle at ${TERRITORIES[tid].name}
+      </div>`;
+    }
+  } else {
+    html += `<div class="phase-help">No battles to resolve. Click NEXT to continue.</div>`;
+  }
+  panel.innerHTML = html;
+}
+
+function renderPlacePanel(panel, fid) {
+  let html = `<div class="panel-title">Place Units</div>`;
+
+  if (purchaseCart.length === 0) {
+    html += `<div class="phase-help">No units to place. Click NEXT to continue.</div>`;
+    panel.innerHTML = html;
+    return;
+  }
+
+  html += `<div class="phase-help">Click a factory to place your purchased units there.</div>`;
+
+  // Find factories owned by this faction
+  const factories = [];
+  for (const [tid, tstate] of Object.entries(G.territories)) {
+    if (tstate.owner === fid && tstate.factory) {
+      factories.push(tid);
+    }
+  }
+
+  html += `<div class="info-units-section"><div class="info-units-cat">Units to Place (${purchaseCart.length})</div>`;
+  const grouped = {};
+  for (const ut of purchaseCart) {
+    grouped[ut] = (grouped[ut] || 0) + 1;
+  }
+  for (const [ut, count] of Object.entries(grouped)) {
+    html += `<div class="info-unit-row"><span class="u-name">${UNIT_TYPES[ut].name}</span><span class="u-stats">x${count}</span></div>`;
+  }
+  html += `</div>`;
+
+  html += `<div class="info-units-section"><div class="info-units-cat">Your Factories</div>`;
+  for (const tid of factories) {
+    const tdef = TERRITORIES[tid];
+    html += `<div class="place-factory" onclick="placeUnitsAtFactory('${tid}')">
+      <h4>${tdef.name}</h4>
+      <div class="pf-units">Click to place all units here</div>
+    </div>`;
+  }
+  html += `</div>`;
+
+  panel.innerHTML = html;
+}
+
+function renderIncomePanel(panel, fid) {
+  const income = calcFactionIncome(fid);
+  let html = `<div class="panel-title">Collect Income</div>`;
+  html += `<div class="phase-help">${FACTIONS[fid].name} collects ${income} IPCs from controlled territories.</div>`;
+
+  // List controlled territories
+  html += `<div class="info-units-section"><div class="info-units-cat">Controlled Territories</div>`;
+  for (const [tid, tstate] of Object.entries(G.territories)) {
+    if (tstate.owner === fid && TERRITORIES[tid].ipc > 0) {
+      html += `<div class="info-detail"><span>${TERRITORIES[tid].name}</span><span>${TERRITORIES[tid].ipc} IPC</span></div>`;
+    }
+  }
+  html += `</div>`;
+  html += `<div style="margin-top:12px;font-size:14px;font-weight:700;color:var(--warning);">Total: ${income} IPCs</div>`;
+
+  panel.innerHTML = html;
+}
+
+
+// ============================================================
+//  SECTION 7: INTERACTION - CLICKS & MOVEMENT
+// ============================================================
+
+function onTerritoryClick(tid) {
+  const phase = currentPhase();
+  if (!isCurrentPlayerTurn()) return;
+
+  if (phase === 'combatMove' || phase === 'nonCombatMove') {
+    // If we have units selected and this is a valid destination, move them
+    if (selectedUnitsToMove.length > 0 && validDestinations.includes(tid)) {
+      moveSelectedUnits(tid);
+      return;
+    }
+    // Otherwise, select this territory
+    selectedTerritory = tid;
+    selectedUnitsToMove = [];
+    validDestinations = [];
+    renderAll();
+  } else if (phase === 'placeUnits') {
+    // Try to place units here
+    const fid = currentFaction();
+    if (G.territories[tid].owner === fid && G.territories[tid].factory) {
+      placeUnitsAtFactory(tid);
+    }
+  } else {
+    // Just select for info
+    selectedTerritory = tid;
+    selectedUnitsToMove = [];
+    validDestinations = [];
+    renderAll();
   }
 }
 
-function showCombatResults(results) {
-  const box = document.getElementById('combat-box');
-  let html = '<div class="combat-title">Combat Results</div>';
+function onUnitTokenClick(tid, unitType, faction, unitIds) {
+  if (!isCurrentPlayerTurn()) return;
+  const phase = currentPhase();
+  if (phase !== 'combatMove' && phase !== 'nonCombatMove') return;
+  if (faction !== currentFaction()) return;
 
-  results.forEach(r => {
-    html += `<div style="margin-bottom:16px;padding:12px;background:var(--surface-light);border-radius:6px;">
-      <div style="font-family:'Teko',sans-serif;font-size:18px;color:var(--text-bright);margin-bottom:8px;">
-        ${r.territory}
-      </div>
-      <div class="combat-results">`;
-    r.rounds.forEach((rd,i) => {
-      html += `<div class="combat-result-line">Round ${i+1}: Attackers(${rd.atkCount}) scored ${rd.atkHits} hits, Defenders(${rd.defCount}) scored ${rd.defHits} hits</div>`;
+  selectedTerritory = tid;
+  // Toggle: if already selected these units, deselect
+  if (selectedUnitsToMove.length > 0 && selectedUnitsToMove[0] === unitIds[0]) {
+    selectedUnitsToMove = [];
+    validDestinations = [];
+  } else {
+    // Select all moveable units of this type
+    selectedUnitsToMove = unitIds.filter(id => {
+      const u = G.units[id];
+      return u && !u.moved && UNIT_TYPES[u.type].move > 0;
     });
-    const outcomeColor = r.outcome==='captured'?'var(--warning)':r.outcome==='repelled'?'var(--danger)':'var(--text-dim)';
-    const outcomeText = r.outcome==='captured'?'Territory Captured!':r.outcome==='repelled'?'Attack Repelled!':'Stalemate - Attackers Retreated';
-    html += `<div class="combat-result-line" style="color:${outcomeColor};font-weight:700;margin-top:4px;">${outcomeText}</div>`;
-    html += '</div></div>';
-  });
+    validDestinations = getValidMoveTargets(tid, faction, phase === 'combatMove');
+  }
+  renderAll();
+}
 
-  html += '<button class="combat-btn" onclick="closeCombat()">Continue</button>';
+function toggleUnitSelection(unitId) {
+  const idx = selectedUnitsToMove.indexOf(unitId);
+  if (idx >= 0) {
+    selectedUnitsToMove.splice(idx, 1);
+  } else {
+    selectedUnitsToMove.push(unitId);
+  }
+  // Recalculate valid destinations
+  if (selectedUnitsToMove.length > 0 && selectedTerritory) {
+    validDestinations = getValidMoveTargets(selectedTerritory, currentFaction(), currentPhase() === 'combatMove');
+  } else {
+    validDestinations = [];
+  }
+  renderAll();
+}
+
+function getValidMoveTargets(fromTid, fid, isCombatMove) {
+  const adj = ADJ[fromTid] || [];
+  const targets = [];
+  for (const tid of adj) {
+    const tdef = TERRITORIES[tid];
+    const tstate = G.territories[tid];
+
+    // Check if any selected unit can reach
+    const canReach = selectedUnitsToMove.some(uid => {
+      const u = G.units[uid];
+      if (!u) return false;
+      const utype = UNIT_TYPES[u.type];
+      // Land units can't enter sea zones (unless transport - simplified)
+      if (utype.type === 'land' && tdef.type === 'sea') return false;
+      // Naval units can't enter land
+      if (utype.type === 'naval' && tdef.type !== 'sea') return false;
+      // Air can go anywhere
+      return true;
+    });
+
+    if (!canReach) continue;
+
+    const hasEnemies = getEnemyUnitsInTerritory(tid, fid).length > 0;
+    const isEnemyOwned = tstate.owner && areEnemy(tstate.owner, fid);
+
+    if (isCombatMove) {
+      // Can move anywhere adjacent
+      targets.push(tid);
+    } else {
+      // Non-combat: only friendly or uncontested
+      if (!hasEnemies && (!isEnemyOwned || tstate.owner === 'NEUTRAL')) {
+        targets.push(tid);
+      }
+      // Also allow friendly territories
+      if (areFriendly(tstate.owner, fid) && !hasEnemies) {
+        if (!targets.includes(tid)) targets.push(tid);
+      }
+    }
+  }
+  return targets;
+}
+
+function moveSelectedUnits(destTid) {
+  if (selectedUnitsToMove.length === 0) return;
+  saveStateSnapshot();
+
+  const fid = currentFaction();
+  const fromTid = selectedTerritory;
+
+  for (const uid of selectedUnitsToMove) {
+    const u = G.units[uid];
+    if (!u) continue;
+    u.territory = destTid;
+    u.moved = true;
+  }
+
+  const destName = TERRITORIES[destTid].name;
+  const fromName = TERRITORIES[fromTid].name;
+  addLog(`${FACTIONS[fid].name}: Moved ${selectedUnitsToMove.length} unit(s) from ${fromName} to ${destName}`, 'info');
+
+  selectedUnitsToMove = [];
+  validDestinations = [];
+  selectedTerritory = destTid;
+  renderAll();
+}
+
+function placeUnitsAtFactory(tid) {
+  if (purchaseCart.length === 0) return;
+  saveStateSnapshot();
+
+  const fid = currentFaction();
+  const tdef = TERRITORIES[tid];
+
+  for (const unitType of purchaseCart) {
+    const uid = newUnitId();
+    G.units[uid] = { id: uid, type: unitType, faction: fid, territory: tid, moved: true };
+  }
+
+  addLog(`${FACTIONS[fid].name}: Placed ${purchaseCart.length} unit(s) at ${tdef.name}`, 'purchase');
+  purchaseCart = [];
+  renderAll();
+}
+
+
+// ============================================================
+//  SECTION 8: PHASE ADVANCEMENT
+// ============================================================
+
+function advancePhase() {
+  if (!isCurrentPlayerTurn()) return;
+  saveStateSnapshot();
+
+  const phase = currentPhase();
+  const fid = currentFaction();
+
+  // Execute phase-end logic
+  switch (phase) {
+    case 'purchase':
+      executePurchase(fid);
+      break;
+    case 'combatMove':
+      // Identify combat zones
+      combatQueue = findCombatZones(fid);
+      break;
+    case 'combat':
+      resolveCombats(fid);
+      break;
+    case 'nonCombatMove':
+      // Nothing special
+      break;
+    case 'placeUnits':
+      // If there are still units in cart, auto-place at first factory
+      if (purchaseCart.length > 0) {
+        autoPlaceUnits(fid);
+      }
+      break;
+    case 'collectIncome':
+      executeIncome(fid);
+      break;
+  }
+
+  // Advance to next phase or next faction
+  G.phaseIndex++;
+  if (G.phaseIndex >= PHASES.length) {
+    G.phaseIndex = 0;
+    G.turnIndex++;
+    if (G.turnIndex >= TURN_ORDER.length) {
+      G.turnIndex = 0;
+      G.round++;
+      addLog(`Round ${G.round} begins.`, 'round-marker');
+    }
+    // Reset moved flags for new faction
+    resetMovedFlags(currentFaction());
+    purchaseCart = [];
+    selectedTerritory = null;
+    selectedUnitsToMove = [];
+    validDestinations = [];
+  }
+
+  // Check win conditions
+  checkWinConditions();
+  if (G.gameOver) return;
+
+  renderAll();
+
+  // If it's AI turn, run it
+  if (!isCurrentPlayerTurn()) {
+    setTimeout(() => runAITurn(), 300);
+  }
+}
+
+function executePurchase(fid) {
+  const spent = purchaseCart.reduce((s, item) => s + UNIT_TYPES[item].cost, 0);
+  G.factionData[fid].ipcs -= spent;
+  if (purchaseCart.length > 0) {
+    addLog(`${FACTIONS[fid].name}: Purchased ${purchaseCart.length} unit(s) for ${spent} IPCs`, 'purchase');
+  }
+  // Cart stays until placeUnits phase
+}
+
+function findCombatZones(fid) {
+  const zones = [];
+  const alliance = getAlliance(fid);
+  for (const tid of Object.keys(TERRITORIES)) {
+    const friendlyUnits = getUnitsInTerritoryByAlliance(tid, alliance);
+    const enemyUnits = Object.values(G.units).filter(u => u.territory === tid && getAlliance(u.faction) !== alliance && u.faction !== 'NEUTRAL');
+    if (friendlyUnits.length > 0 && enemyUnits.length > 0) {
+      zones.push(tid);
+    }
+  }
+  return zones;
+}
+
+function resolveCombats(fid) {
+  const alliance = getAlliance(fid);
+  for (const tid of combatQueue) {
+    resolveSingleCombat(tid, alliance);
+  }
+  combatQueue = [];
+}
+
+function resolveSingleCombat(tid, attackerAlliance) {
+  const tdef = TERRITORIES[tid];
+  const terrainBonus = TERRAIN_DEF_BONUS[tdef.terrain] || 0;
+
+  let attackers = Object.values(G.units).filter(u => u.territory === tid && getAlliance(u.faction) === attackerAlliance);
+  let defenders = Object.values(G.units).filter(u => u.territory === tid && getAlliance(u.faction) !== attackerAlliance && u.faction !== 'NEUTRAL');
+
+  if (attackers.length === 0 || defenders.length === 0) return;
+
+  const defenderAlliance = getAlliance(defenders[0].faction);
+  let combatLog = [];
+  combatLog.push(`Battle at ${tdef.name}!`);
+
+  // Check submarine first strike
+  const defHasDD = defenders.some(u => u.type === 'DESTROYER');
+  const atkHasDD = attackers.some(u => u.type === 'DESTROYER');
+  const atkSubs = attackers.filter(u => u.type === 'SUBMARINE' || u.type === 'NUC_SUB');
+  const defSubs = defenders.filter(u => u.type === 'SUBMARINE' || u.type === 'NUC_SUB');
+
+  // Submarine first strike (if opponent has no destroyer)
+  if (atkSubs.length > 0 && !defHasDD) {
+    const hits = rollCombat(atkSubs, true, false, attackers);
+    if (hits > 0) {
+      combatLog.push(`Attacker subs score ${hits} first strike hit(s)!`);
+      removeCheapestUnits(defenders, hits);
+      defenders = defenders.filter(u => G.units[u.id]);
+    }
+  }
+  if (defSubs.length > 0 && !atkHasDD) {
+    const hits = rollCombat(defSubs, false, terrainBonus > 0, defenders);
+    if (hits > 0) {
+      combatLog.push(`Defender subs score ${hits} first strike hit(s)!`);
+      removeCheapestUnits(attackers, hits);
+      attackers = attackers.filter(u => G.units[u.id]);
+    }
+  }
+
+  // Main combat (up to 10 rounds)
+  for (let round = 0; round < 10 && attackers.length > 0 && defenders.length > 0; round++) {
+    const atkHits = rollCombat(attackers, true, false, attackers);
+    const defHits = rollCombat(defenders, false, terrainBonus > 0, defenders);
+
+    combatLog.push(`Round ${round + 1}: Attackers hit ${atkHits}, Defenders hit ${defHits}`);
+
+    // Apply casualties simultaneously
+    removeCheapestUnits(defenders, atkHits);
+    removeCheapestUnits(attackers, defHits);
+
+    attackers = attackers.filter(u => G.units[u.id]);
+    defenders = defenders.filter(u => G.units[u.id]);
+  }
+
+  // Determine outcome
+  if (attackers.length > 0 && defenders.length === 0) {
+    // Attacker wins - capture territory
+    const oldOwner = G.territories[tid].owner;
+    // Set owner to the faction of the first attacker unit
+    G.territories[tid].owner = attackers[0].faction;
+    combatLog.push(`${FACTIONS[attackers[0].faction].name} captures ${tdef.name}!`);
+    addLog(`${FACTIONS[attackers[0].faction].name} captures ${tdef.name} from ${oldOwner ? FACTIONS[oldOwner]?.name || oldOwner : 'neutral'}!`, 'capture');
+  } else if (defenders.length > 0 && attackers.length === 0) {
+    combatLog.push(`Defenders hold ${tdef.name}!`);
+    addLog(`Defense holds at ${tdef.name}`, 'combat');
+  } else {
+    combatLog.push(`Stalemate at ${tdef.name}!`);
+    addLog(`Stalemate at ${tdef.name}`, 'combat');
+  }
+
+  // Show combat overlay
+  showCombatResult(tid, combatLog);
+}
+
+function rollCombat(units, isAttack, hasTerrainBonus, allFriendly) {
+  let hits = 0;
+  for (const u of units) {
+    if (!G.units[u.id]) continue;
+    const utype = UNIT_TYPES[u.type];
+    let value = isAttack ? utype.attack : utype.defense;
+
+    // Infantry + Tank bonus
+    if (isAttack && u.type === 'INFANTRY') {
+      const hasTank = allFriendly.some(f => f.type === 'TANK' && f.id !== u.id && G.units[f.id]);
+      if (hasTank) value += 1;
+    }
+
+    // Terrain defense bonus
+    if (!isAttack && hasTerrainBonus) {
+      value = Math.min(value + 1, 5);
+    }
+
+    if (value <= 0) continue;
+    const roll = Math.floor(Math.random() * 6) + 1;
+    if (roll <= value) hits++;
+  }
+  return hits;
+}
+
+function removeCheapestUnits(units, count) {
+  // Sort by cost (cheapest first)
+  const sorted = [...units].sort((a, b) => UNIT_TYPES[a.type].cost - UNIT_TYPES[b.type].cost);
+  let removed = 0;
+  for (const u of sorted) {
+    if (removed >= count) break;
+    if (G.units[u.id]) {
+      delete G.units[u.id];
+      removed++;
+    }
+  }
+}
+
+let pendingCombatResults = [];
+
+function showCombatResult(tid, combatLog) {
+  pendingCombatResults.push({ tid, log: combatLog });
+}
+
+function displayNextCombatResult() {
+  if (pendingCombatResults.length === 0) {
+    document.getElementById('combat-overlay').classList.remove('active');
+    return;
+  }
+
+  const result = pendingCombatResults.shift();
+  const overlay = document.getElementById('combat-overlay');
+  const box = document.getElementById('combat-box');
+
+  let html = `<div class="combat-title">Battle at ${TERRITORIES[result.tid].name}</div>`;
+  html += `<div class="combat-results">`;
+  for (const line of result.log) {
+    let cls = '';
+    if (line.includes('hit') || line.includes('strike')) cls = 'hit';
+    if (line.includes('captures') || line.includes('Captures')) cls = 'capture';
+    if (line.includes('hold') || line.includes('Stalemate')) cls = 'miss';
+    html += `<div class="combat-result-line ${cls}">${line}</div>`;
+  }
+  html += `</div>`;
+  html += `<button class="combat-btn" onclick="closeCombatResult()">Continue</button>`;
+
   box.innerHTML = html;
-  document.getElementById('combat-overlay').classList.add('active');
+  overlay.classList.add('active');
 }
 
-function closeCombat() {
-  document.getElementById('combat-overlay').classList.remove('active');
+function closeCombatResult() {
+  if (pendingCombatResults.length > 0) {
+    displayNextCombatResult();
+  } else {
+    document.getElementById('combat-overlay').classList.remove('active');
+    renderAll();
+  }
 }
 
-function showGameOver(winner) {
+function executeIncome(fid) {
+  const income = calcFactionIncome(fid);
+  G.factionData[fid].income = income;
+  G.factionData[fid].ipcs += income;
+  addLog(`${FACTIONS[fid].name}: Collected ${income} IPCs (Total: ${G.factionData[fid].ipcs})`, 'income');
+}
+
+function autoPlaceUnits(fid) {
+  // Find first factory
+  let factoryTid = null;
+  for (const [tid, tstate] of Object.entries(G.territories)) {
+    if (tstate.owner === fid && tstate.factory) {
+      factoryTid = tid;
+      break;
+    }
+  }
+  if (factoryTid) {
+    placeUnitsAtFactory(factoryTid);
+  }
+}
+
+function resetMovedFlags(fid) {
+  for (const u of Object.values(G.units)) {
+    if (u.faction === fid) u.moved = false;
+  }
+}
+
+function checkWinConditions() {
+  // Coalition wins: capture Tehran (iran capital)
+  // Alliance wins: capture Israel
+  const iranState = G.territories.iran;
+  const israelState = G.territories.israel;
+
+  if (iranState.owner && getAlliance(iranState.owner) === 'coalition') {
+    endGame('coalition', 'Tehran has fallen!');
+  } else if (israelState.owner && getAlliance(israelState.owner) === 'alliance') {
+    endGame('alliance', 'Israel has been captured!');
+  }
+}
+
+function endGame(winningAlliance, reason) {
+  G.gameOver = true;
+  G.winner = winningAlliance;
+
   const title = document.getElementById('gameover-title');
   const sub = document.getElementById('gameover-sub');
-  title.textContent = `${winner} Victory`;
-  title.className = 'gameover-title ' + (winner==='Coalition'?'coalition':'alliance');
-  sub.textContent = winner===setupConfig.playerAlliance
-    ? 'Congratulations, Commander. The enemy capital has fallen.'
-    : 'Your forces have been defeated. The enemy has taken your capital.';
+
+  if (winningAlliance === 'coalition') {
+    title.textContent = 'COALITION VICTORY';
+    title.className = 'gameover-title coalition';
+  } else {
+    title.textContent = 'ALLIANCE VICTORY';
+    title.className = 'gameover-title alliance';
+  }
+  sub.textContent = reason;
+
   showScreen('gameover-screen');
 }
 
-function rewindPhase() {
-  const ci = PHASES.indexOf(G.phase);
-  if (ci <= 0 || !isPlayerFaction(G.faction)) return;
-  G.phase = PHASES[ci-1];
-  G.selectedTerritory = null;
-  G.selectedUnits = [];
-  addLog(`Rewound to ${PHASE_LABELS[G.phase]}`);
-  render();
-}
 
 // ============================================================
-//  SECTION 8: INIT
+//  SECTION 9: AI
 // ============================================================
 
-// Handle window resize for SVG
-window.addEventListener('resize', () => { if(G) render(); });
+function runAITurn() {
+  const fid = currentFaction();
+  if (isPlayerFaction(fid)) return;
 
-// Set canvas size
-const fxCanvas = document.getElementById('fx-canvas');
-function resizeCanvas() {
-  fxCanvas.width = window.innerWidth;
-  fxCanvas.height = window.innerHeight;
+  const indicator = document.getElementById('ai-indicator');
+  indicator.textContent = `${FACTIONS[fid].name.toUpperCase()} IS THINKING...`;
+  indicator.classList.add('visible');
+
+  // Run through all phases with delays for visibility
+  runAIPhaseSequence(fid, 0);
 }
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+
+function runAIPhaseSequence(fid, phaseIdx) {
+  if (phaseIdx >= PHASES.length || G.gameOver) {
+    // Done with this faction's turn
+    document.getElementById('ai-indicator').classList.remove('visible');
+    // Move to next faction
+    G.phaseIndex = 0;
+    G.turnIndex++;
+    if (G.turnIndex >= TURN_ORDER.length) {
+      G.turnIndex = 0;
+      G.round++;
+      addLog(`Round ${G.round} begins.`, 'round-marker');
+    }
+    resetMovedFlags(currentFaction());
+    purchaseCart = [];
+    selectedTerritory = null;
+    selectedUnitsToMove = [];
+    validDestinations = [];
+
+    checkWinConditions();
+    if (G.gameOver) return;
+
+    renderAll();
+
+    // If next faction is also AI, run their turn
+    if (!isCurrentPlayerTurn()) {
+      setTimeout(() => runAITurn(), 400);
+    }
+    return;
+  }
+
+  G.phaseIndex = phaseIdx;
+  const phase = PHASES[phaseIdx];
+
+  switch (phase) {
+    case 'purchase': aiPurchase(fid); break;
+    case 'combatMove': aiCombatMove(fid); break;
+    case 'combat':
+      combatQueue = findCombatZones(fid);
+      resolveCombats(fid);
+      break;
+    case 'nonCombatMove': aiNonCombatMove(fid); break;
+    case 'placeUnits': aiPlaceUnits(fid); break;
+    case 'collectIncome': executeIncome(fid); break;
+  }
+
+  renderAll();
+
+  // Show combat results if any
+  if (phase === 'combat' && pendingCombatResults.length > 0) {
+    displayNextCombatResult();
+    // Wait for player to click through combat results, then continue
+    waitForCombatResultsClosed(() => {
+      setTimeout(() => runAIPhaseSequence(fid, phaseIdx + 1), 200);
+    });
+    return;
+  }
+
+  setTimeout(() => runAIPhaseSequence(fid, phaseIdx + 1), 200);
+}
+
+function waitForCombatResultsClosed(callback) {
+  const check = setInterval(() => {
+    if (pendingCombatResults.length === 0 && !document.getElementById('combat-overlay').classList.contains('active')) {
+      clearInterval(check);
+      callback();
+    }
+  }, 100);
+}
+
+function aiPurchase(fid) {
+  const ipcs = G.factionData[fid].ipcs;
+  const alliance = FACTIONS[fid].alliance;
+  const fighterType = alliance === 'coalition' ? 'FIGHTER_F35' : 'FIGHTER_SU57';
+
+  purchaseCart = [];
+  let remaining = ipcs;
+
+  // AI strategy: buy 1 fighter, 1 drone, 1 tank if affordable, fill rest with infantry
+  const buyOrder = [fighterType, 'DRONE', 'TANK'];
+  for (const ut of buyOrder) {
+    if (remaining >= UNIT_TYPES[ut].cost) {
+      purchaseCart.push(ut);
+      remaining -= UNIT_TYPES[ut].cost;
+    }
+  }
+  while (remaining >= UNIT_TYPES.INFANTRY.cost) {
+    purchaseCart.push('INFANTRY');
+    remaining -= UNIT_TYPES.INFANTRY.cost;
+  }
+
+  const spent = purchaseCart.reduce((s, item) => s + UNIT_TYPES[item].cost, 0);
+  G.factionData[fid].ipcs -= spent;
+
+  if (purchaseCart.length > 0) {
+    addLog(`${FACTIONS[fid].name}: Purchased ${purchaseCart.length} unit(s) for ${spent} IPCs`, 'purchase');
+  }
+}
+
+function aiCombatMove(fid) {
+  const alliance = getAlliance(fid);
+  const diff = G.difficulty;
+  const ratio = diff === 'easy' ? 3 : diff === 'hard' ? 1.3 : 2;
+
+  // Get all territories with this faction's units
+  const myTerritories = {};
+  for (const u of Object.values(G.units)) {
+    if (u.faction === fid && !u.moved) {
+      if (!myTerritories[u.territory]) myTerritories[u.territory] = [];
+      myTerritories[u.territory].push(u);
+    }
+  }
+
+  for (const [tid, units] of Object.entries(myTerritories)) {
+    const adj = ADJ[tid] || [];
+    for (const adjTid of adj) {
+      const tdef = TERRITORIES[adjTid];
+      if (tdef.type === 'sea') continue; // Simplified: AI doesn't do naval moves
+
+      const owner = getTerritoryOwner(adjTid);
+      if (areFriendly(owner, fid)) continue;
+      if (owner === fid) continue;
+      if (owner === 'NEUTRAL' && diff !== 'hard') continue;
+
+      const enemyCount = getEnemyUnitsInTerritory(adjTid, fid).length;
+      const availableUnits = units.filter(u => !u.moved && UNIT_TYPES[u.type].move > 0 && UNIT_TYPES[u.type].type !== 'naval');
+
+      if (availableUnits.length >= enemyCount * ratio || (enemyCount === 0 && availableUnits.length > 0)) {
+        // Move units to attack
+        const toSend = availableUnits.slice(0, Math.max(1, Math.ceil(enemyCount * ratio)));
+        for (const u of toSend) {
+          u.territory = adjTid;
+          u.moved = true;
+        }
+        if (toSend.length > 0) {
+          addLog(`${FACTIONS[fid].name}: Moved ${toSend.length} unit(s) to ${tdef.name}`, 'info');
+        }
+        break; // One move per territory for simplicity
+      }
+    }
+  }
+}
+
+function aiNonCombatMove(fid) {
+  // Simple: move unmoved units toward the frontline
+  // For simplicity, skip non-combat move for AI
+}
+
+function aiPlaceUnits(fid) {
+  if (purchaseCart.length === 0) return;
+
+  // Find best factory (closest to enemy)
+  let bestFactory = null;
+  for (const [tid, tstate] of Object.entries(G.territories)) {
+    if (tstate.owner === fid && tstate.factory) {
+      if (!bestFactory || !TERRITORIES[tid].offmap) {
+        bestFactory = tid;
+      }
+    }
+  }
+
+  if (bestFactory) {
+    for (const unitType of purchaseCart) {
+      const uid = newUnitId();
+      G.units[uid] = { id: uid, type: unitType, faction: fid, territory: bestFactory, moved: true };
+    }
+    addLog(`${FACTIONS[fid].name}: Deployed ${purchaseCart.length} unit(s) at ${TERRITORIES[bestFactory].name}`, 'purchase');
+  }
+  purchaseCart = [];
+}
+
+
+// ============================================================
+//  SECTION 10: INITIALIZATION
+// ============================================================
+
+// Handle window resize for unit overlays
+window.addEventListener('resize', () => {
+  if (G) renderUnitOverlays();
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    selectedTerritory = null;
+    selectedUnitsToMove = [];
+    validDestinations = [];
+    if (G) renderAll();
+  }
+  if (e.key === 'Enter' || e.key === ' ') {
+    if (G && isCurrentPlayerTurn() && !G.gameOver) {
+      advancePhase();
+    }
+  }
+});
+
 </script>
 </body>
 </html>

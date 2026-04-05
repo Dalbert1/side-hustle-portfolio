@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Heart, MessageCircle, Clock, UtensilsCrossed, Star, ChevronDown } from 'lucide-react'
+import { Heart, MessageCircle, Clock, UtensilsCrossed, Star, ChevronDown, Search, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 
 const PAGE_SIZE = 10
+const CATEGORIES = ['all', 'breakfast', 'lunch', 'dinner', 'snack', 'dessert', 'other']
 
 export default function Feed() {
   const { user } = useAuth()
@@ -16,6 +17,11 @@ export default function Feed() {
   const [loadingMore, setLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [page, setPage] = useState(0)
+  const [search, setSearch] = useState('')
+  const [category, setCategory] = useState('all')
+  const searchTimer = useRef(null)
+  const activeSearch = useRef('')
+  const activeCategory = useRef('all')
 
   // Load likes once on mount
   useEffect(() => {
@@ -28,18 +34,29 @@ export default function Feed() {
     }
   }, [user])
 
-  const loadPage = useCallback(async (pageNum, append = false) => {
+  const loadPage = useCallback(async (pageNum, append = false, searchQuery = '', cat = 'all') => {
     if (pageNum > 0) setLoadingMore(true)
     else setLoading(true)
 
     const from = pageNum * PAGE_SIZE
     const to = from + PAGE_SIZE - 1
 
-    const { data: recipesData } = await supabase
+    let query = supabase
       .from('recipes')
       .select('id, user_id, title, description, hero_image_url, category, prep_minutes, cook_minutes, servings, rating, tags, like_count, made_on, created_at')
       .order('created_at', { ascending: false })
-      .range(from, to)
+
+    if (cat !== 'all') {
+      query = query.eq('category', cat)
+    }
+
+    if (searchQuery) {
+      query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,tags.cs.{${searchQuery.toLowerCase()}}`)
+    }
+
+    query = query.range(from, to)
+
+    const { data: recipesData } = await query
 
     if (!recipesData) {
       setLoading(false)
@@ -48,21 +65,24 @@ export default function Feed() {
     }
 
     if (recipesData.length < PAGE_SIZE) setHasMore(false)
+    else setHasMore(true)
 
     const allRecipes = append ? [...recipes, ...recipesData] : recipesData
 
     // Load profiles for new recipes
-    const newUserIds = [...new Set(recipesData.map(r => r.user_id))].filter(id => !profiles[id])
+    const existingProfiles = append ? profiles : {}
+    const newUserIds = [...new Set(recipesData.map(r => r.user_id))].filter(id => !existingProfiles[id])
+    let updatedProfiles = existingProfiles
     if (newUserIds.length > 0) {
       const { data: profilesData } = await supabase
         .from('user_profiles')
         .select('id, email, rsn, display_name')
         .in('id', newUserIds)
-      const map = { ...profiles }
+      updatedProfiles = { ...existingProfiles }
       profilesData?.forEach(p => {
-        map[p.id] = { name: p.display_name || p.rsn || p.email?.split('@')[0] || 'User' }
+        updatedProfiles[p.id] = { name: p.display_name || p.rsn || p.email?.split('@')[0] || 'User' }
       })
-      setProfiles(map)
+      setProfiles(updatedProfiles)
     }
 
     // Load comment counts for new recipes
@@ -84,10 +104,36 @@ export default function Feed() {
 
   useEffect(() => { loadPage(0) }, [])
 
+  function resetAndSearch(newSearch, newCategory) {
+    activeSearch.current = newSearch
+    activeCategory.current = newCategory
+    setPage(0)
+    setRecipes([])
+    loadPage(0, false, newSearch, newCategory)
+  }
+
+  function handleSearchChange(value) {
+    setSearch(value)
+    clearTimeout(searchTimer.current)
+    searchTimer.current = setTimeout(() => {
+      resetAndSearch(value.trim(), activeCategory.current)
+    }, 400)
+  }
+
+  function handleCategoryChange(cat) {
+    setCategory(cat)
+    resetAndSearch(activeSearch.current, cat)
+  }
+
+  function clearSearch() {
+    setSearch('')
+    resetAndSearch('', activeCategory.current)
+  }
+
   function loadMore() {
     const nextPage = page + 1
     setPage(nextPage)
-    loadPage(nextPage, true)
+    loadPage(nextPage, true, activeSearch.current, activeCategory.current)
   }
 
   async function toggleLike(recipeId) {
@@ -102,18 +148,56 @@ export default function Feed() {
     }
   }
 
-  if (loading) return <div className="text-center py-20 text-warm-gray text-sm">Loading feed...</div>
-
   return (
     <div className="max-w-2xl mx-auto px-5 py-8">
       <h1 className="font-serif text-2xl sm:text-3xl text-bark mb-2">Feed</h1>
-      <p className="text-sm text-warm-gray mb-8">Latest recipes from everyone</p>
+      <p className="text-sm text-warm-gray mb-6">Latest recipes from everyone</p>
 
-      {recipes.length === 0 ? (
+      {/* Search */}
+      <div className="relative mb-4">
+        <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-warm-gray-light" />
+        <input
+          type="text"
+          placeholder="Search recipes or tags..."
+          value={search}
+          onChange={e => handleSearchChange(e.target.value)}
+          className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-border bg-surface text-sm text-bark placeholder:text-warm-gray-light focus:border-sage focus:outline-none"
+        />
+        {search && (
+          <button onClick={clearSearch} className="absolute right-3 top-1/2 -translate-y-1/2 text-warm-gray hover:text-bark transition-colors">
+            <X size={16} />
+          </button>
+        )}
+      </div>
+
+      {/* Category pills */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {CATEGORIES.map(cat => (
+          <button
+            key={cat}
+            onClick={() => handleCategoryChange(cat)}
+            className={`text-xs font-medium px-3.5 py-1.5 rounded-full border transition-colors capitalize ${
+              category === cat
+                ? 'bg-sage text-white border-sage'
+                : 'bg-surface text-warm-gray border-border hover:border-sage/40'
+            }`}
+          >
+            {cat === 'all' ? 'All' : cat}
+          </button>
+        ))}
+      </div>
+
+      {loading ? (
+        <div className="text-center py-20 text-warm-gray text-sm">Loading feed...</div>
+      ) : recipes.length === 0 ? (
         <div className="text-center py-16">
           <UtensilsCrossed size={40} className="text-warm-gray-light mx-auto mb-4" />
-          <p className="text-warm-gray mb-4">No recipes posted yet.</p>
-          <Link to="/add" className="text-sm text-sage font-medium hover:underline">Be the first to add one</Link>
+          <p className="text-warm-gray mb-4">
+            {search || category !== 'all' ? 'No recipes match your search.' : 'No recipes posted yet.'}
+          </p>
+          {!search && category === 'all' && (
+            <Link to="/add" className="text-sm text-sage font-medium hover:underline">Be the first to add one</Link>
+          )}
         </div>
       ) : (
         <>

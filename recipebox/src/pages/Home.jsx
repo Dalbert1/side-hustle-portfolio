@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Search, Plus, SlidersHorizontal } from 'lucide-react'
+import { Search, Plus, SlidersHorizontal, Heart } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
@@ -10,13 +10,19 @@ const CATEGORIES = ['all', 'breakfast', 'lunch', 'dinner', 'snack', 'dessert', '
 export default function Home() {
   const { user } = useAuth()
   const [recipes, setRecipes] = useState([])
+  const [favorites, setFavorites] = useState([])
   const [loading, setLoading] = useState(true)
+  const [loadingFavs, setLoadingFavs] = useState(true)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
   const [sortBy, setSortBy] = useState('newest')
+  const [tab, setTab] = useState('mine')
 
   useEffect(() => {
-    if (user) loadRecipes()
+    if (user) {
+      loadRecipes()
+      loadFavorites()
+    }
   }, [user])
 
   async function loadRecipes() {
@@ -29,7 +35,34 @@ export default function Home() {
     setLoading(false)
   }
 
-  const filtered = recipes.filter(r => {
+  async function loadFavorites() {
+    setLoadingFavs(true)
+    const { data: likes } = await supabase
+      .from('recipe_likes')
+      .select('recipe_id')
+      .eq('user_id', user.id)
+
+    if (!likes || likes.length === 0) {
+      setFavorites([])
+      setLoadingFavs(false)
+      return
+    }
+
+    const ids = likes.map(l => l.recipe_id)
+    const { data: favsData } = await supabase
+      .from('recipes')
+      .select('*')
+      .in('id', ids)
+      .order('created_at', { ascending: false })
+
+    setFavorites(favsData || [])
+    setLoadingFavs(false)
+  }
+
+  const activeList = tab === 'mine' ? recipes : favorites
+  const isLoading = tab === 'mine' ? loading : loadingFavs
+
+  const filtered = activeList.filter(r => {
     const matchesCategory = category === 'all' || r.category === category
     const q = search.toLowerCase()
     const matchesSearch = !q
@@ -50,10 +83,9 @@ export default function Home() {
   return (
     <div className="max-w-5xl mx-auto px-5 py-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-serif text-2xl sm:text-3xl text-bark">My Recipes</h1>
-          <p className="text-sm text-warm-gray mt-1">{recipes.length} recipe{recipes.length !== 1 ? 's' : ''} saved</p>
         </div>
         <Link
           to="/add"
@@ -62,6 +94,31 @@ export default function Home() {
           <Plus size={16} />
           <span className="hidden sm:inline">New Recipe</span>
         </Link>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 mb-6 border-b border-border">
+        <button
+          onClick={() => setTab('mine')}
+          className={`px-4 py-2.5 text-sm font-medium transition-colors relative ${
+            tab === 'mine' ? 'text-sage' : 'text-warm-gray hover:text-bark'
+          }`}
+        >
+          My Recipes
+          <span className="ml-1.5 text-xs text-warm-gray">({recipes.length})</span>
+          {tab === 'mine' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-sage rounded-t" />}
+        </button>
+        <button
+          onClick={() => setTab('favorites')}
+          className={`px-4 py-2.5 text-sm font-medium transition-colors relative flex items-center gap-1.5 ${
+            tab === 'favorites' ? 'text-terra' : 'text-warm-gray hover:text-bark'
+          }`}
+        >
+          <Heart size={14} className={tab === 'favorites' ? 'fill-terra' : ''} />
+          Favorites
+          <span className="text-xs text-warm-gray">({favorites.length})</span>
+          {tab === 'favorites' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-terra rounded-t" />}
+        </button>
       </div>
 
       {/* Search + Filter */}
@@ -109,22 +166,29 @@ export default function Home() {
       </div>
 
       {/* Recipe grid */}
-      {loading ? (
+      {isLoading ? (
         <div className="text-center py-20 text-warm-gray text-sm">Loading recipes...</div>
       ) : sorted.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-warm-gray mb-4">
-            {recipes.length === 0
-              ? 'No recipes yet. Add your first one!'
+            {activeList.length === 0
+              ? tab === 'favorites'
+                ? 'No favorites yet. Like recipes on the Feed to save them here!'
+                : 'No recipes yet. Add your first one!'
               : 'No recipes match your search.'}
           </p>
-          {recipes.length === 0 && (
+          {activeList.length === 0 && tab === 'mine' && (
             <Link
               to="/add"
               className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-sage text-white font-semibold text-sm rounded-lg hover:bg-sage-dark transition-colors"
             >
               <Plus size={16} />
               Add Recipe
+            </Link>
+          )}
+          {activeList.length === 0 && tab === 'favorites' && (
+            <Link to="/" className="text-sm text-sage font-medium hover:underline">
+              Browse the Feed
             </Link>
           )}
         </div>

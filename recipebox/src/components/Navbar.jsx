@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, X, Plus, LogOut, ShoppingCart, UtensilsCrossed, User, BookOpen } from 'lucide-react'
+import { Menu, X, Plus, LogOut, ShoppingCart, UtensilsCrossed, User, BookOpen, Rss } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 
@@ -26,6 +26,10 @@ export default function Navbar() {
         {user && (
           <>
             <div className="hidden sm:flex items-center gap-5">
+              <Link to="/" className="text-sm font-medium text-warm-gray hover:text-bark transition-colors flex items-center gap-1.5">
+                <Rss size={15} />
+                Feed
+              </Link>
               <Link to="/my-recipes" className="text-sm font-medium text-warm-gray hover:text-bark transition-colors flex items-center gap-1.5">
                 <BookOpen size={15} />
                 My Recipes

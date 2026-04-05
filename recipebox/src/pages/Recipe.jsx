@@ -158,10 +158,10 @@ export default function Recipe() {
     <div className="max-w-3xl mx-auto px-5 py-8">
       {/* Back + Actions */}
       <div className="flex items-center justify-between mb-6">
-        <Link to="/" className="text-sm text-warm-gray hover:text-bark flex items-center gap-1 transition-colors">
+        <button onClick={() => navigate(-1)} className="text-sm text-warm-gray hover:text-bark flex items-center gap-1 transition-colors">
           <ArrowLeft size={15} />
-          Feed
-        </Link>
+          Back
+        </button>
         {isOwner && (
           <div className="flex items-center gap-2">
             <Link

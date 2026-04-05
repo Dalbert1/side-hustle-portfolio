@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Menu, X, Plus, LogOut, ShoppingCart, UtensilsCrossed, User, BookOpen, Rss } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
@@ -9,10 +9,25 @@ export default function Navbar() {
   const { cartCount } = useCart()
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   const handleSignOut = async () => {
     await signOut()
     navigate('/login')
+  }
+
+  function navClass(path) {
+    const active = path === '/' ? pathname === '/' : pathname.startsWith(path)
+    return `text-sm font-medium transition-colors flex items-center gap-1.5 ${
+      active ? 'text-sage-light' : 'text-warm-gray hover:text-bark'
+    }`
+  }
+
+  function mobileNavClass(path) {
+    const active = path === '/' ? pathname === '/' : pathname.startsWith(path)
+    return `text-sm font-medium py-2.5 px-3 rounded-lg transition-colors flex items-center gap-2 ${
+      active ? 'text-sage-light bg-sage-muted/50' : 'text-bark hover:bg-cream-dark'
+    }`
   }
 
   return (
@@ -26,11 +41,11 @@ export default function Navbar() {
         {user && (
           <>
             <div className="hidden sm:flex items-center gap-5">
-              <Link to="/" className="text-sm font-medium text-warm-gray hover:text-bark transition-colors flex items-center gap-1.5">
+              <Link to="/" className={navClass('/')}>
                 <Rss size={15} />
                 Feed
               </Link>
-              <Link to="/my-recipes" className="text-sm font-medium text-warm-gray hover:text-bark transition-colors flex items-center gap-1.5">
+              <Link to="/my-recipes" className={navClass('/my-recipes')}>
                 <BookOpen size={15} />
                 My Recipes
               </Link>
@@ -38,7 +53,7 @@ export default function Navbar() {
                 <Plus size={16} />
                 New Recipe
               </Link>
-              <Link to="/cart" className="text-sm font-medium text-warm-gray hover:text-bark transition-colors flex items-center gap-1.5 relative">
+              <Link to="/cart" className={`${navClass('/cart')} relative`}>
                 <ShoppingCart size={15} />
                 Cart
                 {cartCount > 0 && (
@@ -78,26 +93,31 @@ export default function Navbar() {
 
       {open && user && (
         <div className="sm:hidden bg-cream border-t border-border px-5 py-3 flex flex-col gap-1" role="menu">
-          <Link to="/" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors" role="menuitem">
+          <Link to="/" onClick={() => setOpen(false)} className={mobileNavClass('/')} role="menuitem">
+            <Rss size={15} />
             Feed
           </Link>
-          <Link to="/my-recipes" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors" role="menuitem">
+          <Link to="/my-recipes" onClick={() => setOpen(false)} className={mobileNavClass('/my-recipes')} role="menuitem">
+            <BookOpen size={15} />
             My Recipes
           </Link>
-          <Link to="/add" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors" role="menuitem">
+          <Link to="/add" onClick={() => setOpen(false)} className={mobileNavClass('/add')} role="menuitem">
+            <Plus size={15} />
             New Recipe
           </Link>
-          <Link to="/cart" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors flex items-center gap-2" role="menuitem">
+          <Link to="/cart" onClick={() => setOpen(false)} className={mobileNavClass('/cart')} role="menuitem">
+            <ShoppingCart size={15} />
             Grocery Cart
             {cartCount > 0 && <span className="text-[10px] bg-terra text-white px-1.5 py-0.5 rounded-full font-bold">{cartCount}</span>}
           </Link>
-          <Link to="/profile" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors flex items-center gap-2" role="menuitem">
-            <User size={14} />
+          <Link to="/profile" onClick={() => setOpen(false)} className={mobileNavClass('/profile')} role="menuitem">
+            <User size={15} />
             Profile
           </Link>
           <div className="border-t border-border mt-1 pt-2">
             <span className="text-xs text-warm-gray px-3">{displayName}</span>
-            <button onClick={() => { setOpen(false); handleSignOut() }} className="text-sm text-warm-gray py-2.5 px-3 w-full text-left hover:text-bark transition-colors" role="menuitem">
+            <button onClick={() => { setOpen(false); handleSignOut() }} className="text-sm text-warm-gray py-2.5 px-3 w-full text-left hover:text-bark transition-colors flex items-center gap-2" role="menuitem">
+              <LogOut size={15} />
               Sign Out
             </button>
           </div>

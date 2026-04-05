@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ShoppingCart, Trash2, X, ArrowLeft, CheckCircle2, Circle } from 'lucide-react'
 import { useCart } from '../contexts/CartContext'
 
 export default function GroceryCart() {
+  const navigate = useNavigate()
   const { items, removeItem, toggleItem, clearCart, clearChecked, removeRecipeFromCart, getRecipesInCart } = useCart()
 
   const recipes = getRecipesInCart()
@@ -12,10 +13,10 @@ export default function GroceryCart() {
 
   return (
     <div className="max-w-2xl mx-auto px-5 py-8">
-      <Link to="/" className="text-sm text-warm-gray hover:text-bark flex items-center gap-1 transition-colors mb-6">
+      <button onClick={() => navigate(-1)} className="text-sm text-warm-gray hover:text-bark flex items-center gap-1 transition-colors mb-6">
         <ArrowLeft size={15} />
-        Feed
-      </Link>
+        Back
+      </button>
 
       <div className="flex items-center justify-between mb-6">
         <div>

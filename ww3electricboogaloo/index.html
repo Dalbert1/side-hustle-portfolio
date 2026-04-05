@@ -48,6 +48,9 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 .screen{display:none;position:fixed;inset:0;flex-direction:column;align-items:center;justify-content:center;z-index:10;}
 .screen.active{display:flex;}
 
+/* Game Screen */
+#game-screen{align-items:stretch;justify-content:stretch;}
+
 /* Title Screen */
 #title-screen{background:radial-gradient(ellipse at 50% 40%,#0e1a2e 0%,#060a12 70%);overflow:hidden;}
 #title-screen::before{content:'';position:absolute;inset:0;background:
@@ -173,8 +176,11 @@ h1,h2,h3,h4{font-family:'Teko',sans-serif;font-weight:600;letter-spacing:0.04em;
 .t-capital{font-size:9px;color:var(--warning);}
 .t-nuke-icon{font-size:10px;color:var(--nuke-glow);}
 
+/* Territory nodes container */
+#territory-nodes{position:absolute;inset:0;z-index:2;}
+
 /* SVG adjacency lines */
-#adj-svg{position:absolute;inset:0;z-index:1;pointer-events:none;}
+#adj-svg{position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%;}
 .adj-line{stroke:var(--border);stroke-width:1;stroke-dasharray:4,4;opacity:0.3;transition:opacity 0.2s;}
 .adj-line.highlight{stroke:var(--accent);opacity:0.5;stroke-dasharray:none;stroke-width:1.5;}
 

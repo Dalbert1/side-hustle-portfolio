@@ -47,7 +47,7 @@ export default function App() {
     <HashRouter>
       <AuthProvider>
         <CartProvider>
-          <div className="min-h-screen bg-cream text-bark font-sans">
+          <div className="min-h-screen text-bark font-sans">
             <Navbar />
             <AppRoutes />
           </div>

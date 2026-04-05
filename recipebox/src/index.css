@@ -14,8 +14,8 @@
   --color-terra-light: oklch(78% 0.12 55);
   --color-bark: oklch(93% 0.01 350);
   --color-bark-light: oklch(82% 0.01 350);
-  --color-warm-gray: oklch(62% 0.01 350);
-  --color-warm-gray-light: oklch(45% 0.01 350);
+  --color-warm-gray: oklch(65% 0.01 350);
+  --color-warm-gray-light: oklch(50% 0.01 350);
   --color-border: oklch(25% 0.015 320);
 
   --font-serif: 'DM Serif Display', Georgia, serif;

@@ -29,10 +29,15 @@ export default function Feed() {
     if (userIds.length > 0) {
       const { data: profilesData } = await supabase
         .from('user_profiles')
-        .select('id, email, rsn')
+        .select('id, email, rsn, display_name, avatar_url')
         .in('id', userIds)
       const map = {}
-      profilesData?.forEach(p => { map[p.id] = p.rsn || p.email?.split('@')[0] || 'User' })
+      profilesData?.forEach(p => {
+        map[p.id] = {
+          name: p.display_name || p.rsn || p.email?.split('@')[0] || 'User',
+          avatar_url: p.avatar_url,
+        }
+      })
       setProfiles(map)
     }
 
@@ -90,7 +95,7 @@ export default function Feed() {
             <FeedCard
               key={recipe.id}
               recipe={recipe}
-              author={profiles[recipe.user_id] || 'User'}
+              author={profiles[recipe.user_id] || { name: 'User', avatar_url: null }}
               isOwn={recipe.user_id === user?.id}
               liked={myLikes.has(recipe.id)}
               commentCount={commentCounts[recipe.id] || 0}
@@ -110,16 +115,20 @@ function FeedCard({ recipe, author, isOwn, liked, commentCount, onLike }) {
     : new Date(recipe.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 
   return (
-    <article className="bg-white rounded-xl border border-border overflow-hidden">
+    <article className="bg-surface rounded-xl border border-border overflow-hidden">
       {/* Author bar */}
       <div className="px-5 py-3 flex items-center justify-between border-b border-border/50">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center">
-            <span className="text-[10px] font-semibold text-sage-dark uppercase">
-              {author[0]}
-            </span>
-          </div>
-          <span className="text-sm font-medium text-bark">{author}</span>
+          {author.avatar_url ? (
+            <img src={author.avatar_url} alt="" className="w-7 h-7 rounded-full object-cover" />
+          ) : (
+            <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center">
+              <span className="text-[10px] font-semibold text-sage-dark uppercase">
+                {author.name[0]}
+              </span>
+            </div>
+          )}
+          <span className="text-sm font-medium text-bark">{author.name}</span>
           {isOwn && <span className="text-[9px] font-medium text-sage bg-sage-muted px-1.5 py-0.5 rounded-full">You</span>}
         </div>
         <span className="text-[11px] text-warm-gray">{dateStr}</span>

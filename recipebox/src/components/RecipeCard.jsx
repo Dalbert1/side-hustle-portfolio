@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom'
 import { Clock, Star, UtensilsCrossed } from 'lucide-react'
 
 const CATEGORY_COLORS = {
-  breakfast: 'bg-amber-100 text-amber-800',
-  lunch: 'bg-green-100 text-green-800',
-  dinner: 'bg-blue-100 text-blue-800',
-  snack: 'bg-purple-100 text-purple-800',
-  dessert: 'bg-pink-100 text-pink-800',
-  other: 'bg-gray-100 text-gray-700',
+  breakfast: 'bg-amber-900/40 text-amber-300',
+  lunch: 'bg-green-900/40 text-green-300',
+  dinner: 'bg-blue-900/40 text-blue-300',
+  snack: 'bg-purple-900/40 text-purple-300',
+  dessert: 'bg-pink-900/40 text-pink-300',
+  other: 'bg-gray-800/40 text-gray-300',
 }
 
 export default function RecipeCard({ recipe }) {
@@ -16,7 +16,7 @@ export default function RecipeCard({ recipe }) {
   return (
     <Link
       to={`/recipe/${recipe.id}`}
-      className="group bg-white rounded-xl border border-border overflow-hidden hover:border-sage/40 hover:shadow-md transition-all"
+      className="group bg-surface rounded-xl border border-border overflow-hidden hover:border-sage/40 hover:shadow-md transition-all"
     >
       {/* Hero image */}
       <div className="aspect-[4/3] bg-cream-dark overflow-hidden">

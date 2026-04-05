@@ -1,10 +1,13 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
+import { CartProvider } from './contexts/CartContext'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Feed from './pages/Feed'
 import Recipe from './pages/Recipe'
 import RecipeForm from './pages/RecipeForm'
+import GroceryCart from './pages/GroceryCart'
+import ProfileSettings from './pages/ProfileSettings'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ForgotPassword from './pages/ForgotPassword'
@@ -33,6 +36,8 @@ function AppRoutes() {
       <Route path="/recipe/:id" element={<ProtectedRoute><Recipe /></ProtectedRoute>} />
       <Route path="/add" element={<ProtectedRoute><RecipeForm /></ProtectedRoute>} />
       <Route path="/edit/:id" element={<ProtectedRoute><RecipeForm isEdit /></ProtectedRoute>} />
+      <Route path="/cart" element={<ProtectedRoute><GroceryCart /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><ProfileSettings /></ProtectedRoute>} />
     </Routes>
   )
 }
@@ -41,10 +46,12 @@ export default function App() {
   return (
     <HashRouter>
       <AuthProvider>
-        <div className="min-h-screen bg-cream text-bark font-sans">
-          <Navbar />
-          <AppRoutes />
-        </div>
+        <CartProvider>
+          <div className="min-h-screen bg-cream text-bark font-sans">
+            <Navbar />
+            <AppRoutes />
+          </div>
+        </CartProvider>
       </AuthProvider>
     </HashRouter>
   )

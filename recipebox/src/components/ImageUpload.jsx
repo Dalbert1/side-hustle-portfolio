@@ -49,7 +49,7 @@ export default function ImageUpload({ value, onChange, path, label = 'Upload Pho
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
-              className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center text-bark hover:bg-white transition-colors shadow-sm"
+              className="w-8 h-8 bg-surface/90 rounded-lg flex items-center justify-center text-bark hover:bg-surface transition-colors shadow-sm"
               aria-label="Replace photo"
             >
               <Camera size={14} />
@@ -57,7 +57,7 @@ export default function ImageUpload({ value, onChange, path, label = 'Upload Pho
             <button
               type="button"
               onClick={handleRemove}
-              className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center text-terra hover:bg-white transition-colors shadow-sm"
+              className="w-8 h-8 bg-surface/90 rounded-lg flex items-center justify-center text-terra hover:bg-surface transition-colors shadow-sm"
               aria-label="Remove photo"
             >
               <X size={14} />

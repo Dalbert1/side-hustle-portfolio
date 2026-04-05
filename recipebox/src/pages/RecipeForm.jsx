@@ -205,7 +205,7 @@ export default function RecipeForm({ isEdit = false }) {
               onChange={e => update('title', e.target.value)}
               required
               placeholder="What are we making?"
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
           <label className="flex flex-col gap-1.5">
@@ -215,7 +215,7 @@ export default function RecipeForm({ isEdit = false }) {
               onChange={e => update('description', e.target.value)}
               rows={2}
               placeholder="Brief description of the dish..."
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm resize-y focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm resize-y focus:border-sage focus:outline-none"
             />
           </label>
         </div>
@@ -227,7 +227,7 @@ export default function RecipeForm({ isEdit = false }) {
             <select
               value={form.category}
               onChange={e => update('category', e.target.value)}
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm capitalize focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm capitalize focus:border-sage focus:outline-none"
             >
               {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
@@ -239,7 +239,7 @@ export default function RecipeForm({ isEdit = false }) {
               value={form.prep_minutes}
               onChange={e => update('prep_minutes', e.target.value)}
               min="0"
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
           <label className="flex flex-col gap-1.5">
@@ -249,7 +249,7 @@ export default function RecipeForm({ isEdit = false }) {
               value={form.cook_minutes}
               onChange={e => update('cook_minutes', e.target.value)}
               min="0"
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
           <label className="flex flex-col gap-1.5">
@@ -259,7 +259,7 @@ export default function RecipeForm({ isEdit = false }) {
               value={form.servings}
               onChange={e => update('servings', e.target.value)}
               min="1"
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
           <label className="flex flex-col gap-1.5">
@@ -268,7 +268,7 @@ export default function RecipeForm({ isEdit = false }) {
               type="date"
               value={form.made_on}
               onChange={e => update('made_on', e.target.value)}
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
         </div>
@@ -293,7 +293,7 @@ export default function RecipeForm({ isEdit = false }) {
               onChange={e => setTagInput(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag() } }}
               placeholder="Add a tag..."
-              className="flex-1 px-4 py-2 rounded-lg border border-border bg-white text-sm text-bark focus:border-sage focus:outline-none"
+              className="flex-1 px-4 py-2 rounded-lg border border-border bg-surface text-sm text-bark focus:border-sage focus:outline-none"
             />
             <button type="button" onClick={addTag} className="px-3 py-2 text-xs font-medium text-sage border border-sage/30 rounded-lg hover:bg-sage-muted transition-colors">
               Add
@@ -312,21 +312,21 @@ export default function RecipeForm({ isEdit = false }) {
                   value={ing.amount}
                   onChange={e => updateIngredient(i, 'amount', e.target.value)}
                   placeholder="Amt"
-                  className="w-16 px-3 py-2 rounded-lg border border-border bg-white text-sm text-bark focus:border-sage focus:outline-none"
+                  className="w-16 px-3 py-2 rounded-lg border border-border bg-surface text-sm text-bark focus:border-sage focus:outline-none"
                 />
                 <input
                   type="text"
                   value={ing.unit}
                   onChange={e => updateIngredient(i, 'unit', e.target.value)}
                   placeholder="Unit"
-                  className="w-20 px-3 py-2 rounded-lg border border-border bg-white text-sm text-bark focus:border-sage focus:outline-none"
+                  className="w-20 px-3 py-2 rounded-lg border border-border bg-surface text-sm text-bark focus:border-sage focus:outline-none"
                 />
                 <input
                   type="text"
                   value={ing.name}
                   onChange={e => updateIngredient(i, 'name', e.target.value)}
                   placeholder="Ingredient name"
-                  className="flex-1 px-3 py-2 rounded-lg border border-border bg-white text-sm text-bark focus:border-sage focus:outline-none"
+                  className="flex-1 px-3 py-2 rounded-lg border border-border bg-surface text-sm text-bark focus:border-sage focus:outline-none"
                 />
                 {form.ingredients.length > 1 && (
                   <button type="button" onClick={() => removeIngredient(i)} className="p-1.5 text-warm-gray-light hover:text-terra transition-colors" aria-label="Remove ingredient">
@@ -357,7 +357,7 @@ export default function RecipeForm({ isEdit = false }) {
                     onChange={e => updateStep(i, 'instruction', e.target.value)}
                     placeholder={`Step ${i + 1}...`}
                     rows={2}
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-white text-sm text-bark resize-y focus:border-sage focus:outline-none"
+                    className="w-full px-3 py-2 rounded-lg border border-border bg-surface text-sm text-bark resize-y focus:border-sage focus:outline-none"
                   />
                 </div>
                 {form.steps.length > 1 && (
@@ -395,7 +395,7 @@ export default function RecipeForm({ isEdit = false }) {
                   value={form.nutrition[key]}
                   onChange={e => updateNutrition(key, e.target.value)}
                   min="0"
-                  className="px-3 py-2 rounded-lg border border-border bg-white text-sm text-bark focus:border-sage focus:outline-none"
+                  className="px-3 py-2 rounded-lg border border-border bg-surface text-sm text-bark focus:border-sage focus:outline-none"
                 />
               </label>
             ))}
@@ -411,7 +411,7 @@ export default function RecipeForm({ isEdit = false }) {
             value={form.rating_notes}
             onChange={e => update('rating_notes', e.target.value)}
             placeholder="Rating notes (e.g. kids loved it, needs more salt...)"
-            className="mt-2 w-full px-4 py-2 rounded-lg border border-border bg-white text-sm text-bark focus:border-sage focus:outline-none"
+            className="mt-2 w-full px-4 py-2 rounded-lg border border-border bg-surface text-sm text-bark focus:border-sage focus:outline-none"
           />
         </div>
 
@@ -423,7 +423,7 @@ export default function RecipeForm({ isEdit = false }) {
             onChange={e => update('notes', e.target.value)}
             rows={3}
             placeholder="Personal notes, tweaks, ideas for next time..."
-            className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm resize-y focus:border-sage focus:outline-none"
+            className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm resize-y focus:border-sage focus:outline-none"
           />
         </label>
 

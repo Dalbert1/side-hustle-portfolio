@@ -69,7 +69,7 @@ export default function ResetPassword() {
               onChange={e => setPassword(e.target.value)}
               required
               minLength={6}
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
 
@@ -81,7 +81,7 @@ export default function ResetPassword() {
               onChange={e => setConfirm(e.target.value)}
               required
               minLength={6}
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
 

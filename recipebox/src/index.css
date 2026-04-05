@@ -2,19 +2,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: oklch(96.5% 0.01 85);
-  --color-cream-dark: oklch(93% 0.015 85);
-  --color-sage: oklch(52% 0.08 155);
-  --color-sage-light: oklch(58% 0.07 155);
-  --color-sage-dark: oklch(42% 0.08 155);
-  --color-sage-muted: oklch(92% 0.03 155);
-  --color-terra: oklch(55% 0.14 35);
-  --color-terra-light: oklch(62% 0.12 35);
-  --color-bark: oklch(22% 0.015 60);
-  --color-bark-light: oklch(30% 0.015 60);
-  --color-warm-gray: oklch(55% 0.01 60);
-  --color-warm-gray-light: oklch(72% 0.01 60);
-  --color-border: oklch(88% 0.01 85);
+  --color-cream: oklch(13% 0.01 260);
+  --color-cream-dark: oklch(17% 0.015 260);
+  --color-surface: oklch(20% 0.012 260);
+  --color-sage: oklch(62% 0.10 155);
+  --color-sage-light: oklch(70% 0.09 155);
+  --color-sage-dark: oklch(52% 0.10 155);
+  --color-sage-muted: oklch(20% 0.04 155);
+  --color-terra: oklch(65% 0.16 35);
+  --color-terra-light: oklch(72% 0.14 35);
+  --color-bark: oklch(92% 0.01 60);
+  --color-bark-light: oklch(80% 0.01 60);
+  --color-warm-gray: oklch(60% 0.01 60);
+  --color-warm-gray-light: oklch(38% 0.01 60);
+  --color-border: oklch(24% 0.01 260);
 
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-sans: 'DM Sans', system-ui, sans-serif;
@@ -31,7 +32,7 @@ body {
 
 h1, h2, h3 { font-family: var(--font-serif); }
 
-::selection { background-color: oklch(52% 0.08 155 / 0.2); }
+::selection { background-color: oklch(62% 0.10 155 / 0.3); }
 
 :focus-visible {
   outline: 2px solid var(--color-sage);

@@ -33,7 +33,17 @@ export function AuthProvider({ children }) {
     setProfile(data)
   }
 
-  const displayName = profile?.rsn || profile?.email?.split('@')[0] || user?.email?.split('@')[0] || 'User'
+  const displayName = profile?.display_name || profile?.rsn || profile?.email?.split('@')[0] || user?.email?.split('@')[0] || 'User'
+
+  async function updateProfile(updates) {
+    if (!user) return { error: { message: 'Not authenticated' } }
+    const { error } = await supabase
+      .from('user_profiles')
+      .update(updates)
+      .eq('id', user.id)
+    if (!error) await loadProfile(user.id)
+    return { error }
+  }
 
   async function signIn(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
@@ -41,7 +51,6 @@ export function AuthProvider({ children }) {
   }
 
   async function signUp(email, password) {
-    // Check 5-user cap client-side (DB trigger enforces it too)
     const { count } = await supabase
       .from('user_profiles')
       .select('*', { count: 'exact', head: true })
@@ -70,7 +79,7 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={{
       user, profile, displayName, loading,
-      signIn, signUp, signOut, resetPassword, updatePassword,
+      signIn, signUp, signOut, resetPassword, updatePassword, updateProfile, loadProfile,
     }}>
       {children}
     </AuthContext.Provider>

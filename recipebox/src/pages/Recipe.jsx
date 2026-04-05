@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import {
   Clock, Users, Edit, Trash2, ArrowLeft, Star, ChevronDown, ChevronUp,
-  Heart, MessageCircle, Send, Calendar,
+  Heart, MessageCircle, Send, Calendar, ShoppingCart, Check,
 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
+import { useCart } from '../contexts/CartContext'
 import NutritionCard from '../components/NutritionCard'
 import RatingStars from '../components/RatingStars'
 
@@ -14,12 +15,15 @@ export default function Recipe() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [recipe, setRecipe] = useState(null)
-  const [author, setAuthor] = useState('')
+  const [author, setAuthor] = useState({ name: '', avatar_url: null })
   const [loading, setLoading] = useState(true)
   const [showNotes, setShowNotes] = useState(false)
   const [editingNotes, setEditingNotes] = useState(false)
   const [notes, setNotes] = useState('')
   const [ratingNotes, setRatingNotes] = useState('')
+
+  // Cart
+  const { addRecipeToCart, removeRecipeFromCart, isRecipeInCart } = useCart()
 
   // Like state
   const [liked, setLiked] = useState(false)
@@ -39,13 +43,16 @@ export default function Recipe() {
       setNotes(data.notes || '')
       setRatingNotes(data.rating_notes || '')
 
-      // Load author name
+      // Load author name + avatar
       const { data: profile } = await supabase
         .from('user_profiles')
-        .select('email, rsn')
+        .select('email, rsn, display_name, avatar_url')
         .eq('id', data.user_id)
         .single()
-      setAuthor(profile?.rsn || profile?.email?.split('@')[0] || 'User')
+      setAuthor({
+        name: profile?.display_name || profile?.rsn || profile?.email?.split('@')[0] || 'User',
+        avatar_url: profile?.avatar_url || null,
+      })
 
       // Check if current user liked it
       if (user) {
@@ -74,10 +81,15 @@ export default function Recipe() {
       if (userIds.length > 0) {
         const { data: profiles } = await supabase
           .from('user_profiles')
-          .select('id, email, rsn')
+          .select('id, email, rsn, display_name, avatar_url')
           .in('id', userIds)
         const map = {}
-        profiles?.forEach(p => { map[p.id] = p.rsn || p.email?.split('@')[0] || 'User' })
+        profiles?.forEach(p => {
+          map[p.id] = {
+            name: p.display_name || p.rsn || p.email?.split('@')[0] || 'User',
+            avatar_url: p.avatar_url,
+          }
+        })
         setCommentProfiles(map)
       }
     }
@@ -183,7 +195,7 @@ export default function Recipe() {
           <span className="text-[10px] font-semibold uppercase tracking-wider text-sage bg-sage-muted px-2.5 py-1 rounded-full">
             {recipe.category}
           </span>
-          <span className="text-[11px] text-warm-gray">by {author}</span>
+          <span className="text-[11px] text-warm-gray">by {author.name}</span>
         </div>
         <h1 className="font-serif text-2xl sm:text-3xl text-bark mb-2">{recipe.title}</h1>
         {recipe.description && (
@@ -260,7 +272,26 @@ export default function Recipe() {
       {/* Ingredients */}
       {ingredients.length > 0 && (
         <div className="mb-8">
-          <h2 className="font-serif text-lg text-bark mb-4">Ingredients</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-serif text-lg text-bark">Ingredients</h2>
+            {isRecipeInCart(recipe.id) ? (
+              <button
+                onClick={() => removeRecipeFromCart(recipe.id)}
+                className="px-3 py-1.5 text-xs font-medium text-sage border border-sage/30 rounded-lg hover:bg-sage-muted transition-colors flex items-center gap-1.5"
+              >
+                <Check size={13} />
+                In Cart
+              </button>
+            ) : (
+              <button
+                onClick={() => addRecipeToCart(recipe)}
+                className="px-3 py-1.5 text-xs font-medium text-white bg-sage rounded-lg hover:bg-sage-dark transition-colors flex items-center gap-1.5"
+              >
+                <ShoppingCart size={13} />
+                Add to Cart
+              </button>
+            )}
+          </div>
           <ul className="flex flex-col gap-2">
             {ingredients.map((ing, i) => (
               <li key={i} className="flex items-baseline gap-3 text-sm">
@@ -318,13 +349,13 @@ export default function Recipe() {
                   <textarea
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-border bg-white text-sm text-bark resize-y min-h-[100px] focus:border-sage focus:outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-surface text-sm text-bark resize-y min-h-[100px] focus:border-sage focus:outline-none"
                     placeholder="Personal notes, tweaks, ideas..."
                   />
                   <label className="flex flex-col gap-1.5">
                     <span className="text-xs text-warm-gray">Rating notes</span>
                     <input type="text" value={ratingNotes} onChange={e => setRatingNotes(e.target.value)}
-                      className="px-4 py-2 rounded-lg border border-border bg-white text-sm text-bark focus:border-sage focus:outline-none"
+                      className="px-4 py-2 rounded-lg border border-border bg-surface text-sm text-bark focus:border-sage focus:outline-none"
                       placeholder="e.g. kids loved it, needs more salt..." />
                   </label>
                   <div className="flex gap-2">
@@ -359,7 +390,7 @@ export default function Recipe() {
             value={newComment}
             onChange={e => setNewComment(e.target.value)}
             placeholder="Add a comment..."
-            className="flex-1 px-4 py-2.5 rounded-lg border border-border bg-white text-sm text-bark focus:border-sage focus:outline-none"
+            className="flex-1 px-4 py-2.5 rounded-lg border border-border bg-surface text-sm text-bark focus:border-sage focus:outline-none"
           />
           <button
             type="submit"
@@ -378,14 +409,18 @@ export default function Recipe() {
           <div className="flex flex-col gap-4">
             {comments.map(c => (
               <div key={c.id} className="flex gap-3">
-                <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center flex-shrink-0">
-                  <span className="text-[10px] font-semibold text-sage-dark uppercase">
-                    {(commentProfiles[c.user_id] || 'U')[0]}
-                  </span>
-                </div>
+                {commentProfiles[c.user_id]?.avatar_url ? (
+                  <img src={commentProfiles[c.user_id].avatar_url} alt="" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+                ) : (
+                  <div className="w-7 h-7 rounded-full bg-sage-muted flex items-center justify-center flex-shrink-0">
+                    <span className="text-[10px] font-semibold text-sage-dark uppercase">
+                      {(commentProfiles[c.user_id]?.name || 'U')[0]}
+                    </span>
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-bark">{commentProfiles[c.user_id] || 'User'}</span>
+                    <span className="text-xs font-semibold text-bark">{commentProfiles[c.user_id]?.name || 'User'}</span>
                     <span className="text-[10px] text-warm-gray">
                       {new Date(c.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </span>

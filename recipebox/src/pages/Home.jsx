@@ -73,7 +73,7 @@ export default function Home() {
             placeholder="Search recipes or tags..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-white text-sm text-bark placeholder:text-warm-gray-light focus:border-sage focus:outline-none"
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-surface text-sm text-bark placeholder:text-warm-gray-light focus:border-sage focus:outline-none"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export default function Home() {
           <select
             value={sortBy}
             onChange={e => setSortBy(e.target.value)}
-            className="text-xs border border-border rounded-lg px-3 py-2.5 bg-white text-bark focus:border-sage focus:outline-none"
+            className="text-xs border border-border rounded-lg px-3 py-2.5 bg-surface text-bark focus:border-sage focus:outline-none"
           >
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
@@ -100,7 +100,7 @@ export default function Home() {
             className={`text-xs font-medium px-3.5 py-1.5 rounded-full border transition-colors capitalize ${
               category === cat
                 ? 'bg-sage text-white border-sage'
-                : 'bg-white text-warm-gray border-border hover:border-sage/40'
+                : 'bg-surface text-warm-gray border-border hover:border-sage/40'
             }`}
           >
             {cat === 'all' ? 'All' : cat}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { UtensilsCrossed } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
@@ -26,7 +27,11 @@ export default function Login() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-5">
       <div className="w-full max-w-sm">
-        <h1 className="font-serif text-2xl text-bark text-center mb-8">Sign In</h1>
+        <div className="flex justify-center mb-4">
+          <UtensilsCrossed size={36} className="text-sage" />
+        </div>
+        <h1 className="font-serif text-2xl text-bark text-center mb-2">Sign In</h1>
+        <p className="text-xs text-warm-gray text-center mb-8">The Forking Good Club</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {error && (
@@ -40,7 +45,7 @@ export default function Login() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
 
@@ -51,7 +56,7 @@ export default function Login() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="px-4 py-2.5 rounded-lg border border-border bg-white text-bark text-sm focus:border-sage focus:outline-none"
+              className="px-4 py-2.5 rounded-lg border border-border bg-surface text-bark text-sm focus:border-sage focus:outline-none"
             />
           </label>
 

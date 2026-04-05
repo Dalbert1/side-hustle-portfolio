@@ -162,7 +162,7 @@ export default function Recipe() {
       <div className="flex items-center justify-between mb-6">
         <Link to="/" className="text-sm text-warm-gray hover:text-bark flex items-center gap-1 transition-colors">
           <ArrowLeft size={15} />
-          All Recipes
+          Feed
         </Link>
         {isOwner && (
           <div className="flex items-center gap-2">

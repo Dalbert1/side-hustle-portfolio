@@ -64,7 +64,7 @@ export default function ProfileSettings() {
     <div className="max-w-lg mx-auto px-5 py-8">
       <Link to="/" className="text-sm text-warm-gray hover:text-bark flex items-center gap-1 transition-colors mb-6">
         <ArrowLeft size={15} />
-        My Recipes
+        Feed
       </Link>
 
       <h1 className="font-serif text-2xl text-bark mb-8">Profile Settings</h1>

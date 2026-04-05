@@ -31,8 +31,8 @@ function AppRoutes() {
       <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
+      <Route path="/" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
+      <Route path="/my-recipes" element={<ProtectedRoute><Home /></ProtectedRoute>} />
       <Route path="/recipe/:id" element={<ProtectedRoute><Recipe /></ProtectedRoute>} />
       <Route path="/add" element={<ProtectedRoute><RecipeForm /></ProtectedRoute>} />
       <Route path="/edit/:id" element={<ProtectedRoute><RecipeForm isEdit /></ProtectedRoute>} />

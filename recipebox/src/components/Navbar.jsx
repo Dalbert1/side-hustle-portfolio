@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, X, Plus, LogOut, Newspaper, ShoppingCart, UtensilsCrossed, User } from 'lucide-react'
+import { Menu, X, Plus, LogOut, Newspaper, ShoppingCart, UtensilsCrossed, User, BookOpen } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
 
@@ -26,9 +26,9 @@ export default function Navbar() {
         {user && (
           <>
             <div className="hidden sm:flex items-center gap-5">
-              <Link to="/feed" className="text-sm font-medium text-warm-gray hover:text-bark transition-colors flex items-center gap-1.5">
-                <Newspaper size={15} />
-                Feed
+              <Link to="/my-recipes" className="text-sm font-medium text-warm-gray hover:text-bark transition-colors flex items-center gap-1.5">
+                <BookOpen size={15} />
+                My Recipes
               </Link>
               <Link to="/add" className="text-sm font-medium text-sage hover:text-sage-light transition-colors flex items-center gap-1.5">
                 <Plus size={16} />
@@ -78,10 +78,10 @@ export default function Navbar() {
 
       {open && user && (
         <div className="sm:hidden bg-cream border-t border-border px-5 py-3 flex flex-col gap-1" role="menu">
-          <Link to="/feed" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors" role="menuitem">
+          <Link to="/" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors" role="menuitem">
             Feed
           </Link>
-          <Link to="/" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors" role="menuitem">
+          <Link to="/my-recipes" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors" role="menuitem">
             My Recipes
           </Link>
           <Link to="/add" onClick={() => setOpen(false)} className="text-sm font-medium text-bark py-2.5 px-3 rounded-lg hover:bg-cream-dark transition-colors" role="menuitem">

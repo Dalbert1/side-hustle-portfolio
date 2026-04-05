@@ -14,7 +14,7 @@ export default function GroceryCart() {
     <div className="max-w-2xl mx-auto px-5 py-8">
       <Link to="/" className="text-sm text-warm-gray hover:text-bark flex items-center gap-1 transition-colors mb-6">
         <ArrowLeft size={15} />
-        My Recipes
+        Feed
       </Link>
 
       <div className="flex items-center justify-between mb-6">

@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAVASTRIKE — Battleship</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Teko:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1a0a02;
+  --bg2: #120800;
+  --lava-bright: #ff4400;
+  --lava-med: #cc3300;
+  --lava-dark: #881a00;
+  --lava-glow: rgba(255,68,0,0.5);
+  --lava-cell: #2a1005;
+  --lava-cell-hover: #3d1808;
+  --hit: #ff2200;
+  --miss: #444;
+  --miss-dot: #666;
+  --ship-color: #888;
+  --text: #ffeedd;
+  --text-dim: rgba(255,238,221,0.4);
+  --text-accent: #ff6622;
+  --gold: #ffaa00;
+  --border: rgba(255,68,0,0.2);
+  --panel-bg: rgba(20,8,2,0.9);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  font-family:'Rajdhani',sans-serif;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* Lava background animation */
+body::before{
+  content:'';position:fixed;top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(255,68,0,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,68,0,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(200,50,0,0.04) 0%, transparent 70%);
+  pointer-events:none;z-index:0;
+  animation: lava-bg 8s ease-in-out infinite alternate;
+}
+@keyframes lava-bg {
+  0%{opacity:0.6;} 100%{opacity:1;}
+}
+
+.container{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:20px;}
+
+/* ===== SCREENS ===== */
+.screen{display:none;flex-direction:column;align-items:center;animation:fadeIn 0.4s ease;}
+.screen.active{display:flex;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* ===== TITLE SCREEN ===== */
+#title-screen .logo{
+  font-family:'Teko',sans-serif;font-size:clamp(60px,12vw,100px);font-weight:700;
+  letter-spacing:8px;text-transform:uppercase;
+  background:linear-gradient(180deg,#ffcc44 0%,#ff6600 40%,#cc2200 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px rgba(255,100,0,0.5));
+  margin-top:60px;line-height:1;
+}
+#title-screen .tagline{
+  font-family:'Teko',sans-serif;font-size:18px;letter-spacing:12px;
+  color:var(--text-dim);text-transform:uppercase;margin:8px 0 50px;
+}
+.mode-cards{display:flex;gap:20px;margin-bottom:40px;flex-wrap:wrap;justify-content:center;}
+.mode-card{
+  background:var(--panel-bg);border:1px solid var(--border);border-radius:8px;
+  padding:30px 40px;cursor:pointer;text-align:center;transition:all 0.2s;
+  min-width:200px;
+}
+.mode-card:hover{
+  border-color:var(--lava-bright);
+  box-shadow:0 0 30px rgba(255,68,0,0.2);
+  transform:translateY(-3px);
+}
+.mode-card .mode-icon{font-size:40px;margin-bottom:12px;}
+.mode-card .mode-name{font-family:'Teko',sans-serif;font-size:28px;font-weight:600;color:var(--text-accent);}
+.mode-card .mode-desc{font-size:13px;color:var(--text-dim);margin-top:6px;}
+
+/* ===== SETUP SCREEN ===== */
+#setup-screen .setup-title{
+  font-family:'Teko',sans-serif;font-size:36px;font-weight:600;
+  color:var(--text-accent);margin:30px 0 8px;letter-spacing:3px;
+}
+#setup-screen .setup-sub{font-size:14px;color:var(--text-dim);margin-bottom:24px;}
+.country-grid{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:30px;}
+.country-card{
+  background:var(--panel-bg);border:2px solid var(--border);border-radius:8px;
+  padding:16px 20px;cursor:pointer;text-align:center;transition:all 0.2s;
+  min-width:130px;position:relative;overflow:hidden;
+}
+.country-card:hover{border-color:var(--lava-med);transform:translateY(-2px);}
+.country-card.selected{border-color:var(--gold);box-shadow:0 0 20px rgba(255,170,0,0.3);}
+.country-card .flag{font-size:36px;margin-bottom:6px;}
+.country-card .cname{font-family:'Teko',sans-serif;font-size:20px;font-weight:600;}
+.country-card .cpop{font-size:10px;color:var(--text-dim);}
+.country-card.selected::after{
+  content:'✓';position:absolute;top:6px;right:10px;
+  color:var(--gold);font-size:18px;font-weight:700;
+}
+
+.difficulty-row{display:flex;gap:10px;margin:16px 0 30px;flex-wrap:wrap;justify-content:center;}
+.diff-btn{
+  font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;
+  padding:10px 28px;border:1px solid var(--border);border-radius:4px;
+  background:transparent;color:var(--text);cursor:pointer;transition:all 0.2s;
+  letter-spacing:1px;
+}
+.diff-btn:hover{border-color:var(--lava-med);}
+.diff-btn.selected{background:var(--lava-dark);border-color:var(--lava-bright);color:#fff;}
+
+.btn-primary{
+  font-family:'Teko',sans-serif;font-size:22px;font-weight:600;
+  padding:14px 50px;border:none;border-radius:4px;cursor:pointer;
+  background:linear-gradient(135deg,#ff5500,#cc2200);color:#fff;
+  letter-spacing:3px;text-transform:uppercase;
+  box-shadow:0 4px 20px rgba(255,68,0,0.3);
+  transition:all 0.2s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 30px rgba(255,68,0,0.4);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+/* ===== PLACEMENT SCREEN ===== */
+#placement-screen .place-title{
+  font-family:'Teko',sans-serif;font-size:32px;font-weight:600;
+  color:var(--text-accent);margin:20px 0 6px;letter-spacing:2px;
+}
+.place-info{font-size:13px;color:var(--text-dim);margin-bottom:16px;}
+.placement-area{display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap;justify-content:center;}
+.ship-list{
+  background:var(--panel-bg);border:1px solid var(--border);border-radius:6px;
+  padding:16px;min-width:180px;
+}
+.ship-list h3{font-family:'Teko',sans-serif;font-size:18px;color:var(--text-accent);margin-bottom:10px;letter-spacing:1px;}
+.ship-entry{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;}
+.ship-entry .ship-blocks{display:flex;gap:2px;}
+.ship-entry .sb{width:14px;height:14px;border-radius:2px;}
+.ship-entry.placed .ship-name{color:var(--text-dim);text-decoration:line-through;}
+.btn-secondary{
+  font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;
+  padding:8px 20px;border:1px solid var(--border);border-radius:4px;
+  background:transparent;color:var(--text);cursor:pointer;transition:all 0.2s;
+  margin-top:12px;width:100%;
+}
+.btn-secondary:hover{border-color:var(--lava-med);background:rgba(255,68,0,0.1);}
+
+/* ===== GAME BOARD ===== */
+.board-wrapper{position:relative;}
+.board-label{
+  font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;
+  color:var(--text-dim);text-align:center;margin-bottom:6px;text-transform:uppercase;
+}
+.board{
+  display:grid;grid-template-columns:repeat(10,1fr);
+  gap:2px;padding:2px;
+  background:var(--border);border-radius:4px;
+  box-shadow:0 0 40px rgba(255,68,0,0.08);
+}
+.cell{
+  width:clamp(28px,4.5vw,38px);height:clamp(28px,4.5vw,38px);
+  background:var(--lava-cell);border-radius:2px;position:relative;
+  transition:background 0.15s;cursor:default;
+  overflow:hidden;
+}
+/* Lava shimmer on cells */
+.cell::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 30% 70%, rgba(255,80,0,0.06) 0%, transparent 70%);
+  animation:cell-shimmer 4s ease-in-out infinite;
+  animation-delay:calc(var(--ci,0) * 0.1s);
+}
+@keyframes cell-shimmer{0%,100%{opacity:0.3;}50%{opacity:1;}}
+
+.cell.clickable{cursor:crosshair;}
+.cell.clickable:hover{background:var(--lava-cell-hover);box-shadow:inset 0 0 12px rgba(255,100,0,0.2);}
+.cell.ship-visible{background:rgba(100,100,100,0.3);}
+.cell.ship-visible::after{
+  content:'';position:absolute;inset:3px;border-radius:2px;
+  background:var(--ship-color);opacity:0.6;
+}
+.cell.hit{background:rgba(255,34,0,0.3);}
+.cell.hit::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle,var(--hit) 30%,rgba(255,34,0,0.4) 60%,transparent 70%);
+}
+.cell.miss{background:rgba(60,60,60,0.3);}
+.cell.miss::after{
+  content:'';position:absolute;
+  top:50%;left:50%;width:8px;height:8px;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:var(--miss-dot);
+}
+.cell.sunk{background:rgba(255,0,0,0.15);}
+.cell.sunk::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle,#ff0000 25%,rgba(255,0,0,0.5) 55%,transparent 70%);
+}
+
+/* Coordinate labels */
+.board-container{display:inline-flex;flex-direction:column;align-items:center;}
+.board-with-labels{display:grid;grid-template-columns:20px auto;grid-template-rows:20px auto;gap:0;}
+.col-labels,.row-labels{display:flex;font-size:10px;color:var(--text-dim);font-weight:600;}
+.col-labels{flex-direction:row;padding-left:20px;}
+.col-labels span{width:clamp(28px,4.5vw,38px);text-align:center;margin:0 1px;}
+.row-labels{flex-direction:column;padding-top:0;justify-content:space-around;}
+.row-labels span{height:clamp(28px,4.5vw,38px);display:flex;align-items:center;justify-content:center;margin:1px 0;}
+
+/* ===== GAME SCREEN ===== */
+#game-screen .game-header{
+  display:flex;justify-content:space-between;align-items:center;
+  width:100%;max-width:900px;margin:10px 0 16px;flex-wrap:wrap;gap:10px;
+}
+.player-badge{
+  display:flex;align-items:center;gap:10px;
+  background:var(--panel-bg);border:1px solid var(--border);
+  border-radius:6px;padding:8px 16px;
+}
+.player-badge.active-player{border-color:var(--gold);box-shadow:0 0 15px rgba(255,170,0,0.2);}
+.player-badge .pflag{font-size:24px;}
+.player-badge .pname{font-family:'Teko',sans-serif;font-size:20px;font-weight:600;}
+.player-badge .pscore{font-size:11px;color:var(--text-dim);}
+.turn-indicator{
+  font-family:'Teko',sans-serif;font-size:20px;font-weight:600;
+  color:var(--gold);letter-spacing:2px;text-align:center;
+}
+.boards-area{
+  display:flex;gap:clamp(16px,3vw,40px);flex-wrap:wrap;justify-content:center;
+  align-items:flex-start;
+}
+.status-bar{
+  font-size:14px;color:var(--text-accent);text-align:center;
+  margin:16px 0;min-height:24px;font-weight:600;letter-spacing:1px;
+}
+
+/* ===== MISSILE ANIMATION OVERLAY ===== */
+#missile-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  z-index:100;pointer-events:none;display:none;
+}
+#missile-overlay canvas{width:100%;height:100%;}
+
+/* ===== COUNTDOWN OVERLAY ===== */
+#countdown-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  z-index:90;display:none;
+  background:#0f0500;
+  justify-content:center;align-items:center;flex-direction:column;
+}
+#countdown-overlay.active{display:flex;}
+#countdown-overlay .cd-country{
+  font-family:'Teko',sans-serif;font-size:28px;font-weight:600;
+  color:var(--gold);letter-spacing:4px;margin-bottom:6px;
+}
+#countdown-overlay .count-label{
+  font-family:'Teko',sans-serif;font-size:20px;color:var(--text-dim);
+  letter-spacing:6px;margin-bottom:24px;
+}
+#countdown-overlay .cd-ring-container{
+  position:relative;width:180px;height:180px;margin-bottom:20px;
+}
+#countdown-overlay .cd-ring-container svg{width:100%;height:100%;transform:rotate(-90deg);}
+.cd-ring-bg{fill:none;stroke:rgba(255,68,0,0.12);stroke-width:6;}
+.cd-ring-fg{
+  fill:none;stroke:var(--lava-bright);stroke-width:6;
+  stroke-linecap:round;
+  stroke-dasharray:439.82;
+  stroke-dashoffset:0;
+  transition:stroke-dashoffset 1s linear;
+  filter:drop-shadow(0 0 8px rgba(255,68,0,0.5));
+}
+#countdown-overlay .cd-ring-container .cd-ring-number{
+  position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Teko',sans-serif;font-size:64px;font-weight:700;
+  color:var(--lava-bright);text-shadow:0 0 30px var(--lava-glow);
+}
+#countdown-overlay .cd-ring-container .cd-ring-label{
+  position:absolute;top:67%;left:50%;transform:translateX(-50%);
+  font-size:11px;color:var(--text-dim);letter-spacing:2px;
+  font-family:'Rajdhani',sans-serif;font-weight:600;
+}
+@keyframes count-pop{0%{transform:scale(2.5);opacity:0;}60%{transform:scale(0.9);}100%{transform:scale(1);opacity:1;}}
+
+/* ===== HOT-SEAT TRANSITION ===== */
+#transition-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  z-index:80;display:none;
+  background:#0f0500;
+  justify-content:center;align-items:center;flex-direction:column;
+}
+#transition-overlay.active{display:flex;}
+#transition-overlay .trans-text{
+  font-family:'Teko',sans-serif;font-size:36px;font-weight:600;
+  color:var(--gold);letter-spacing:4px;margin-bottom:30px;
+}
+#transition-overlay .trans-sub{
+  font-size:13px;color:var(--text-dim);letter-spacing:1px;margin-bottom:10px;
+}
+.countdown-ring-container{
+  position:relative;width:160px;height:160px;margin-bottom:30px;
+}
+.countdown-ring-container svg{width:100%;height:100%;transform:rotate(-90deg);}
+.countdown-ring-bg{fill:none;stroke:rgba(255,68,0,0.12);stroke-width:6;}
+.countdown-ring-fg{
+  fill:none;stroke:var(--gold);stroke-width:6;
+  stroke-linecap:round;
+  stroke-dasharray:439.82;
+  stroke-dashoffset:0;
+  transition:stroke-dashoffset 1s linear;
+  filter:drop-shadow(0 0 8px rgba(255,170,0,0.5));
+}
+.countdown-ring-container .ring-number{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Teko',sans-serif;font-size:56px;font-weight:700;
+  color:var(--gold);text-shadow:0 0 20px rgba(255,170,0,0.4);
+}
+.countdown-ring-container .ring-label{
+  position:absolute;top:65%;left:50%;transform:translateX(-50%);
+  font-size:11px;color:var(--text-dim);letter-spacing:2px;
+  font-family:'Rajdhani',sans-serif;font-weight:600;
+}
+
+/* Exit button */
+.btn-exit{
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;
+  padding:6px 16px;border:1px solid rgba(255,68,0,0.25);border-radius:4px;
+  background:transparent;color:var(--text-dim);cursor:pointer;
+  transition:all 0.2s;letter-spacing:1px;
+}
+.btn-exit:hover{border-color:var(--lava-med);color:var(--text);background:rgba(255,68,0,0.08);}
+
+/* Confirm exit modal */
+#exit-modal{
+  position:fixed;top:0;left:0;right:0;bottom:0;z-index:95;
+  display:none;background:rgba(10,5,0,0.9);
+  justify-content:center;align-items:center;flex-direction:column;
+}
+#exit-modal.active{display:flex;}
+#exit-modal .exit-prompt{
+  font-family:'Teko',sans-serif;font-size:32px;font-weight:600;
+  color:var(--text);letter-spacing:2px;margin-bottom:8px;
+}
+#exit-modal .exit-sub{
+  font-size:13px;color:var(--text-dim);margin-bottom:30px;
+}
+.exit-btns{display:flex;gap:14px;}
+
+/* ===== GAME OVER ===== */
+#gameover-screen .go-title{
+  font-family:'Teko',sans-serif;font-size:clamp(48px,10vw,72px);font-weight:700;
+  background:linear-gradient(180deg,#ffcc44,#ff6600);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin:60px 0 10px;
+}
+#gameover-screen .go-winner{
+  font-family:'Teko',sans-serif;font-size:28px;color:var(--text);
+  letter-spacing:3px;margin-bottom:30px;
+}
+.stats-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  margin-bottom:40px;
+}
+.stat-card{
+  background:var(--panel-bg);border:1px solid var(--border);
+  border-radius:6px;padding:16px 24px;text-align:center;
+}
+.stat-card .stat-val{font-family:'Teko',sans-serif;font-size:32px;font-weight:600;color:var(--text-accent);}
+.stat-card .stat-label{font-size:11px;color:var(--text-dim);letter-spacing:1px;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--lava-dark);border-radius:3px;}
+
+/* Responsive */
+@media(max-width:700px){
+  .cell{width:28px!important;height:28px!important;}
+  .boards-area{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===== TITLE SCREEN ===== -->
+  <div class="screen active" id="title-screen">
+    <div class="logo">LAVASTRIKE</div>
+    <div class="tagline">Battleship in the Inferno</div>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="selectMode('single')">
+        <div class="mode-icon">🎯</div>
+        <div class="mode-name">Single Player</div>
+        <div class="mode-desc">Battle the AI Commander</div>
+      </div>
+      <div class="mode-card" onclick="selectMode('multi')">
+        <div class="mode-icon">⚔️</div>
+        <div class="mode-name">2 Players</div>
+        <div class="mode-desc">Hot-seat local battle</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SETUP SCREEN ===== -->
+  <div class="screen" id="setup-screen">
+    <div class="setup-title" id="setup-title">CHOOSE YOUR NATION</div>
+    <div class="setup-sub" id="setup-sub">Select your faction to command</div>
+    <div class="country-grid" id="country-grid"></div>
+    <div id="difficulty-section" style="text-align:center;">
+      <div style="font-family:'Teko',sans-serif;font-size:18px;color:var(--text-dim);letter-spacing:2px;margin-bottom:8px;">AI DIFFICULTY</div>
+      <div class="difficulty-row">
+        <button class="diff-btn" data-diff="easy" onclick="selectDifficulty('easy')">EASY</button>
+        <button class="diff-btn selected" data-diff="medium" onclick="selectDifficulty('medium')">MEDIUM</button>
+        <button class="diff-btn" data-diff="hard" onclick="selectDifficulty('hard')">HARD</button>
+      </div>
+    </div>
+    <button class="btn-primary" id="setup-next" onclick="setupNext()" disabled>DEPLOY FLEET</button>
+  </div>
+
+  <!-- ===== PLACEMENT SCREEN ===== -->
+  <div class="screen" id="placement-screen">
+    <div class="place-title" id="place-title">DEPLOY YOUR FLEET</div>
+    <div class="place-info" id="place-info">Arrange your ships in the lava field</div>
+    <div class="placement-area">
+      <div class="board-container">
+        <div class="board-label" id="placement-board-label">YOUR FIELD</div>
+        <div class="board-with-labels">
+          <div></div>
+          <div class="col-labels" id="place-col-labels"></div>
+          <div class="row-labels" id="place-row-labels"></div>
+          <div class="board" id="placement-board"></div>
+        </div>
+      </div>
+      <div class="ship-list">
+        <h3>FLEET</h3>
+        <div id="ship-list-entries"></div>
+        <button class="btn-secondary" onclick="reshuffleShips()">🔄 RESHUFFLE</button>
+        <button class="btn-primary" style="margin-top:12px;width:100%;font-size:18px;padding:10px;" onclick="confirmPlacement()">CONFIRM</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== GAME SCREEN ===== -->
+  <div class="screen" id="game-screen">
+    <div style="width:100%;max-width:900px;display:flex;justify-content:flex-end;margin-top:6px;">
+      <button class="btn-exit" onclick="showExitModal()">✕ EXIT TO MENU</button>
+    </div>
+    <div class="game-header">
+      <div class="player-badge" id="badge-p1"><span class="pflag" id="flag-p1"></span><div><div class="pname" id="name-p1"></div><div class="pscore" id="score-p1">Hits: 0</div></div></div>
+      <div class="turn-indicator" id="turn-indicator">YOUR TURN</div>
+      <div class="player-badge" id="badge-p2"><span class="pflag" id="flag-p2"></span><div><div class="pname" id="name-p2"></div><div class="pscore" id="score-p2">Hits: 0</div></div></div>
+    </div>
+    <div class="status-bar" id="status-bar"></div>
+    <div class="boards-area">
+      <div class="board-container">
+        <div class="board-label" id="enemy-board-label">ENEMY WATERS</div>
+        <div class="board-with-labels">
+          <div></div>
+          <div class="col-labels enemy-cols"></div>
+          <div class="row-labels enemy-rows"></div>
+          <div class="board" id="enemy-board"></div>
+        </div>
+      </div>
+      <div class="board-container">
+        <div class="board-label" id="own-board-label">YOUR FLEET</div>
+        <div class="board-with-labels">
+          <div></div>
+          <div class="col-labels own-cols"></div>
+          <div class="row-labels own-rows"></div>
+          <div class="board" id="own-board"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== GAME OVER ===== -->
+  <div class="screen" id="gameover-screen">
+    <div class="go-title">VICTORY</div>
+    <div class="go-winner" id="go-winner"></div>
+    <div class="stats-grid" id="stats-grid"></div>
+    <button class="btn-primary" onclick="backToTitle()">RETURN TO BASE</button>
+  </div>
+</div>
+
+<!-- Overlays -->
+<div id="countdown-overlay">
+  <div class="cd-country" id="cd-country">🇺🇸 UNITED STATES</div>
+  <div class="count-label" id="cd-label">PREPARE FOR BATTLE</div>
+  <div class="cd-ring-container">
+    <svg viewBox="0 0 160 160">
+      <circle class="cd-ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="cd-ring-fg" id="cd-ring-fg" cx="80" cy="80" r="70"/>
+    </svg>
+    <div class="cd-ring-number" id="cd-ring-number">10</div>
+    <div class="cd-ring-label">SEC</div>
+  </div>
+</div>
+<div id="transition-overlay">
+  <div class="trans-text" id="trans-text">PASS TO PLAYER 2</div>
+  <div class="trans-sub">Look away! Boards are hidden.</div>
+  <div style="font-family:'Teko',sans-serif;font-size:20px;color:var(--text-dim);letter-spacing:3px;margin-bottom:20px;" id="trans-turn-label">NEXT TURN</div>
+  <div class="countdown-ring-container">
+    <svg viewBox="0 0 160 160">
+      <circle class="countdown-ring-bg" cx="80" cy="80" r="70"/>
+      <circle class="countdown-ring-fg" id="ring-fg" cx="80" cy="80" r="70"/>
+    </svg>
+    <div class="ring-number" id="ring-number">10</div>
+    <div class="ring-label">SEC</div>
+  </div>
+  <button class="btn-primary" id="trans-btn" onclick="transitionDone()" disabled>WAITING...</button>
+</div>
+<div id="exit-modal">
+  <div class="exit-prompt">ABANDON BATTLE?</div>
+  <div class="exit-sub">Current game progress will be lost</div>
+  <div class="exit-btns">
+    <button class="btn-secondary" style="padding:10px 28px;" onclick="closeExitModal()">CANCEL</button>
+    <button class="btn-primary" style="font-size:18px;padding:10px 28px;" onclick="confirmExit()">EXIT</button>
+  </div>
+</div>
+<div id="missile-overlay"><canvas id="missile-canvas"></canvas></div>
+
+<script>
+// ==================== DATA ====================
+const COUNTRIES = [
+  { id:'russia', name:'Russia', flag:'🇷🇺', colors:['#0039a6','#d52b1e','#ffffff'], accent:'#d52b1e' },
+  { id:'canada', name:'Canada', flag:'🇨🇦', colors:['#ff0000','#ffffff','#ff0000'], accent:'#ff0000' },
+  { id:'usa', name:'United States', flag:'🇺🇸', colors:['#3c3b6e','#b22234','#ffffff'], accent:'#b22234' },
+  { id:'china', name:'China', flag:'🇨🇳', colors:['#de2910','#ffde00','#de2910'], accent:'#de2910' },
+  { id:'brazil', name:'Brazil', flag:'🇧🇷', colors:['#009739','#fedd00','#002776'], accent:'#009739' },
+];
+
+const SHIPS = [
+  { name:'Carrier', size:5 },
+  { name:'Battleship', size:4 },
+  { name:'Cruiser', size:3 },
+  { name:'Submarine', size:3 },
+  { name:'Destroyer', size:2 },
+];
+
+const COLS = 'ABCDEFGHIJ'.split('');
+
+// ==================== GAME STATE ====================
+let gameMode = 'single'; // 'single' | 'multi'
+let difficulty = 'medium';
+let players = [null, null]; // {country, board[10][10], ships[{...placed}], hits, shots}
+let currentPlayer = 0; // 0 or 1
+let setupPlayer = 0;
+let gameActive = false;
+let aiHuntStack = []; // for AI targeting
+let aiHitMemory = []; // for hard AI
+
+// ==================== SCREEN MANAGEMENT ====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function backToTitle() {
+  gameActive = false;
+  showScreen('title-screen');
+}
+
+// ==================== MODE SELECTION ====================
+function selectMode(mode) {
+  gameMode = mode;
+  setupPlayer = 0;
+  players = [null, null];
+  showSetupScreen(0);
+}
+
+// ==================== SETUP SCREEN ====================
+function showSetupScreen(playerIdx) {
+  setupPlayer = playerIdx;
+  showScreen('setup-screen');
+
+  const titleEl = document.getElementById('setup-title');
+  const subEl = document.getElementById('setup-sub');
+  const diffSection = document.getElementById('difficulty-section');
+  const nextBtn = document.getElementById('setup-next');
+
+  if (gameMode === 'single') {
+    titleEl.textContent = 'CHOOSE YOUR NATION';
+    subEl.textContent = 'Select your faction to command';
+    diffSection.style.display = '';
+  } else {
+    titleEl.textContent = `PLAYER ${playerIdx + 1} — CHOOSE YOUR NATION`;
+    subEl.textContent = `Player ${playerIdx + 1}, select your faction`;
+    diffSection.style.display = 'none';
+  }
+
+  nextBtn.disabled = true;
+  nextBtn.textContent = 'DEPLOY FLEET';
+
+  // Build country cards
+  const grid = document.getElementById('country-grid');
+  grid.innerHTML = '';
+  COUNTRIES.forEach(c => {
+    const taken = gameMode === 'multi' && players[0] && players[0].country.id === c.id;
+    const card = document.createElement('div');
+    card.className = 'country-card' + (taken ? ' taken' : '');
+    if (taken) { card.style.opacity = '0.3'; card.style.pointerEvents = 'none'; }
+    card.innerHTML = `<div class="flag">${c.flag}</div><div class="cname">${c.name}</div>`;
+    card.onclick = () => selectCountry(c, card);
+    grid.appendChild(card);
+  });
+}
+
+let selectedCountry = null;
+function selectCountry(country, card) {
+  selectedCountry = country;
+  document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('setup-next').disabled = false;
+}
+
+function selectDifficulty(diff) {
+  difficulty = diff;
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector(`.diff-btn[data-diff="${diff}"]`).classList.add('selected');
+}
+
+function setupNext() {
+  if (!selectedCountry) return;
+
+  players[setupPlayer] = {
+    country: selectedCountry,
+    board: createEmptyBoard(),
+    ships: SHIPS.map(s => ({ ...s, cells: [], sunk: false })),
+    hits: 0,
+    shots: 0,
+  };
+
+  randomPlaceShips(players[setupPlayer]);
+  selectedCountry = null;
+
+  if (gameMode === 'single') {
+    // AI gets a random country not chosen by player
+    const available = COUNTRIES.filter(c => c.id !== players[0].country.id);
+    const aiCountry = available[Math.floor(Math.random() * available.length)];
+    players[1] = {
+      country: aiCountry,
+      board: createEmptyBoard(),
+      ships: SHIPS.map(s => ({ ...s, cells: [], sunk: false })),
+      hits: 0,
+      shots: 0,
+      isAI: true,
+    };
+    randomPlaceShips(players[1]);
+    showPlacementScreen(0);
+  } else {
+    showPlacementScreen(setupPlayer);
+  }
+}
+
+// ==================== BOARD HELPERS ====================
+function createEmptyBoard() {
+  return Array.from({ length: 10 }, () => Array(10).fill(null));
+  // null = empty, 'ship' = ship, 'hit' = hit, 'miss' = miss, 'sunk' = sunk
+}
+
+function randomPlaceShips(player) {
+  player.board = createEmptyBoard();
+  player.ships.forEach(ship => ship.cells = []);
+
+  for (const ship of player.ships) {
+    let placed = false;
+    let attempts = 0;
+    while (!placed && attempts < 500) {
+      attempts++;
+      const horizontal = Math.random() < 0.5;
+      const r = Math.floor(Math.random() * 10);
+      const c = Math.floor(Math.random() * 10);
+
+      if (horizontal && c + ship.size > 10) continue;
+      if (!horizontal && r + ship.size > 10) continue;
+
+      const cells = [];
+      let valid = true;
+      for (let i = 0; i < ship.size; i++) {
+        const nr = horizontal ? r : r + i;
+        const nc = horizontal ? c + i : c;
+        if (player.board[nr][nc] !== null) { valid = false; break; }
+        cells.push([nr, nc]);
+      }
+      if (!valid) continue;
+
+      cells.forEach(([rr, cc]) => player.board[rr][cc] = 'ship');
+      ship.cells = cells;
+      placed = true;
+    }
+  }
+}
+
+// ==================== PLACEMENT SCREEN ====================
+function showPlacementScreen(playerIdx) {
+  showScreen('placement-screen');
+  const player = players[playerIdx];
+
+  document.getElementById('place-title').textContent =
+    gameMode === 'multi' ? `PLAYER ${playerIdx + 1} — DEPLOY FLEET` : 'DEPLOY YOUR FLEET';
+  document.getElementById('placement-board-label').textContent =
+    `${player.country.flag} ${player.country.name.toUpperCase()}`;
+
+  renderPlacementBoard(player);
+  renderShipList(player);
+}
+
+function renderPlacementBoard(player) {
+  const board = document.getElementById('placement-board');
+  board.innerHTML = '';
+  const colLabels = document.getElementById('place-col-labels');
+  const rowLabels = document.getElementById('place-row-labels');
+  colLabels.innerHTML = COLS.map(c => `<span>${c}</span>`).join('');
+  rowLabels.innerHTML = Array.from({ length: 10 }, (_, i) => `<span>${i + 1}</span>`).join('');
+
+  for (let r = 0; r < 10; r++) {
+    for (let c = 0; c < 10; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.style.setProperty('--ci', r * 10 + c);
+      if (player.board[r][c] === 'ship') {
+        cell.classList.add('ship-visible');
+        // Color ships with country accent
+        cell.style.setProperty('--ship-color-override', player.country.accent);
+        const inner = cell.querySelector('::after');
+      }
+      board.appendChild(cell);
+    }
+  }
+
+  // Style ship cells with country color
+  board.querySelectorAll('.ship-visible').forEach(el => {
+    el.style.background = `rgba(${hexToRgb(player.country.accent)},0.25)`;
+  });
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+function renderShipList(player) {
+  const list = document.getElementById('ship-list-entries');
+  list.innerHTML = '';
+  player.ships.forEach(ship => {
+    const entry = document.createElement('div');
+    entry.className = 'ship-entry';
+    let blocks = '';
+    for (let i = 0; i < ship.size; i++) {
+      blocks += `<div class="sb" style="background:${player.country.accent}"></div>`;
+    }
+    entry.innerHTML = `<div class="ship-blocks">${blocks}</div><span class="ship-name">${ship.name} (${ship.size})</span>`;
+    list.appendChild(entry);
+  });
+}
+
+function reshuffleShips() {
+  const player = players[setupPlayer];
+  randomPlaceShips(player);
+  renderPlacementBoard(player);
+}
+
+function confirmPlacement() {
+  if (gameMode === 'multi' && setupPlayer === 0) {
+    setupPlayer = 1;
+    showSetupScreen(1);
+    return;
+  }
+  startBattle();
+}
+
+// ==================== BATTLE START ====================
+function startBattle() {
+  currentPlayer = 0;
+  aiHuntStack = [];
+  aiHitMemory = [];
+  gameActive = true;
+
+  // Show countdown
+  showCountdown(() => {
+    showScreen('game-screen');
+    renderGameUI();
+  });
+}
+
+let countdownTimer = null;
+
+function showCountdown(callback) {
+  const overlay = document.getElementById('countdown-overlay');
+  const ringFg = document.getElementById('cd-ring-fg');
+  const ringNum = document.getElementById('cd-ring-number');
+  const countryEl = document.getElementById('cd-country');
+  const labelEl = document.getElementById('cd-label');
+
+  // Show the current player's country
+  const cp = players[currentPlayer];
+  countryEl.textContent = `${cp.country.flag} ${cp.country.name.toUpperCase()}`;
+  labelEl.textContent = 'PREPARE FOR BATTLE';
+
+  // Reset ring
+  let count = 10;
+  ringFg.style.transition = 'none';
+  ringFg.style.strokeDashoffset = '0';
+  ringFg.style.stroke = '';
+  ringFg.style.filter = '';
+  ringNum.textContent = '10';
+
+  overlay.classList.add('active');
+
+  void ringFg.offsetWidth;
+  ringFg.style.transition = 'stroke-dashoffset 1s linear';
+
+  countdownTimer = setInterval(() => {
+    count--;
+    ringNum.textContent = count;
+    const offset = RING_CIRCUMFERENCE * (1 - count / 10);
+    ringFg.style.strokeDashoffset = offset;
+
+    if (count <= 0) {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+      ringNum.textContent = '🔥';
+      ringFg.style.stroke = '#39ff14';
+      ringFg.style.filter = 'drop-shadow(0 0 8px rgba(57,255,20,0.5))';
+      labelEl.textContent = 'FIRE!';
+      setTimeout(() => {
+        overlay.classList.remove('active');
+        callback();
+      }, 800);
+    }
+  }, 1000);
+}
+
+// ==================== GAME UI ====================
+function renderGameUI() {
+  const p1 = players[0], p2 = players[1];
+  document.getElementById('flag-p1').textContent = p1.country.flag;
+  document.getElementById('name-p1').textContent = p1.country.name;
+  document.getElementById('flag-p2').textContent = p2.country.flag;
+  document.getElementById('name-p2').textContent = p2.country.name;
+
+  updateTurnUI();
+  renderAttackBoard();
+  renderDefenseBoard();
+}
+
+function updateTurnUI() {
+  const cp = players[currentPlayer];
+  const op = players[1 - currentPlayer];
+
+  document.getElementById('score-p1').textContent = `Hits: ${players[0].hits} | Shots: ${players[0].shots}`;
+  document.getElementById('score-p2').textContent = `Hits: ${players[1].hits} | Shots: ${players[1].shots}`;
+
+  document.getElementById('badge-p1').classList.toggle('active-player', currentPlayer === 0);
+  document.getElementById('badge-p2').classList.toggle('active-player', currentPlayer === 1);
+
+  if (gameMode === 'single') {
+    document.getElementById('turn-indicator').textContent = currentPlayer === 0 ? 'YOUR TURN' : 'AI TARGETING...';
+  } else {
+    document.getElementById('turn-indicator').textContent = `PLAYER ${currentPlayer + 1}'S TURN`;
+  }
+  document.getElementById('enemy-board-label').textContent = `${op.country.flag} ENEMY FIELD`;
+  document.getElementById('own-board-label').textContent = `${cp.country.flag} YOUR FLEET`;
+}
+
+function renderAttackBoard() {
+  const target = players[1 - currentPlayer];
+  const board = document.getElementById('enemy-board');
+  board.innerHTML = '';
+
+  const colContainer = document.querySelector('.enemy-cols');
+  const rowContainer = document.querySelector('.enemy-rows');
+  colContainer.innerHTML = COLS.map(c => `<span>${c}</span>`).join('');
+  rowContainer.innerHTML = Array.from({ length: 10 }, (_, i) => `<span>${i + 1}</span>`).join('');
+
+  for (let r = 0; r < 10; r++) {
+    for (let c = 0; c < 10; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.style.setProperty('--ci', r * 10 + c);
+      const val = target.board[r][c];
+
+      if (val === 'hit') cell.classList.add('hit');
+      else if (val === 'miss') cell.classList.add('miss');
+      else if (val === 'sunk') cell.classList.add('sunk');
+      else {
+        cell.classList.add('clickable');
+        cell.onclick = () => fireAt(r, c);
+      }
+      board.appendChild(cell);
+    }
+  }
+}
+
+function renderDefenseBoard() {
+  const me = players[currentPlayer];
+  const board = document.getElementById('own-board');
+  board.innerHTML = '';
+
+  const colContainer = document.querySelector('.own-cols');
+  const rowContainer = document.querySelector('.own-rows');
+  colContainer.innerHTML = COLS.map(c => `<span>${c}</span>`).join('');
+  rowContainer.innerHTML = Array.from({ length: 10 }, (_, i) => `<span>${i + 1}</span>`).join('');
+
+  for (let r = 0; r < 10; r++) {
+    for (let c = 0; c < 10; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.style.setProperty('--ci', r * 10 + c);
+      const val = me.board[r][c];
+
+      if (val === 'ship') {
+        cell.classList.add('ship-visible');
+        cell.style.background = `rgba(${hexToRgb(me.country.accent)},0.25)`;
+      }
+      else if (val === 'hit') cell.classList.add('hit');
+      else if (val === 'miss') cell.classList.add('miss');
+      else if (val === 'sunk') cell.classList.add('sunk');
+      board.appendChild(cell);
+    }
+  }
+}
+
+// ==================== FIRING LOGIC ====================
+async function fireAt(r, c) {
+  if (!gameActive) return;
+  const target = players[1 - currentPlayer];
+  if (['hit','miss','sunk'].includes(target.board[r][c])) return;
+
+  gameActive = false; // prevent double-click
+
+  // Get cell position for missile animation
+  const enemyBoard = document.getElementById('enemy-board');
+  const cellEl = enemyBoard.children[r * 10 + c];
+  const rect = cellEl.getBoundingClientRect();
+  const targetX = rect.left + rect.width / 2;
+  const targetY = rect.top + rect.height / 2;
+
+  players[currentPlayer].shots++;
+
+  await playMissileAnimation(targetX, targetY);
+
+  const isHit = target.board[r][c] === 'ship';
+
+  if (isHit) {
+    target.board[r][c] = 'hit';
+    players[currentPlayer].hits++;
+    setStatus('🔥 DIRECT HIT!');
+
+    // Check if a ship is sunk
+    const sunkShip = checkSunk(target, r, c);
+    if (sunkShip) {
+      sunkShip.sunk = true;
+      sunkShip.cells.forEach(([sr, sc]) => target.board[sr][sc] = 'sunk');
+      setStatus(`💀 ${sunkShip.name.toUpperCase()} DESTROYED!`);
+    }
+
+    // Check win
+    if (target.ships.every(s => s.sunk)) {
+      renderAttackBoard();
+      renderDefenseBoard();
+      updateTurnUI();
+      setTimeout(() => endGame(currentPlayer), 800);
+      return;
+    }
+  } else {
+    target.board[r][c] = 'miss';
+    setStatus('💨 Miss...');
+  }
+
+  renderAttackBoard();
+  renderDefenseBoard();
+  updateTurnUI();
+
+  // Next turn
+  setTimeout(() => {
+    switchTurn();
+  }, 800);
+}
+
+function checkSunk(player, hitR, hitC) {
+  for (const ship of player.ships) {
+    if (ship.sunk) continue;
+    if (ship.cells.some(([r, c]) => r === hitR && c === hitC)) {
+      if (ship.cells.every(([r, c]) => player.board[r][c] === 'hit' || player.board[r][c] === 'sunk')) {
+        return ship;
+      }
+    }
+  }
+  return null;
+}
+
+function setStatus(text) {
+  document.getElementById('status-bar').textContent = text;
+}
+
+function switchTurn() {
+  currentPlayer = 1 - currentPlayer;
+
+  if (gameMode === 'multi') {
+    // Hot-seat: show transition screen
+    showTransition(() => {
+      gameActive = true;
+      updateTurnUI();
+      renderAttackBoard();
+      renderDefenseBoard();
+    });
+  } else if (players[currentPlayer].isAI) {
+    gameActive = true;
+    updateTurnUI();
+    renderAttackBoard();
+    renderDefenseBoard();
+    setTimeout(() => aiTurn(), 600);
+  } else {
+    gameActive = true;
+    updateTurnUI();
+    renderAttackBoard();
+    renderDefenseBoard();
+  }
+}
+
+// ==================== HOT-SEAT TRANSITION (10s countdown) ====================
+let transitionCallback = null;
+let transitionTimer = null;
+let transitionCountdown = 10;
+const RING_CIRCUMFERENCE = 2 * Math.PI * 70; // ~439.82
+
+function showTransition(callback) {
+  transitionCallback = callback;
+  transitionCountdown = 10;
+  const overlay = document.getElementById('transition-overlay');
+  const ringFg = document.getElementById('ring-fg');
+  const ringNum = document.getElementById('ring-number');
+  const btn = document.getElementById('trans-btn');
+
+  document.getElementById('trans-text').textContent =
+    `PASS DEVICE TO ${players[currentPlayer].country.flag} ${players[currentPlayer].country.name.toUpperCase()}`;
+  document.getElementById('trans-turn-label').textContent =
+    `${players[currentPlayer].country.flag} ${players[currentPlayer].country.name.toUpperCase()}'S TURN`;
+
+  // Reset ring
+  ringFg.style.transition = 'none';
+  ringFg.style.strokeDashoffset = '0';
+  ringNum.textContent = '10';
+  btn.disabled = true;
+  btn.textContent = 'WAITING...';
+
+  overlay.classList.add('active');
+
+  // Force reflow then start animation
+  void ringFg.offsetWidth;
+  ringFg.style.transition = 'stroke-dashoffset 1s linear';
+
+  transitionTimer = setInterval(() => {
+    transitionCountdown--;
+    ringNum.textContent = transitionCountdown;
+    // Animate ring: offset goes from 0 to full circumference
+    const offset = RING_CIRCUMFERENCE * (1 - transitionCountdown / 10);
+    ringFg.style.strokeDashoffset = offset;
+
+    if (transitionCountdown <= 0) {
+      clearInterval(transitionTimer);
+      transitionTimer = null;
+      btn.disabled = false;
+      btn.textContent = "I'M READY";
+      ringNum.textContent = '✓';
+      ringFg.style.stroke = '#39ff14';
+      ringFg.style.filter = 'drop-shadow(0 0 8px rgba(57,255,20,0.5))';
+    }
+  }, 1000);
+}
+
+function transitionDone() {
+  if (transitionCountdown > 0) return; // can't skip
+  const overlay = document.getElementById('transition-overlay');
+  const ringFg = document.getElementById('ring-fg');
+  overlay.classList.remove('active');
+  // Reset ring color
+  ringFg.style.stroke = '';
+  ringFg.style.filter = '';
+  if (transitionTimer) { clearInterval(transitionTimer); transitionTimer = null; }
+  if (transitionCallback) transitionCallback();
+  transitionCallback = null;
+}
+
+// ==================== EXIT MODAL ====================
+function showExitModal() {
+  document.getElementById('exit-modal').classList.add('active');
+}
+function closeExitModal() {
+  document.getElementById('exit-modal').classList.remove('active');
+}
+function confirmExit() {
+  document.getElementById('exit-modal').classList.remove('active');
+  gameActive = false;
+  if (transitionTimer) { clearInterval(transitionTimer); transitionTimer = null; }
+  if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+  document.getElementById('transition-overlay').classList.remove('active');
+  document.getElementById('countdown-overlay').classList.remove('active');
+  backToTitle();
+}
+
+// ==================== AI LOGIC ====================
+function aiTurn() {
+  if (!gameActive) return;
+  const target = players[0]; // AI always attacks player 0
+  let r, c;
+
+  if (difficulty === 'hard' && aiHuntStack.length > 0) {
+    [r, c] = aiHuntStack.pop();
+    while (aiHuntStack.length > 0 && ['hit','miss','sunk'].includes(target.board[r][c])) {
+      if (aiHuntStack.length === 0) { [r, c] = aiRandomTarget(target); break; }
+      [r, c] = aiHuntStack.pop();
+    }
+    if (['hit','miss','sunk'].includes(target.board[r][c])) {
+      [r, c] = aiRandomTarget(target);
+    }
+  } else if (difficulty === 'medium' && aiHuntStack.length > 0) {
+    [r, c] = aiHuntStack.pop();
+    while (aiHuntStack.length > 0 && ['hit','miss','sunk'].includes(target.board[r][c])) {
+      [r, c] = aiHuntStack.pop();
+    }
+    if (['hit','miss','sunk'].includes(target.board[r][c])) {
+      [r, c] = aiRandomTarget(target);
+    }
+  } else {
+    [r, c] = aiRandomTarget(target);
+  }
+
+  // Fire
+  const enemyBoard = document.getElementById('own-board'); // AI attacks player's board, shown as "own" from player perspective
+  fireAI(r, c);
+}
+
+function aiRandomTarget(target) {
+  const available = [];
+  for (let r = 0; r < 10; r++) {
+    for (let c = 0; c < 10; c++) {
+      if (target.board[r][c] === null || target.board[r][c] === 'ship') {
+        // Hard mode uses checkerboard pattern
+        if (difficulty === 'hard' && (r + c) % 2 === 0) continue;
+        available.push([r, c]);
+      }
+    }
+  }
+  // Fallback if checkerboard exhausted
+  if (available.length === 0) {
+    for (let r = 0; r < 10; r++) {
+      for (let c = 0; c < 10; c++) {
+        if (target.board[r][c] === null || target.board[r][c] === 'ship') {
+          available.push([r, c]);
+        }
+      }
+    }
+  }
+  return available[Math.floor(Math.random() * available.length)];
+}
+
+async function fireAI(r, c) {
+  gameActive = false;
+  const target = players[0];
+  players[1].shots++;
+
+  // Get cell position on the defense board (player's own board)
+  const ownBoard = document.getElementById('own-board');
+  const cellEl = ownBoard.children[r * 10 + c];
+  const rect = cellEl.getBoundingClientRect();
+  const targetX = rect.left + rect.width / 2;
+  const targetY = rect.top + rect.height / 2;
+
+  setStatus('🚀 INCOMING MISSILE!');
+  await playMissileAnimation(targetX, targetY);
+
+  const isHit = target.board[r][c] === 'ship';
+
+  if (isHit) {
+    target.board[r][c] = 'hit';
+    players[1].hits++;
+    setStatus('💥 YOUR SHIP WAS HIT!');
+
+    // Add adjacent cells to hunt stack
+    const adj = [[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
+    adj.forEach(([ar,ac]) => {
+      if (ar >= 0 && ar < 10 && ac >= 0 && ac < 10) {
+        if (!['hit','miss','sunk'].includes(target.board[ar][ac])) {
+          aiHuntStack.push([ar, ac]);
+        }
+      }
+    });
+
+    const sunkShip = checkSunk(target, r, c);
+    if (sunkShip) {
+      sunkShip.sunk = true;
+      sunkShip.cells.forEach(([sr, sc]) => target.board[sr][sc] = 'sunk');
+      setStatus(`💀 YOUR ${sunkShip.name.toUpperCase()} WAS DESTROYED!`);
+      // Clear hunt stack for this ship on hard
+      if (difficulty === 'hard') aiHuntStack = aiHuntStack.filter(([ar,ac]) => !['hit','miss','sunk'].includes(target.board[ar][ac]));
+    }
+
+    if (target.ships.every(s => s.sunk)) {
+      renderAttackBoard();
+      renderDefenseBoard();
+      updateTurnUI();
+      setTimeout(() => endGame(1), 800);
+      return;
+    }
+  } else {
+    target.board[r][c] = 'miss';
+    setStatus('😮‍💨 Enemy missed!');
+  }
+
+  renderAttackBoard();
+  renderDefenseBoard();
+  updateTurnUI();
+
+  setTimeout(() => {
+    currentPlayer = 0;
+    gameActive = true;
+    updateTurnUI();
+    renderAttackBoard();
+    renderDefenseBoard();
+    setStatus('');
+  }, 1000);
+}
+
+// ==================== MISSILE ANIMATION ====================
+function playMissileAnimation(targetX, targetY) {
+  return new Promise(resolve => {
+    const overlay = document.getElementById('missile-overlay');
+    const canvas = document.getElementById('missile-canvas');
+    overlay.style.display = 'block';
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+
+    const startX = canvas.width / 2;
+    const startY = -40;
+    const peakY = Math.min(startY, targetY) - 200;
+
+    const particles = [];
+    let t = 0;
+    const duration = 40; // frames
+
+    function bezierPoint(t, p0, p1, p2) {
+      const u = 1 - t;
+      return u * u * p0 + 2 * u * t * p1 + t * t * p2;
+    }
+
+    const ctrlX = (startX + targetX) / 2 + (Math.random() - 0.5) * 100;
+
+    function frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      t++;
+      const progress = Math.min(t / duration, 1);
+      const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+      const mx = bezierPoint(eased, startX, ctrlX, targetX);
+      const my = bezierPoint(eased, startY, peakY, targetY);
+
+      // Trail particles
+      if (progress < 1) {
+        for (let i = 0; i < 3; i++) {
+          particles.push({
+            x: mx + (Math.random() - 0.5) * 6,
+            y: my + (Math.random() - 0.5) * 6,
+            vx: (Math.random() - 0.5) * 2,
+            vy: Math.random() * 2 + 1,
+            life: 1,
+            size: Math.random() * 4 + 2,
+          });
+        }
+      }
+
+      // Update particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 0.03;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+
+        ctx.globalAlpha = p.life;
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+        grad.addColorStop(0, '#ffcc00');
+        grad.addColorStop(0.5, '#ff6600');
+        grad.addColorStop(1, 'rgba(255,34,0,0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      // Missile head
+      if (progress < 1) {
+        ctx.shadowColor = '#ff4400';
+        ctx.shadowBlur = 20;
+        ctx.fillStyle = '#ffdd44';
+        ctx.beginPath();
+        ctx.arc(mx, my, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // Explosion
+      if (progress >= 1) {
+        const expProgress = (t - duration) / 20;
+        if (expProgress < 1) {
+          const expR = expProgress * 60;
+          ctx.globalAlpha = 1 - expProgress;
+
+          // Outer blast
+          const grad = ctx.createRadialGradient(targetX, targetY, 0, targetX, targetY, expR);
+          grad.addColorStop(0, '#ffffff');
+          grad.addColorStop(0.2, '#ffcc00');
+          grad.addColorStop(0.5, '#ff4400');
+          grad.addColorStop(1, 'rgba(255,34,0,0)');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(targetX, targetY, expR, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Explosion particles
+          if (expProgress < 0.3) {
+            for (let i = 0; i < 5; i++) {
+              particles.push({
+                x: targetX, y: targetY,
+                vx: (Math.random() - 0.5) * 10,
+                vy: (Math.random() - 0.5) * 10,
+                life: 0.8, size: Math.random() * 5 + 2,
+              });
+            }
+          }
+
+          ctx.globalAlpha = 1;
+          requestAnimationFrame(frame);
+        } else {
+          overlay.style.display = 'none';
+          resolve();
+        }
+        return;
+      }
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  });
+}
+
+// ==================== GAME OVER ====================
+function endGame(winnerIdx) {
+  gameActive = false;
+  showScreen('gameover-screen');
+
+  const winner = players[winnerIdx];
+  const loser = players[1 - winnerIdx];
+
+  let winnerLabel;
+  if (gameMode === 'single') {
+    winnerLabel = winnerIdx === 0 ? 'YOU WIN!' : 'AI WINS!';
+  } else {
+    winnerLabel = `PLAYER ${winnerIdx + 1} WINS!`;
+  }
+
+  document.getElementById('go-winner').textContent =
+    `${winner.country.flag} ${winner.country.name} — ${winnerLabel}`;
+
+  const accuracy1 = players[0].shots > 0 ? Math.round(players[0].hits / players[0].shots * 100) : 0;
+  const accuracy2 = players[1].shots > 0 ? Math.round(players[1].hits / players[1].shots * 100) : 0;
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-val">${players[0].shots}</div><div class="stat-label">${players[0].country.flag} SHOTS FIRED</div></div>
+    <div class="stat-card"><div class="stat-val">${players[1].shots}</div><div class="stat-label">${players[1].country.flag} SHOTS FIRED</div></div>
+    <div class="stat-card"><div class="stat-val">${accuracy1}%</div><div class="stat-label">${players[0].country.flag} ACCURACY</div></div>
+    <div class="stat-card"><div class="stat-val">${accuracy2}%</div><div class="stat-label">${players[1].country.flag} ACCURACY</div></div>
+  `;
+}
+
+// ==================== INIT ====================
+showScreen('title-screen');
+</script>
+</body>
+</html>

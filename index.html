@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dylan's Project Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f14;
+    --surface: #1a1a24;
+    --border: #2a2a3a;
+    --text: #e8e6f0;
+    --text-dim: #8888a0;
+    --accent: #7c6ff7;
+    --accent-glow: rgba(124,111,247,0.15);
+    --green: #39ff14;
+    --orange: #ff6622;
+    --pink: #e88bc4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  header p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+
+  .section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--accent-glow);
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: fit-content;
+  }
+
+  .badge-app { background: rgba(124,111,247,0.15); color: var(--accent); }
+  .badge-biz { background: rgba(232,139,196,0.15); color: var(--pink); }
+  .badge-game { background: rgba(57,255,20,0.1); color: var(--green); }
+  .badge-tool { background: rgba(255,102,34,0.15); color: var(--orange); }
+
+  .game-card:hover {
+    border-color: var(--green);
+    box-shadow: 0 8px 24px rgba(57,255,20,0.1);
+  }
+
+  footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Dylan's Projects</h1>
+    <p>A collection of apps, sites, and games</p>
+  </header>
+
+  <h2 class="section-title">Apps</h2>
+  <div class="grid">
+    <a href="recipebox/" class="card">
+      <span class="badge badge-app">App</span>
+      <span class="card-title">The Forking Good Club</span>
+      <span class="card-desc">Recipe sharing app for friends and family. Share, like, and save your favorite recipes.</span>
+    </a>
+    <a href="osrs-inv-tracker/" class="card">
+      <span class="badge badge-tool">Tool</span>
+      <span class="card-title">OSRS Activity Helper</span>
+      <span class="card-desc">Old School RuneScape inventory and gear tracker.</span>
+    </a>
+    <a href="ww3electricboogaloo/" class="card">
+      <span class="badge badge-game">Game</span>
+      <span class="card-title">WW3: Electric Boogaloo</span>
+      <span class="card-desc">Turn-based strategy game inspired by Axis &amp; Allies. Dice combat, alliances, and nuclear weapons.</span>
+    </a>
+  </div>
+
+  <h2 class="section-title">Business Sites</h2>
+  <div class="grid">
+    <a href="tulsahomehelp/" class="card">
+      <span class="badge badge-biz">Business</span>
+      <span class="card-title">Tulsa Home Help</span>
+      <span class="card-desc">Home services marketplace: pressure washing, lawn care, junk hauling, and fence repair.</span>
+    </a>
+    <a href="partyplug/" class="card">
+      <span class="badge badge-biz">Business</span>
+      <span class="card-title">918 Party Co.</span>
+      <span class="card-desc">Event services in Tulsa: bounce houses, DJs, caterers, and photo booths.</span>
+    </a>
+    <a href="heelerconstruction/" class="card">
+      <span class="badge badge-biz">Business</span>
+      <span class="card-title">Heeler Construction</span>
+      <span class="card-desc">Construction company in Elk City, OK. Remodels, new builds, framing, and fencing.</span>
+    </a>
+    <a href="haughhoney/" class="card">
+      <span class="badge badge-biz">Business</span>
+      <span class="card-title">Haugh Honey</span>
+      <span class="card-desc">Local honey farm. Raw honey, honeycomb, and beekeeping.</span>
+    </a>
+    <a href="handyrandys/" class="card">
+      <span class="badge badge-biz">Business</span>
+      <span class="card-title">Handy Randy's</span>
+      <span class="card-desc">Tulsa house sitting, pet sitting, and handyman services.</span>
+    </a>
+  </div>
+
+  <h2 class="section-title">Mini Games</h2>
+  <div class="grid">
+    <a href="games/battleship.html" class="card game-card">
+      <span class="badge badge-game">Game</span>
+      <span class="card-title">LAVASTRIKE - Battleship</span>
+      <span class="card-desc">Classic battleship with a lava-themed twist. Place your fleet and sink the enemy.</span>
+    </a>
+    <a href="games/snake.html" class="card game-card">
+      <span class="badge badge-game">Game</span>
+      <span class="card-title">SNEK - Snake Game</span>
+      <span class="card-desc">Retro snake game with a neon green CRT aesthetic. How long can you survive?</span>
+    </a>
+  </div>
+
+  <footer>
+    Built by Dylan Albert
+  </footer>
+</div>
+</body>
+</html>

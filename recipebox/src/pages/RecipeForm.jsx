@@ -47,6 +47,7 @@ export default function RecipeForm({ isEdit = false }) {
       setForm({
         ...EMPTY_RECIPE,
         ...data,
+        description: data.description || '',
         prep_minutes: data.prep_minutes || '',
         cook_minutes: data.cook_minutes || '',
         servings: data.servings || '',

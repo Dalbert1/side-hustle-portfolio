@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
-import { Plus, X, GripVertical, ArrowLeft } from 'lucide-react'
+import { Plus, X, GripVertical, ArrowLeft, ChevronUp, ChevronDown } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import ImageUpload from '../components/ImageUpload'
@@ -35,6 +35,7 @@ export default function RecipeForm({ isEdit = false }) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(isEdit)
+  const [dragIngredientIndex, setDragIngredientIndex] = useState(null)
 
   useEffect(() => {
     if (isEdit && id) loadRecipe()
@@ -78,6 +79,32 @@ export default function RecipeForm({ isEdit = false }) {
 
   function removeIngredient(index) {
     setForm(f => ({ ...f, ingredients: f.ingredients.filter((_, i) => i !== index) }))
+  }
+
+  function moveIngredient(fromIndex, toIndex) {
+    if (toIndex < 0 || toIndex >= form.ingredients.length) return
+    setForm(f => {
+      const updated = [...f.ingredients]
+      const [moved] = updated.splice(fromIndex, 1)
+      updated.splice(toIndex, 0, moved)
+      return { ...f, ingredients: updated }
+    })
+  }
+
+  function handleIngredientDragStart(e, index) {
+    setDragIngredientIndex(index)
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
+  function handleIngredientDragOver(e, index) {
+    e.preventDefault()
+    if (dragIngredientIndex === null || dragIngredientIndex === index) return
+    moveIngredient(dragIngredientIndex, index)
+    setDragIngredientIndex(index)
+  }
+
+  function handleIngredientDragEnd() {
+    setDragIngredientIndex(null)
   }
 
   function updateStep(index, field, value) {
@@ -306,7 +333,37 @@ export default function RecipeForm({ isEdit = false }) {
           <label className="text-xs font-medium text-warm-gray uppercase tracking-wider mb-3 block">Ingredients</label>
           <div className="flex flex-col gap-2">
             {form.ingredients.map((ing, i) => (
-              <div key={i} className="flex items-center gap-2">
+              <div
+                key={i}
+                className={`flex items-center gap-2 ${dragIngredientIndex === i ? 'opacity-50' : ''}`}
+                draggable
+                onDragStart={e => handleIngredientDragStart(e, i)}
+                onDragOver={e => handleIngredientDragOver(e, i)}
+                onDragEnd={handleIngredientDragEnd}
+              >
+                {form.ingredients.length > 1 && (
+                  <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => moveIngredient(i, i - 1)}
+                      disabled={i === 0}
+                      className="p-0.5 text-warm-gray hover:text-sage disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      aria-label="Move ingredient up"
+                    >
+                      <ChevronUp size={12} />
+                    </button>
+                    <GripVertical size={14} className="text-warm-gray cursor-grab" />
+                    <button
+                      type="button"
+                      onClick={() => moveIngredient(i, i + 1)}
+                      disabled={i === form.ingredients.length - 1}
+                      className="p-0.5 text-warm-gray hover:text-sage disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      aria-label="Move ingredient down"
+                    >
+                      <ChevronDown size={12} />
+                    </button>
+                  </div>
+                )}
                 <input
                   type="text"
                   value={ing.amount}

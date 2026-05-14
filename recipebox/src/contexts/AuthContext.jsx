@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
     const { count } = await supabase
       .from('user_profiles')
       .select('*', { count: 'exact', head: true })
-    if (count >= 5) {
+    if (count >= 20) {
       return { error: { message: 'Signups are currently closed. Maximum number of users reached.' } }
     }
     const { data, error } = await supabase.auth.signUp({ email, password })

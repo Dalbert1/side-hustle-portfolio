@@ -343,16 +343,7 @@ function About() {
         </div>
 
         <div className="lg:col-span-7 order-1 lg:order-2">
-          <div className="flex items-center gap-3 text-amber-warm/90 mb-8">
-            <span className="h-px w-10 bg-amber-warm/60" />
-            <span className="font-display text-xs tracking-[0.32em]">The Artist</span>
-          </div>
-
-          <p className="font-serif-display italic text-4xl sm:text-5xl lg:text-6xl text-dust leading-[1.05]">
-            "From 90s country to modern <span className="text-amber-warm">Red Dirt</span>."
-          </p>
-
-          <div className="mt-12 grid grid-cols-3 gap-6 border-t border-dust/10 pt-8">
+          <div className="grid grid-cols-3 gap-6 border-t border-dust/10 pt-8">
             <Stat label="Roots" value="Western OK" />
             <Stat label="Sound" value="Red Dirt" />
             <Stat label="Vibe" value="Live & Loud" />

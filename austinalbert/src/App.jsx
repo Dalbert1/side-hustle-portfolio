@@ -343,35 +343,16 @@ function About() {
         </div>
 
         <div className="lg:col-span-7 order-1 lg:order-2">
-          <div className="flex items-center gap-3 text-amber-warm/90 mb-6">
+          <div className="flex items-center gap-3 text-amber-warm/90 mb-8">
             <span className="h-px w-10 bg-amber-warm/60" />
             <span className="font-display text-xs tracking-[0.32em]">The Artist</span>
           </div>
 
-          <h2 className="font-display text-5xl sm:text-6xl leading-[0.9] text-dust mb-8">
-            HONEST SONGS
-            <br />
-            <span className="text-amber-warm">DUSTY ROADS</span>
-          </h2>
-
-          <p className="font-serif-display italic text-xl sm:text-2xl text-dust/85 leading-relaxed mb-6">
-            "From 90s country to modern Red Dirt."
+          <p className="font-serif-display italic text-4xl sm:text-5xl lg:text-6xl text-dust leading-[1.05]">
+            "From 90s country to modern <span className="text-amber-warm">Red Dirt</span>."
           </p>
 
-          <div className="space-y-4 text-base sm:text-lg text-dust/75 leading-relaxed">
-            <p>
-              Austin Albert is a singer and songwriter shaped by the wide open country of Western
-              Oklahoma. His sound pulls from the storytelling tradition of 90s country and the
-              grit of the Red Dirt scene that runs through every honky tonk between Stillwater
-              and the panhandle.
-            </p>
-            <p>
-              Expect songs about small towns, long drives, hard work, and the people who make
-              all of it worth it. No filler, no studio gloss, just honest country music.
-            </p>
-          </div>
-
-          <div className="mt-10 grid grid-cols-3 gap-6 border-t border-dust/10 pt-8">
+          <div className="mt-12 grid grid-cols-3 gap-6 border-t border-dust/10 pt-8">
             <Stat label="Roots" value="Western OK" />
             <Stat label="Sound" value="Red Dirt" />
             <Stat label="Vibe" value="Live & Loud" />

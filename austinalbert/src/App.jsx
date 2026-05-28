@@ -330,8 +330,8 @@ function Ticker() {
 
 function About() {
   return (
-    <section id="about" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <section id="about" className="relative pt-10 sm:pt-14 pb-20 sm:pb-28">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         <div className="lg:col-span-5 order-2 lg:order-1">
           <div className="relative">
             <div

@@ -1,0 +1,11 @@
+{
+  "appId": "com.forkinggoodclub.app",
+  "appName": "Forking Good",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "automatic"
+  }
+}

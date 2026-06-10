@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Forking Good</string>
+    <string name="title_activity_main">Forking Good</string>
+    <string name="package_name">com.forkinggoodclub.app</string>
+    <string name="custom_url_scheme">com.forkinggoodclub.app</string>
+</resources>

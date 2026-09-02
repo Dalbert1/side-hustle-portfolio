@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#12160f">
-<title>Tulsa Dugout Counter</title>
-<meta name="description" content="Free ball, strike, and pitch count tracker for Tulsa softball and baseball games. Works on your phone, no signup.">
+<title>Dugout Counter</title>
+<meta name="description" content="Free ball, strike, out, and pitch count tracker for softball and baseball. Works on your phone, saves your game, no signup.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -18,6 +20,7 @@
     --ball: #4ea3f5;
     --strike: #ff5a3c;
     --pitch: #f2c14e;
+    --out: #e8ecdf;
     --chalk: #e8ecdf;
     --dirt: #b5763f;
   }
@@ -30,6 +33,7 @@
     font-family: 'Inter', system-ui, sans-serif;
     min-height: 100vh;
     padding: 1rem 0.75rem 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
     background-image:
       radial-gradient(circle at 50% -10%, rgba(78,163,245,0.10), transparent 55%),
       repeating-linear-gradient(115deg, rgba(255,255,255,0.012) 0 22px, transparent 22px 44px);
@@ -37,28 +41,47 @@
 
   .wrap { max-width: 560px; margin: 0 auto; }
 
-  header { text-align: center; margin-bottom: 1.25rem; }
+  header { text-align: center; margin-bottom: 1rem; }
 
-  h1 {
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
+  h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; }
 
-  header p {
-    color: var(--text-dim);
-    font-size: 0.8rem;
-    margin-top: 0.3rem;
-  }
+  header p { color: var(--text-dim); font-size: 0.8rem; margin-top: 0.3rem; }
 
-  /* Big scoreboard readout */
+  /* Scoreboard */
   .board {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 1.25rem 1rem 1rem;
+    padding: 0.75rem 1rem 1rem;
     text-align: center;
     margin-bottom: 0.75rem;
+  }
+
+  .inning-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .inning-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    min-width: 6.5rem;
+  }
+
+  .half-arrow {
+    width: 34px;
+    height: 30px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
   }
 
   .board-label {
@@ -74,7 +97,7 @@
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.04em;
-    margin: 0.4rem 0 0.6rem;
+    margin: 0.3rem 0 0.6rem;
     font-variant-numeric: tabular-nums;
   }
 
@@ -82,7 +105,7 @@
   .count .sep { color: var(--text-dim); font-weight: 500; }
   .count .s { color: var(--strike); }
 
-  .pips { display: flex; justify-content: center; gap: 1.5rem; }
+  .pips { display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap; }
 
   .pip-group { display: flex; align-items: center; gap: 0.4rem; }
 
@@ -103,8 +126,9 @@
 
   .pip.on-ball { background: var(--ball); border-color: var(--ball); }
   .pip.on-strike { background: var(--strike); border-color: var(--strike); }
+  .pip.on-out { background: var(--out); border-color: var(--out); }
 
-  /* Result banner */
+  /* Banner */
   .banner {
     border-radius: 12px;
     padding: 0.7rem;
@@ -119,6 +143,8 @@
   .banner.show { display: block; animation: pop 0.25s ease-out; }
   .banner.walk { background: rgba(78,163,245,0.15); color: var(--ball); border: 1px solid rgba(78,163,245,0.4); }
   .banner.k { background: rgba(255,90,60,0.15); color: var(--strike); border: 1px solid rgba(255,90,60,0.4); }
+  .banner.inning { background: rgba(232,236,223,0.12); color: var(--chalk); border: 1px solid rgba(232,236,223,0.35); }
+  .banner.limit { background: rgba(242,193,78,0.15); color: var(--pitch); border: 1px solid rgba(242,193,78,0.45); }
 
   @keyframes pop {
     from { transform: scale(0.96); opacity: 0; }
@@ -133,22 +159,15 @@
     padding: 0.85rem 0.9rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.7rem;
     margin-bottom: 0.6rem;
   }
 
   .row-info { flex: 1; min-width: 0; }
 
-  .row-name {
-    font-size: 0.95rem;
-    font-weight: 700;
-  }
+  .row-name { font-size: 0.95rem; font-weight: 700; }
 
-  .row-sub {
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    margin-top: 0.1rem;
-  }
+  .row-sub { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.1rem; }
 
   .row-value {
     font-size: 2rem;
@@ -162,8 +181,10 @@
   .row.balls .row-value { color: var(--ball); }
   .row.strikes .row-value { color: var(--strike); }
   .row.pitches .row-value { color: var(--pitch); }
+  .row.outs .row-value { color: var(--out); }
 
-  .btns { display: flex; gap: 0.5rem; }
+  .row.pitches .row-value.near { color: #ffb020; }
+  .row.pitches .row-value.over { color: var(--strike); }
 
   button {
     font-family: inherit;
@@ -172,11 +193,12 @@
     background: var(--surface-2);
     color: var(--text);
     border-radius: 10px;
-    transition: transform 0.08s, background 0.15s, border-color 0.15s;
+    transition: transform 0.08s, background 0.15s, border-color 0.15s, opacity 0.15s;
   }
 
   button:active { transform: scale(0.94); }
   button:disabled { opacity: 0.35; cursor: default; }
+  button:focus-visible { outline: 2px solid var(--ball); outline-offset: 2px; }
 
   .step {
     width: 52px;
@@ -187,68 +209,105 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 auto;
   }
 
   .row.balls .step.plus:not(:disabled) { border-color: rgba(78,163,245,0.5); color: var(--ball); }
   .row.strikes .step.plus:not(:disabled) { border-color: rgba(255,90,60,0.5); color: var(--strike); }
   .row.pitches .step.plus:not(:disabled) { border-color: rgba(242,193,78,0.5); color: var(--pitch); }
+  .row.outs .step.plus:not(:disabled) { border-color: rgba(232,236,223,0.4); color: var(--out); }
 
-  /* Foul ball */
-  .foul {
-    width: 100%;
-    padding: 0.85rem;
-    font-size: 0.9rem;
-    font-weight: 700;
+  .limit-chip {
+    display: inline-block;
+    margin-top: 0.35rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.68rem;
+    font-weight: 600;
     letter-spacing: 0.04em;
-    margin-bottom: 0.6rem;
-    color: var(--chalk);
+    color: var(--text-dim);
+    border-radius: 6px;
   }
 
-  .foul span { color: var(--text-dim); font-weight: 500; font-size: 0.75rem; }
+  .limit-chip.active { color: var(--pitch); border-color: rgba(242,193,78,0.5); }
 
-  /* Session totals */
+  /* Action pair */
+  .actions { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; }
+
+  .action {
+    flex: 1;
+    padding: 0.85rem 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+  }
+
+  .action small { display: block; font-size: 0.68rem; font-weight: 500; color: var(--text-dim); margin-top: 0.15rem; }
+
+  .action.foul { color: var(--chalk); }
+  .action.undo:not(:disabled) { color: var(--ball); border-color: rgba(78,163,245,0.35); }
+
+  /* Totals */
   .totals {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 0.9rem;
+    padding: 0.9rem 0.5rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
     text-align: center;
     margin: 1rem 0 0.6rem;
   }
 
-  .total-num {
-    font-size: 1.5rem;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-  }
+  .total-num { font-size: 1.4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 
   .total-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     color: var(--text-dim);
     margin-top: 0.15rem;
   }
 
-  .resets { display: flex; gap: 0.5rem; }
+  .resets { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
   .reset {
-    flex: 1;
-    padding: 0.8rem;
-    font-size: 0.8rem;
+    flex: 1 1 30%;
+    padding: 0.8rem 0.4rem;
+    font-size: 0.78rem;
     font-weight: 600;
   }
 
   .reset.hard { color: var(--dirt); border-color: rgba(181,118,63,0.4); }
 
+  .hint {
+    margin-top: 0.9rem;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    text-align: center;
+    line-height: 1.7;
+    display: none;
+  }
+
+  .hint kbd {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.05rem 0.3rem;
+    font-family: inherit;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  @media (hover: hover) and (pointer: fine) { .hint { display: block; } }
+
   footer {
     text-align: center;
     color: var(--text-dim);
     font-size: 0.72rem;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     line-height: 1.6;
   }
 
@@ -263,11 +322,16 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>Tulsa Dugout Counter</h1>
-    <p>Balls, strikes, and pitch count. Tap and go.</p>
+    <h1>Dugout Counter</h1>
+    <p>Balls, strikes, outs, and pitch count. Tap and go.</p>
   </header>
 
   <div class="board">
+    <div class="inning-bar">
+      <button class="half-arrow" id="halfBack" aria-label="Previous half inning">&#9664;</button>
+      <div class="inning-label" id="inningLabel">Top 1</div>
+      <button class="half-arrow" id="halfFwd" aria-label="Next half inning">&#9654;</button>
+    </div>
     <div class="board-label">Count</div>
     <div class="count">
       <span class="b" id="bigBalls">0</span><span class="sep">-</span><span class="s" id="bigStrikes">0</span>
@@ -284,10 +348,15 @@
         <div class="pip" data-strike="1"></div>
         <div class="pip" data-strike="2"></div>
       </div>
+      <div class="pip-group">
+        <span>O</span>
+        <div class="pip" data-out="1"></div>
+        <div class="pip" data-out="2"></div>
+      </div>
     </div>
   </div>
 
-  <div class="banner" id="banner"></div>
+  <div class="banner" id="banner" role="status" aria-live="polite"></div>
 
   <div class="row balls">
     <div class="row-info">
@@ -309,17 +378,31 @@
     <button class="step plus" id="strikesPlus" aria-label="Add a strike">+</button>
   </div>
 
+  <div class="row outs">
+    <div class="row-info">
+      <div class="row-name">Outs</div>
+      <div class="row-sub">3 outs flips the inning</div>
+    </div>
+    <button class="step minus" id="outsMinus" aria-label="Remove an out">&minus;</button>
+    <div class="row-value" id="outsVal">0</div>
+    <button class="step plus" id="outsPlus" aria-label="Add an out">+</button>
+  </div>
+
   <div class="row pitches">
     <div class="row-info">
       <div class="row-name">Pitch Count</div>
       <div class="row-sub">This pitcher, this outing</div>
+      <button class="limit-chip" id="limitChip">Limit: off</button>
     </div>
     <button class="step minus" id="pitchMinus" aria-label="Remove a pitch">&minus;</button>
     <div class="row-value" id="pitchVal">0</div>
     <button class="step plus" id="pitchPlus" aria-label="Add a pitch">+</button>
   </div>
 
-  <button class="foul" id="foulBtn">FOUL BALL <span>counts the pitch, holds at 2 strikes</span></button>
+  <div class="actions">
+    <button class="action foul" id="foulBtn">FOUL BALL<small>counts the pitch, holds at 2 strikes</small></button>
+    <button class="action undo" id="undoBtn">UNDO<small id="undoLabel">nothing to undo</small></button>
+  </div>
 
   <div class="totals">
     <div>
@@ -332,184 +415,411 @@
     </div>
     <div>
       <div class="total-num" id="kCount">0</div>
-      <div class="total-label">Strikeouts</div>
+      <div class="total-label">K's</div>
+    </div>
+    <div>
+      <div class="total-num" id="strikePct">&ndash;</div>
+      <div class="total-label">Strike %</div>
     </div>
   </div>
 
   <div class="resets">
     <button class="reset" id="newBatter">New Batter</button>
-    <button class="reset hard" id="newGame">Reset Everything</button>
+    <button class="reset" id="newPitcher">New Pitcher</button>
+    <button class="reset hard" id="newGame">Reset Game</button>
   </div>
 
+  <p class="hint">
+    Keyboard: <kbd>B</kbd> ball &middot; <kbd>S</kbd> strike &middot; <kbd>F</kbd> foul &middot;
+    <kbd>O</kbd> out &middot; <kbd>P</kbd> pitch &middot; <kbd>N</kbd> new batter &middot; <kbd>U</kbd> undo
+  </p>
+
   <footer>
-    Nothing is saved to a server. Your count sticks around while this tab is open.<br>
-    Built in Tulsa by Dylan Albert &middot; <a href="../">More projects</a>
+    Saved right on this device, no account and no server. Close the tab or
+    the whole browser and your game is still here when you come back.<br>
+    Built by Dylan Albert &middot; <a href="../">More projects</a>
   </footer>
 </div>
 
 <script>
 (function () {
-  var KEY = 'dugout-counter-session';
+  var KEY = 'dugout-counter-v2';
+  var LIMITS = [0, 50, 65, 75, 85, 95, 105];
+  var MAX_UNDO = 60;
 
-  var state = {
+  var defaults = {
     balls: 0,
     strikes: 0,
+    outs: 0,
     pitches: 0,
+    inning: 1,
+    half: 'T',
     batters: 0,
     walks: 0,
-    strikeouts: 0
+    strikeouts: 0,
+    strikesThrown: 0,
+    ballsThrown: 0,
+    limit: 0
   };
 
-  var el = {
-    bigBalls: document.getElementById('bigBalls'),
-    bigStrikes: document.getElementById('bigStrikes'),
-    ballsVal: document.getElementById('ballsVal'),
-    strikesVal: document.getElementById('strikesVal'),
-    pitchVal: document.getElementById('pitchVal'),
-    ballsPlus: document.getElementById('ballsPlus'),
-    ballsMinus: document.getElementById('ballsMinus'),
-    strikesPlus: document.getElementById('strikesPlus'),
-    strikesMinus: document.getElementById('strikesMinus'),
-    pitchPlus: document.getElementById('pitchPlus'),
-    pitchMinus: document.getElementById('pitchMinus'),
-    foulBtn: document.getElementById('foulBtn'),
-    banner: document.getElementById('banner'),
-    batterCount: document.getElementById('batterCount'),
-    walkCount: document.getElementById('walkCount'),
-    kCount: document.getElementById('kCount'),
-    newBatter: document.getElementById('newBatter'),
-    newGame: document.getElementById('newGame')
-  };
+  var state = Object.assign({}, defaults);
+  var history = [];
+  var lastAction = '';
+  var banner = { text: '', kind: '' };
 
-  var ballPips = Array.prototype.slice.call(document.querySelectorAll('[data-ball]'));
-  var strikePips = Array.prototype.slice.call(document.querySelectorAll('[data-strike]'));
+  var el = {};
+  ['bigBalls','bigStrikes','ballsVal','strikesVal','outsVal','pitchVal','ballsPlus','ballsMinus',
+   'strikesPlus','strikesMinus','outsPlus','outsMinus','pitchPlus','pitchMinus','foulBtn','undoBtn',
+   'undoLabel','banner','batterCount','walkCount','kCount','strikePct','newBatter','newPitcher',
+   'newGame','inningLabel','halfBack','halfFwd','limitChip'].forEach(function (id) {
+    el[id] = document.getElementById(id);
+  });
+
+  var ballPips = [].slice.call(document.querySelectorAll('[data-ball]'));
+  var strikePips = [].slice.call(document.querySelectorAll('[data-strike]'));
+  var outPips = [].slice.call(document.querySelectorAll('[data-out]'));
+
+  /* ---- storage: localStorage so the game survives a closed tab or browser ---- */
+
+  var store = (function () {
+    var candidates = [];
+    try { if (window.localStorage) candidates.push(window.localStorage); } catch (e) { /* blocked */ }
+    try { if (window.sessionStorage) candidates.push(window.sessionStorage); } catch (e) { /* blocked */ }
+    for (var i = 0; i < candidates.length; i++) {
+      try {
+        candidates[i].setItem(KEY + '-probe', '1');
+        candidates[i].removeItem(KEY + '-probe');
+        return candidates[i];
+      } catch (e) { /* full or private mode, try the next one */ }
+    }
+    return null;
+  })();
 
   function load() {
+    if (!store) return;
     try {
-      var raw = sessionStorage.getItem(KEY);
-      if (!raw) return;
-      var saved = JSON.parse(raw);
-      Object.keys(state).forEach(function (k) {
-        if (typeof saved[k] === 'number' && saved[k] >= 0) state[k] = saved[k];
+      var saved = JSON.parse(store.getItem(KEY) || 'null');
+      if (!saved) return;
+      Object.keys(defaults).forEach(function (k) {
+        var v = saved[k];
+        if (k === 'half') {
+          if (v === 'T' || v === 'B') state.half = v;
+        } else if (typeof v === 'number' && isFinite(v) && v >= 0) {
+          state[k] = v;
+        }
       });
-    } catch (e) { /* private mode or blocked storage, run from defaults */ }
+      if (LIMITS.indexOf(state.limit) === -1) state.limit = 0;
+      if (state.inning < 1) state.inning = 1;
+    } catch (e) { /* corrupt payload, fall back to defaults */ }
   }
 
   function save() {
-    try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+    if (!store) return;
+    try { store.setItem(KEY, JSON.stringify(state)); } catch (e) { /* quota or blocked */ }
   }
 
-  function showBanner(text, kind) {
-    el.banner.textContent = text;
-    el.banner.className = 'banner show ' + kind;
+  /* ---- undo ---- */
+
+  function snapshot(label) {
+    history.push({ state: Object.assign({}, state), banner: Object.assign({}, banner), label: label });
+    if (history.length > MAX_UNDO) history.shift();
+    lastAction = label;
   }
 
-  function clearBanner() {
-    el.banner.className = 'banner';
+  function undo() {
+    var prev = history.pop();
+    if (!prev) return;
+    state = prev.state;
+    banner = prev.banner;
+    lastAction = history.length ? history[history.length - 1].label : '';
+    render();
   }
+
+  /* ---- helpers ---- */
+
+  function buzz(ms) {
+    try { if (navigator.vibrate) navigator.vibrate(ms || 12); } catch (e) { /* unsupported */ }
+  }
+
+  function setBanner(text, kind) { banner = { text: text, kind: kind }; }
+  function clearBanner() { banner = { text: '', kind: '' }; }
+
+  function clearCount() { state.balls = 0; state.strikes = 0; }
+
+  function flipHalf(dir) {
+    if (dir > 0) {
+      if (state.half === 'T') { state.half = 'B'; }
+      else { state.half = 'T'; state.inning++; }
+    } else {
+      if (state.half === 'B') { state.half = 'T'; }
+      else if (state.inning > 1) { state.half = 'B'; state.inning--; }
+    }
+  }
+
+  function checkLimit() {
+    if (!state.limit || state.pitches < state.limit) return;
+    setBanner('PITCH LIMIT: ' + state.pitches + ' of ' + state.limit + '. Time for a change.', 'limit');
+  }
+
+  /* ---- render ---- */
 
   function render() {
     el.bigBalls.textContent = state.balls;
     el.bigStrikes.textContent = state.strikes;
     el.ballsVal.textContent = state.balls;
     el.strikesVal.textContent = state.strikes;
+    el.outsVal.textContent = state.outs;
     el.pitchVal.textContent = state.pitches;
     el.batterCount.textContent = state.batters;
     el.walkCount.textContent = state.walks;
     el.kCount.textContent = state.strikeouts;
+    el.inningLabel.textContent = (state.half === 'T' ? 'Top ' : 'Bot ') + state.inning;
 
-    ballPips.forEach(function (p) {
-      p.classList.toggle('on-ball', state.balls >= Number(p.dataset.ball));
-    });
-    strikePips.forEach(function (p) {
-      p.classList.toggle('on-strike', state.strikes >= Number(p.dataset.strike));
-    });
+    var tracked = state.strikesThrown + state.ballsThrown;
+    el.strikePct.textContent = tracked ? Math.round((state.strikesThrown / tracked) * 100) + '%' : '–';
+
+    ballPips.forEach(function (p) { p.classList.toggle('on-ball', state.balls >= +p.dataset.ball); });
+    strikePips.forEach(function (p) { p.classList.toggle('on-strike', state.strikes >= +p.dataset.strike); });
+    outPips.forEach(function (p) { p.classList.toggle('on-out', state.outs >= +p.dataset.out); });
+
+    el.pitchVal.classList.toggle('near', !!state.limit && state.pitches >= state.limit * 0.8 && state.pitches < state.limit);
+    el.pitchVal.classList.toggle('over', !!state.limit && state.pitches >= state.limit);
+    el.limitChip.textContent = state.limit ? 'Limit: ' + state.limit : 'Limit: off';
+    el.limitChip.classList.toggle('active', !!state.limit);
 
     el.ballsMinus.disabled = state.balls === 0;
     el.strikesMinus.disabled = state.strikes === 0;
+    el.outsMinus.disabled = state.outs === 0;
     el.pitchMinus.disabled = state.pitches === 0;
+    el.halfBack.disabled = state.inning === 1 && state.half === 'T';
+
+    el.undoBtn.disabled = history.length === 0;
+    el.undoLabel.textContent = history.length ? 'undo ' + lastAction : 'nothing to undo';
+
+    el.banner.textContent = banner.text;
+    el.banner.className = banner.text ? 'banner show ' + banner.kind : 'banner';
 
     save();
   }
 
-  function resetCount() {
-    state.balls = 0;
-    state.strikes = 0;
-  }
+  /* ---- actions ---- */
 
-  el.ballsPlus.addEventListener('click', function () {
+  function addBall() {
+    snapshot('ball');
     state.pitches++;
+    state.ballsThrown++;
     state.balls++;
     if (state.balls >= 4) {
       state.walks++;
       state.batters++;
-      resetCount();
-      showBanner('WALK. Take your base.', 'walk');
+      clearCount();
+      setBanner('WALK. Take your base.', 'walk');
     } else {
       clearBanner();
+      checkLimit();
     }
+    buzz();
     render();
-  });
+  }
 
-  el.ballsMinus.addEventListener('click', function () {
-    if (state.balls === 0) return;
-    state.balls--;
-    if (state.pitches > 0) state.pitches--;
-    clearBanner();
-    render();
-  });
-
-  el.strikesPlus.addEventListener('click', function () {
+  function addStrike() {
+    snapshot('strike');
     state.pitches++;
+    state.strikesThrown++;
     state.strikes++;
     if (state.strikes >= 3) {
       state.strikeouts++;
       state.batters++;
-      resetCount();
-      showBanner('STRIKEOUT. Back to the dugout.', 'k');
+      clearCount();
+      recordOut('STRIKEOUT. Back to the dugout.', 'k');
     } else {
       clearBanner();
+      checkLimit();
     }
+    buzz();
     render();
+  }
+
+  function recordOut(text, kind) {
+    state.outs++;
+    if (state.outs >= 3) {
+      state.outs = 0;
+      clearCount();
+      flipHalf(1);
+      setBanner('THREE OUTS. ' + (state.half === 'T' ? 'Top ' : 'Bottom ') + state.inning + ' coming up.', 'inning');
+    } else {
+      setBanner(text || 'OUT. ' + state.outs + ' down.', kind);
+    }
+  }
+
+  function addFoul() {
+    snapshot('foul');
+    state.pitches++;
+    state.strikesThrown++;
+    if (state.strikes < 2) state.strikes++;
+    clearBanner();
+    checkLimit();
+    buzz();
+    render();
+  }
+
+  function step(field, delta, label, opts) {
+    snapshot(label);
+    var next = state[field] + delta;
+    if (next < 0) { history.pop(); return; }
+    state[field] = next;
+    if (opts && opts.pitchLinked) {
+      if (delta > 0) { state.pitches++; if (label === 'ball') state.ballsThrown++; else state.strikesThrown++; }
+      else {
+        if (state.pitches > 0) state.pitches--;
+        if (label === 'ball') { if (state.ballsThrown > 0) state.ballsThrown--; }
+        else if (state.strikesThrown > 0) state.strikesThrown--;
+      }
+    }
+    clearBanner();
+    buzz();
+    render();
+  }
+
+  el.ballsPlus.addEventListener('click', addBall);
+  el.strikesPlus.addEventListener('click', addStrike);
+  el.foulBtn.addEventListener('click', addFoul);
+  el.undoBtn.addEventListener('click', function () { buzz(); undo(); });
+
+  el.ballsMinus.addEventListener('click', function () {
+    if (state.balls === 0) return;
+    step('balls', -1, 'ball', { pitchLinked: true });
   });
 
   el.strikesMinus.addEventListener('click', function () {
     if (state.strikes === 0) return;
-    state.strikes--;
-    if (state.pitches > 0) state.pitches--;
-    clearBanner();
+    step('strikes', -1, 'strike', { pitchLinked: true });
+  });
+
+  el.outsPlus.addEventListener('click', function () {
+    snapshot('out');
+    state.batters++;
+    clearCount();
+    recordOut(null, 'k');
+    buzz();
     render();
   });
 
+  el.outsMinus.addEventListener('click', function () {
+    if (state.outs === 0) return;
+    step('outs', -1, 'out');
+  });
+
   el.pitchPlus.addEventListener('click', function () {
+    snapshot('pitch');
     state.pitches++;
+    clearBanner();
+    checkLimit();
+    buzz();
     render();
   });
 
   el.pitchMinus.addEventListener('click', function () {
     if (state.pitches === 0) return;
-    state.pitches--;
+    step('pitches', -1, 'pitch');
+  });
+
+  el.halfFwd.addEventListener('click', function () {
+    snapshot('inning change');
+    state.outs = 0;
+    clearCount();
+    flipHalf(1);
+    clearBanner();
+    buzz();
     render();
   });
 
-  el.foulBtn.addEventListener('click', function () {
-    state.pitches++;
-    if (state.strikes < 2) state.strikes++;
+  el.halfBack.addEventListener('click', function () {
+    if (state.inning === 1 && state.half === 'T') return;
+    snapshot('inning change');
+    state.outs = 0;
+    clearCount();
+    flipHalf(-1);
     clearBanner();
+    buzz();
+    render();
+  });
+
+  el.limitChip.addEventListener('click', function () {
+    snapshot('limit change');
+    var i = LIMITS.indexOf(state.limit);
+    state.limit = LIMITS[(i + 1) % LIMITS.length];
+    clearBanner();
+    checkLimit();
     render();
   });
 
   el.newBatter.addEventListener('click', function () {
+    snapshot('new batter');
     if (state.balls > 0 || state.strikes > 0) state.batters++;
-    resetCount();
+    clearCount();
+    clearBanner();
+    render();
+  });
+
+  el.newPitcher.addEventListener('click', function () {
+    snapshot('new pitcher');
+    state.pitches = 0;
+    state.strikesThrown = 0;
+    state.ballsThrown = 0;
+    clearCount();
     clearBanner();
     render();
   });
 
   el.newGame.addEventListener('click', function () {
-    Object.keys(state).forEach(function (k) { state[k] = 0; });
+    if (!window.confirm('Reset the whole game? Everything goes back to zero.')) return;
+    snapshot('reset');
+    var limit = state.limit;
+    state = Object.assign({}, defaults, { limit: limit });
     clearBanner();
     render();
+  });
+
+  /* ---- keyboard, for anyone scoring from a laptop ---- */
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    var map = {
+      b: addBall,
+      s: addStrike,
+      f: addFoul,
+      o: function () { el.outsPlus.click(); },
+      p: function () { el.pitchPlus.click(); },
+      n: function () { el.newBatter.click(); },
+      u: undo
+    };
+    var fn = map[e.key.toLowerCase()];
+    if (!fn) return;
+    e.preventDefault();
+    fn();
+  });
+
+  /* ---- keep the screen awake between innings ---- */
+
+  var wakeLock = null;
+
+  function requestWakeLock() {
+    if (!navigator.wakeLock) return;
+    navigator.wakeLock.request('screen').then(function (lock) {
+      wakeLock = lock;
+      lock.addEventListener('release', function () { wakeLock = null; });
+    }).catch(function () { /* denied or unsupported, no problem */ });
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && !wakeLock) requestWakeLock();
+  });
+
+  document.addEventListener('click', function once() {
+    requestWakeLock();
+    document.removeEventListener('click', once);
   });
 
   load();

@@ -248,6 +248,16 @@
   .action.undo:not(:disabled) { color: var(--ball); border-color: rgba(78,163,245,0.35); }
 
   /* Totals */
+  .totals-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    text-align: center;
+    margin: 1.1rem 0 0.45rem;
+  }
+
   .totals {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -257,8 +267,14 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 0.4rem;
     text-align: center;
-    margin: 1rem 0 0.6rem;
+    margin-bottom: 0.6rem;
   }
+
+  .totals.three { grid-template-columns: repeat(3, 1fr); }
+
+  .total-num.tot-ball { color: var(--ball); }
+  .total-num.tot-strike { color: var(--strike); }
+  .total-num.tot-pitch { color: var(--pitch); }
 
   .total-num { font-size: 1.4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 
@@ -404,6 +420,21 @@
     <button class="action undo" id="undoBtn">UNDO<small id="undoLabel">nothing to undo</small></button>
   </div>
 
+  <div class="totals-title">Game Totals</div>
+  <div class="totals three">
+    <div>
+      <div class="total-num tot-ball" id="gameBalls">0</div>
+      <div class="total-label">Balls</div>
+    </div>
+    <div>
+      <div class="total-num tot-strike" id="gameStrikes">0</div>
+      <div class="total-label">Strikes</div>
+    </div>
+    <div>
+      <div class="total-num tot-pitch" id="gamePitches">0</div>
+      <div class="total-label">Pitches</div>
+    </div>
+  </div>
   <div class="totals">
     <div>
       <div class="total-num" id="batterCount">0</div>
@@ -457,8 +488,9 @@
     batters: 0,
     walks: 0,
     strikeouts: 0,
-    strikesThrown: 0,
-    ballsThrown: 0,
+    gameBalls: 0,
+    gameStrikes: 0,
+    gamePitches: 0,
     limit: 0
   };
 
@@ -471,7 +503,8 @@
   ['bigBalls','bigStrikes','ballsVal','strikesVal','outsVal','pitchVal','ballsPlus','ballsMinus',
    'strikesPlus','strikesMinus','outsPlus','outsMinus','pitchPlus','pitchMinus','foulBtn','undoBtn',
    'undoLabel','banner','batterCount','walkCount','kCount','strikePct','newBatter','newPitcher',
-   'newGame','inningLabel','halfBack','halfFwd','limitChip'].forEach(function (id) {
+   'newGame','inningLabel','halfBack','halfFwd','limitChip','gameBalls','gameStrikes',
+   'gamePitches'].forEach(function (id) {
     el[id] = document.getElementById(id);
   });
 
@@ -546,6 +579,22 @@
 
   function clearCount() { state.balls = 0; state.strikes = 0; }
 
+  /* A pitch always lands in two places: this pitcher's outing, which New
+     Pitcher clears, and the game totals, which only Reset Game clears. */
+  function pitchUp(kind) {
+    state.pitches++;
+    state.gamePitches++;
+    if (kind === 'ball') state.gameBalls++;
+    else if (kind === 'strike') state.gameStrikes++;
+  }
+
+  function pitchDown(kind) {
+    if (state.pitches > 0) state.pitches--;
+    if (state.gamePitches > 0) state.gamePitches--;
+    if (kind === 'ball') { if (state.gameBalls > 0) state.gameBalls--; }
+    else if (kind === 'strike') { if (state.gameStrikes > 0) state.gameStrikes--; }
+  }
+
   function flipHalf(dir) {
     if (dir > 0) {
       if (state.half === 'T') { state.half = 'B'; }
@@ -573,10 +622,13 @@
     el.batterCount.textContent = state.batters;
     el.walkCount.textContent = state.walks;
     el.kCount.textContent = state.strikeouts;
+    el.gameBalls.textContent = state.gameBalls;
+    el.gameStrikes.textContent = state.gameStrikes;
+    el.gamePitches.textContent = state.gamePitches;
     el.inningLabel.textContent = (state.half === 'T' ? 'Top ' : 'Bot ') + state.inning;
 
-    var tracked = state.strikesThrown + state.ballsThrown;
-    el.strikePct.textContent = tracked ? Math.round((state.strikesThrown / tracked) * 100) + '%' : '–';
+    var tracked = state.gameStrikes + state.gameBalls;
+    el.strikePct.textContent = tracked ? Math.round((state.gameStrikes / tracked) * 100) + '%' : '–';
 
     ballPips.forEach(function (p) { p.classList.toggle('on-ball', state.balls >= +p.dataset.ball); });
     strikePips.forEach(function (p) { p.classList.toggle('on-strike', state.strikes >= +p.dataset.strike); });
@@ -606,8 +658,7 @@
 
   function addBall() {
     snapshot('ball');
-    state.pitches++;
-    state.ballsThrown++;
+    pitchUp('ball');
     state.balls++;
     if (state.balls >= 4) {
       state.walks++;
@@ -624,8 +675,7 @@
 
   function addStrike() {
     snapshot('strike');
-    state.pitches++;
-    state.strikesThrown++;
+    pitchUp('strike');
     state.strikes++;
     if (state.strikes >= 3) {
       state.strikeouts++;
@@ -654,8 +704,7 @@
 
   function addFoul() {
     snapshot('foul');
-    state.pitches++;
-    state.strikesThrown++;
+    pitchUp('strike');
     if (state.strikes < 2) state.strikes++;
     clearBanner();
     checkLimit();
@@ -669,12 +718,7 @@
     if (next < 0) { history.pop(); return; }
     state[field] = next;
     if (opts && opts.pitchLinked) {
-      if (delta > 0) { state.pitches++; if (label === 'ball') state.ballsThrown++; else state.strikesThrown++; }
-      else {
-        if (state.pitches > 0) state.pitches--;
-        if (label === 'ball') { if (state.ballsThrown > 0) state.ballsThrown--; }
-        else if (state.strikesThrown > 0) state.strikesThrown--;
-      }
+      if (delta > 0) pitchUp(label); else pitchDown(label);
     }
     clearBanner();
     buzz();
@@ -712,7 +756,7 @@
 
   el.pitchPlus.addEventListener('click', function () {
     snapshot('pitch');
-    state.pitches++;
+    pitchUp('unclassified');
     clearBanner();
     checkLimit();
     buzz();
@@ -721,7 +765,11 @@
 
   el.pitchMinus.addEventListener('click', function () {
     if (state.pitches === 0) return;
-    step('pitches', -1, 'pitch');
+    snapshot('pitch');
+    pitchDown('unclassified');
+    clearBanner();
+    buzz();
+    render();
   });
 
   el.halfFwd.addEventListener('click', function () {
@@ -765,8 +813,6 @@
   el.newPitcher.addEventListener('click', function () {
     snapshot('new pitcher');
     state.pitches = 0;
-    state.strikesThrown = 0;
-    state.ballsThrown = 0;
     clearCount();
     clearBanner();
     render();

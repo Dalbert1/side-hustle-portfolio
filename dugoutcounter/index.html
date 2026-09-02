@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#12160f">
+<title>Tulsa Dugout Counter</title>
+<meta name="description" content="Free ball, strike, and pitch count tracker for Tulsa softball and baseball games. Works on your phone, no signup.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12160f;
+    --surface: #1c2318;
+    --surface-2: #252e1f;
+    --border: #38452c;
+    --text: #f2f5ec;
+    --text-dim: #94a383;
+    --ball: #4ea3f5;
+    --strike: #ff5a3c;
+    --pitch: #f2c14e;
+    --chalk: #e8ecdf;
+    --dirt: #b5763f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 1rem 0.75rem 2rem;
+    background-image:
+      radial-gradient(circle at 50% -10%, rgba(78,163,245,0.10), transparent 55%),
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.012) 0 22px, transparent 22px 44px);
+  }
+
+  .wrap { max-width: 560px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 1.25rem; }
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+  }
+
+  /* Big scoreboard readout */
+  .board {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem 1rem 1rem;
+    text-align: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .board-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-dim);
+  }
+
+  .count {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin: 0.4rem 0 0.6rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .count .b { color: var(--ball); }
+  .count .sep { color: var(--text-dim); font-weight: 500; }
+  .count .s { color: var(--strike); }
+
+  .pips { display: flex; justify-content: center; gap: 1.5rem; }
+
+  .pip-group { display: flex; align-items: center; gap: 0.4rem; }
+
+  .pip-group span {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  .pip {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: transparent;
+  }
+
+  .pip.on-ball { background: var(--ball); border-color: var(--ball); }
+  .pip.on-strike { background: var(--strike); border-color: var(--strike); }
+
+  /* Result banner */
+  .banner {
+    border-radius: 12px;
+    padding: 0.7rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.75rem;
+    text-align: center;
+    display: none;
+  }
+
+  .banner.show { display: block; animation: pop 0.25s ease-out; }
+  .banner.walk { background: rgba(78,163,245,0.15); color: var(--ball); border: 1px solid rgba(78,163,245,0.4); }
+  .banner.k { background: rgba(255,90,60,0.15); color: var(--strike); border: 1px solid rgba(255,90,60,0.4); }
+
+  @keyframes pop {
+    from { transform: scale(0.96); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* Counter rows */
+  .row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0.85rem 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .row-info { flex: 1; min-width: 0; }
+
+  .row-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .row-sub {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: 0.1rem;
+  }
+
+  .row-value {
+    font-size: 2rem;
+    font-weight: 800;
+    min-width: 2.6rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .row.balls .row-value { color: var(--ball); }
+  .row.strikes .row-value { color: var(--strike); }
+  .row.pitches .row-value { color: var(--pitch); }
+
+  .btns { display: flex; gap: 0.5rem; }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    border-radius: 10px;
+    transition: transform 0.08s, background 0.15s, border-color 0.15s;
+  }
+
+  button:active { transform: scale(0.94); }
+  button:disabled { opacity: 0.35; cursor: default; }
+
+  .step {
+    width: 52px;
+    height: 52px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .row.balls .step.plus:not(:disabled) { border-color: rgba(78,163,245,0.5); color: var(--ball); }
+  .row.strikes .step.plus:not(:disabled) { border-color: rgba(255,90,60,0.5); color: var(--strike); }
+  .row.pitches .step.plus:not(:disabled) { border-color: rgba(242,193,78,0.5); color: var(--pitch); }
+
+  /* Foul ball */
+  .foul {
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.6rem;
+    color: var(--chalk);
+  }
+
+  .foul span { color: var(--text-dim); font-weight: 500; font-size: 0.75rem; }
+
+  /* Session totals */
+  .totals {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0.9rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+    margin: 1rem 0 0.6rem;
+  }
+
+  .total-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .total-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-top: 0.15rem;
+  }
+
+  .resets { display: flex; gap: 0.5rem; }
+
+  .reset {
+    flex: 1;
+    padding: 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .reset.hard { color: var(--dirt); border-color: rgba(181,118,63,0.4); }
+
+  footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    margin-top: 1.5rem;
+    line-height: 1.6;
+  }
+
+  footer a { color: var(--text-dim); }
+
+  @media (min-width: 480px) {
+    h1 { font-size: 1.7rem; }
+    .count { font-size: 5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Tulsa Dugout Counter</h1>
+    <p>Balls, strikes, and pitch count. Tap and go.</p>
+  </header>
+
+  <div class="board">
+    <div class="board-label">Count</div>
+    <div class="count">
+      <span class="b" id="bigBalls">0</span><span class="sep">-</span><span class="s" id="bigStrikes">0</span>
+    </div>
+    <div class="pips">
+      <div class="pip-group">
+        <span>B</span>
+        <div class="pip" data-ball="1"></div>
+        <div class="pip" data-ball="2"></div>
+        <div class="pip" data-ball="3"></div>
+      </div>
+      <div class="pip-group">
+        <span>S</span>
+        <div class="pip" data-strike="1"></div>
+        <div class="pip" data-strike="2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banner" id="banner"></div>
+
+  <div class="row balls">
+    <div class="row-info">
+      <div class="row-name">Balls</div>
+      <div class="row-sub">4 balls is a walk</div>
+    </div>
+    <button class="step minus" id="ballsMinus" aria-label="Remove a ball">&minus;</button>
+    <div class="row-value" id="ballsVal">0</div>
+    <button class="step plus" id="ballsPlus" aria-label="Add a ball">+</button>
+  </div>
+
+  <div class="row strikes">
+    <div class="row-info">
+      <div class="row-name">Strikes</div>
+      <div class="row-sub">3 strikes and you're out</div>
+    </div>
+    <button class="step minus" id="strikesMinus" aria-label="Remove a strike">&minus;</button>
+    <div class="row-value" id="strikesVal">0</div>
+    <button class="step plus" id="strikesPlus" aria-label="Add a strike">+</button>
+  </div>
+
+  <div class="row pitches">
+    <div class="row-info">
+      <div class="row-name">Pitch Count</div>
+      <div class="row-sub">This pitcher, this outing</div>
+    </div>
+    <button class="step minus" id="pitchMinus" aria-label="Remove a pitch">&minus;</button>
+    <div class="row-value" id="pitchVal">0</div>
+    <button class="step plus" id="pitchPlus" aria-label="Add a pitch">+</button>
+  </div>
+
+  <button class="foul" id="foulBtn">FOUL BALL <span>counts the pitch, holds at 2 strikes</span></button>
+
+  <div class="totals">
+    <div>
+      <div class="total-num" id="batterCount">0</div>
+      <div class="total-label">Batters</div>
+    </div>
+    <div>
+      <div class="total-num" id="walkCount">0</div>
+      <div class="total-label">Walks</div>
+    </div>
+    <div>
+      <div class="total-num" id="kCount">0</div>
+      <div class="total-label">Strikeouts</div>
+    </div>
+  </div>
+
+  <div class="resets">
+    <button class="reset" id="newBatter">New Batter</button>
+    <button class="reset hard" id="newGame">Reset Everything</button>
+  </div>
+
+  <footer>
+    Nothing is saved to a server. Your count sticks around while this tab is open.<br>
+    Built in Tulsa by Dylan Albert &middot; <a href="../">More projects</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var KEY = 'dugout-counter-session';
+
+  var state = {
+    balls: 0,
+    strikes: 0,
+    pitches: 0,
+    batters: 0,
+    walks: 0,
+    strikeouts: 0
+  };
+
+  var el = {
+    bigBalls: document.getElementById('bigBalls'),
+    bigStrikes: document.getElementById('bigStrikes'),
+    ballsVal: document.getElementById('ballsVal'),
+    strikesVal: document.getElementById('strikesVal'),
+    pitchVal: document.getElementById('pitchVal'),
+    ballsPlus: document.getElementById('ballsPlus'),
+    ballsMinus: document.getElementById('ballsMinus'),
+    strikesPlus: document.getElementById('strikesPlus'),
+    strikesMinus: document.getElementById('strikesMinus'),
+    pitchPlus: document.getElementById('pitchPlus'),
+    pitchMinus: document.getElementById('pitchMinus'),
+    foulBtn: document.getElementById('foulBtn'),
+    banner: document.getElementById('banner'),
+    batterCount: document.getElementById('batterCount'),
+    walkCount: document.getElementById('walkCount'),
+    kCount: document.getElementById('kCount'),
+    newBatter: document.getElementById('newBatter'),
+    newGame: document.getElementById('newGame')
+  };
+
+  var ballPips = Array.prototype.slice.call(document.querySelectorAll('[data-ball]'));
+  var strikePips = Array.prototype.slice.call(document.querySelectorAll('[data-strike]'));
+
+  function load() {
+    try {
+      var raw = sessionStorage.getItem(KEY);
+      if (!raw) return;
+      var saved = JSON.parse(raw);
+      Object.keys(state).forEach(function (k) {
+        if (typeof saved[k] === 'number' && saved[k] >= 0) state[k] = saved[k];
+      });
+    } catch (e) { /* private mode or blocked storage, run from defaults */ }
+  }
+
+  function save() {
+    try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+  }
+
+  function showBanner(text, kind) {
+    el.banner.textContent = text;
+    el.banner.className = 'banner show ' + kind;
+  }
+
+  function clearBanner() {
+    el.banner.className = 'banner';
+  }
+
+  function render() {
+    el.bigBalls.textContent = state.balls;
+    el.bigStrikes.textContent = state.strikes;
+    el.ballsVal.textContent = state.balls;
+    el.strikesVal.textContent = state.strikes;
+    el.pitchVal.textContent = state.pitches;
+    el.batterCount.textContent = state.batters;
+    el.walkCount.textContent = state.walks;
+    el.kCount.textContent = state.strikeouts;
+
+    ballPips.forEach(function (p) {
+      p.classList.toggle('on-ball', state.balls >= Number(p.dataset.ball));
+    });
+    strikePips.forEach(function (p) {
+      p.classList.toggle('on-strike', state.strikes >= Number(p.dataset.strike));
+    });
+
+    el.ballsMinus.disabled = state.balls === 0;
+    el.strikesMinus.disabled = state.strikes === 0;
+    el.pitchMinus.disabled = state.pitches === 0;
+
+    save();
+  }
+
+  function resetCount() {
+    state.balls = 0;
+    state.strikes = 0;
+  }
+
+  el.ballsPlus.addEventListener('click', function () {
+    state.pitches++;
+    state.balls++;
+    if (state.balls >= 4) {
+      state.walks++;
+      state.batters++;
+      resetCount();
+      showBanner('WALK. Take your base.', 'walk');
+    } else {
+      clearBanner();
+    }
+    render();
+  });
+
+  el.ballsMinus.addEventListener('click', function () {
+    if (state.balls === 0) return;
+    state.balls--;
+    if (state.pitches > 0) state.pitches--;
+    clearBanner();
+    render();
+  });
+
+  el.strikesPlus.addEventListener('click', function () {
+    state.pitches++;
+    state.strikes++;
+    if (state.strikes >= 3) {
+      state.strikeouts++;
+      state.batters++;
+      resetCount();
+      showBanner('STRIKEOUT. Back to the dugout.', 'k');
+    } else {
+      clearBanner();
+    }
+    render();
+  });
+
+  el.strikesMinus.addEventListener('click', function () {
+    if (state.strikes === 0) return;
+    state.strikes--;
+    if (state.pitches > 0) state.pitches--;
+    clearBanner();
+    render();
+  });
+
+  el.pitchPlus.addEventListener('click', function () {
+    state.pitches++;
+    render();
+  });
+
+  el.pitchMinus.addEventListener('click', function () {
+    if (state.pitches === 0) return;
+    state.pitches--;
+    render();
+  });
+
+  el.foulBtn.addEventListener('click', function () {
+    state.pitches++;
+    if (state.strikes < 2) state.strikes++;
+    clearBanner();
+    render();
+  });
+
+  el.newBatter.addEventListener('click', function () {
+    if (state.balls > 0 || state.strikes > 0) state.batters++;
+    resetCount();
+    clearBanner();
+    render();
+  });
+
+  el.newGame.addEventListener('click', function () {
+    Object.keys(state).forEach(function (k) { state[k] = 0; });
+    clearBanner();
+    render();
+  });
+
+  load();
+  render();
+})();
+</script>
+</body>
+</html>

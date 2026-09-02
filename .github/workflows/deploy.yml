@@ -120,7 +120,7 @@ jobs:
         run: npm run build
         working-directory: austinalbert
 
-      # ── WW3 is a single HTML file, no build needed ──
+      # ── WW3 and Dugout Counter are single HTML files, no build needed ──
 
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
@@ -137,6 +137,8 @@ jobs:
           cp -r austinalbert/dist _site/austinalbert
           mkdir -p _site/ww3
           cp ww3electricboogaloo/index.html _site/ww3/index.html
+          mkdir -p _site/dugoutcounter
+          cp dugoutcounter/index.html _site/dugoutcounter/index.html
           cp games/*.html _site/games/
           cp index.html _site/index.html
 

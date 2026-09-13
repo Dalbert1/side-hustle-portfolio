@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Green vs. Tan: The Backyard War</title>
+<style>
+  :root{
+    --ink:#1d1a17;
+    --paper:#fff7dc;
+    --paper2:#f3e6bd;
+    --grass:#5d9b3f;
+    --green:#3f6b2b;
+    --tan:#d2b078;
+    --dirt:#a5754a;
+    --red:#e5402b;
+    --sky:#8fd3f4;
+    --font:"Marker Felt","Chalkboard SE","Comic Sans MS","Segoe Print","Bradley Hand",cursive;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font-family:var(--font);overscroll-behavior:none}
+  body{display:flex;flex-direction:column;height:100dvh;height:100vh}
+  .hidden{display:none !important}
+  button{font-family:var(--font);color:var(--ink);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+  button:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+  /* ---------- Intro ---------- */
+  #intro{flex:1;overflow:auto;display:flex;flex-direction:column;padding:18px 16px 0}
+  .title{text-align:center;margin:8px 0 4px;line-height:.95}
+  .title .big{display:block;font-size:min(15vw,66px);font-weight:900;letter-spacing:1px;transform:rotate(-2deg);text-shadow:3px 3px 0 var(--tan)}
+  .title .big span.g{color:var(--green)}
+  .title .big span.t{color:#a37e3f}
+  .title .sub{display:block;font-size:min(6vw,26px);margin-top:10px}
+  .chapter{text-align:center;font-size:15px;margin:6px 0 14px;opacity:.8}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:520px;margin:0 auto;width:100%}
+  .panel{
+    background:#fff;border:3px solid var(--ink);padding:12px 12px 10px;min-height:150px;
+    display:flex;flex-direction:column;justify-content:space-between;position:relative;
+    border-radius:255px 15px 225px 15px / 15px 225px 15px 255px;
+  }
+  .panel:nth-child(2){transform:rotate(1deg)}
+  .panel:nth-child(3){transform:rotate(-1deg)}
+  .panel .sfx{font-size:26px;font-weight:900;line-height:1;margin:0 0 8px;transform:rotate(-3deg)}
+  .panel .sfx.red{color:var(--red)}
+  .panel .sfx.green{color:var(--green)}
+  .panel p{margin:0;font-size:14px;line-height:1.35}
+  .panel svg{width:64px;height:auto;align-self:flex-end;margin-top:6px}
+  .howto{max-width:520px;margin:16px auto 0;background:var(--paper2);border:3px dashed var(--ink);padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.4}
+  .howto b{display:block;font-size:18px;margin-bottom:4px}
+  .startbar{position:sticky;bottom:0;padding:12px 0 calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--paper) 70%,rgba(255,247,220,0));margin-top:14px}
+  .bigbtn{
+    display:block;width:100%;max-width:520px;margin:0 auto;padding:16px;font-size:22px;font-weight:900;
+    background:var(--green);color:#fff;border:3px solid var(--ink);border-radius:18px;box-shadow:4px 4px 0 var(--ink);
+  }
+  .bigbtn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+
+  /* ---------- Game ---------- */
+  #game{flex:1;display:flex;flex-direction:column;min-height:0}
+  .hud{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;border-bottom:3px solid var(--ink);background:var(--paper2);font-size:17px;font-weight:700}
+  .hud span{white-space:nowrap}
+  .hud .lives{color:var(--red)}
+  .hud .money{color:var(--green)}
+  .field{flex:1;min-height:0;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:#2f5a24}
+  canvas{display:block;touch-action:none;image-rendering:auto}
+  .toast{
+    position:absolute;left:50%;bottom:10px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:6px 12px;border-radius:12px;
+    font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap
+  }
+  .toast.show{opacity:1}
+  .bar{border-top:3px solid var(--ink);background:var(--paper2);padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+  .row{display:flex;gap:8px}
+  .row.shop{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .tbtn{
+    flex:1;min-width:0;padding:7px 2px;border:3px solid var(--ink);border-radius:12px;background:#fff;font-size:13px;line-height:1.1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center
+  }
+  .tbtn .cost{font-size:12px;color:var(--green);font-weight:700}
+  .tbtn.sel{background:var(--green);color:#fff;box-shadow:inset 0 0 0 2px #fff}
+  .tbtn.sel .cost{color:#fff}
+  .tbtn.poor{opacity:.45}
+  .wavebtn{flex:3;min-width:0;padding:10px 6px;border:3px solid var(--ink);border-radius:12px;background:var(--tan);font-size:15px;font-weight:900;line-height:1.15}
+  .wavebtn.go{background:var(--red);color:#fff}
+  .pausebtn{flex:1.1;min-width:0;padding:10px 4px;border:3px solid var(--ink);border-radius:12px;background:#fff;font-size:15px;font-weight:900}
+  .pausebtn.on{background:var(--sky)}
+  .speedbtn{flex:.9;min-width:0;padding:10px 4px;border:3px solid var(--ink);border-radius:12px;background:#fff;font-size:16px;font-weight:900}
+  .speedbtn.on{background:var(--ink);color:#fff}
+  .selname{flex:1.4;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;text-align:center;line-height:1.2}
+  .actbtn{flex:1;padding:8px 4px;border:3px solid var(--ink);border-radius:12px;background:#fff;font-size:14px;font-weight:700;line-height:1.15}
+  .actbtn.up{background:var(--sky)}
+  .actbtn.sell{background:var(--tan)}
+  .actbtn:disabled{opacity:.45}
+  .actbtn.poor{opacity:.5}
+
+  /* ---------- Upgrade preview ---------- */
+  .sp{background:#fff;border:3px solid var(--ink);border-radius:12px;padding:6px 10px 7px}
+  .sp-h{font-size:14px;font-weight:900;text-align:center;margin-bottom:4px}
+  .sp-h .lv{color:var(--green)}
+  .sp-g{display:grid;grid-template-columns:1fr auto 14px auto;gap:1px 6px;font-size:13px;align-items:center}
+  .sp-k{opacity:.7}
+  .sp-a{text-align:right;font-weight:700}
+  .sp-ar{text-align:center;opacity:.45;font-weight:700}
+  .sp-b{text-align:right;font-weight:900;color:var(--green)}
+  .sp-note{font-size:12px;text-align:center;opacity:.7;margin-top:3px}
+
+  /* ---------- Game over ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(29,26,23,.82);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+  .card{background:var(--paper);border:3px solid var(--ink);border-radius:20px;padding:22px 20px;max-width:360px;width:100%;text-align:center;box-shadow:6px 6px 0 var(--ink)}
+  .card h2{margin:0 0 6px;font-size:30px;line-height:1;transform:rotate(-2deg);color:var(--red)}
+  .card p{margin:8px 0;font-size:17px}
+  .card .score{font-size:44px;font-weight:900;margin:6px 0 0;color:var(--green)}
+  .card .best{font-size:14px;opacity:.75;margin:0 0 12px}
+  .card .bigbtn{margin-top:6px;font-size:19px;padding:13px}
+  .card .linkbtn{background:none;border:none;text-decoration:underline;font-size:15px;margin-top:10px;padding:6px}
+</style>
+</head>
+<body>
+
+<!-- ===================== INTRO ===================== -->
+<div id="intro" class="screen">
+  <h1 class="title">
+    <span class="big"><span class="g">GREEN</span> vs. <span class="t">TAN</span></span>
+    <span class="sub">The Backyard War</span>
+  </h1>
+  <div class="chapter">Chapter 1: The Sandbox Incident</div>
+
+  <div class="panels">
+    <div class="panel">
+      <div><div class="sfx">PLINK. PLINK.</div>
+      <p>Every Saturday, Max set up his army men on the back porch. Green on the left. Tan on the right. Then he'd go inside for a snack.</p></div>
+      <svg viewBox="0 0 64 44" aria-hidden="true"><ellipse cx="18" cy="38" rx="12" ry="4" fill="#3f6b2b"/><rect x="14" y="20" width="8" height="14" fill="#3f6b2b"/><circle cx="18" cy="15" r="5" fill="#3f6b2b"/><rect x="11" y="10" width="14" height="3" fill="#3f6b2b"/><ellipse cx="46" cy="38" rx="12" ry="4" fill="#c9a66b"/><rect x="42" y="20" width="8" height="14" fill="#c9a66b"/><circle cx="46" cy="15" r="5" fill="#c9a66b"/><rect x="39" y="10" width="14" height="3" fill="#c9a66b"/></svg>
+    </div>
+    <div class="panel">
+      <div><div class="sfx red">ZZZORP!</div>
+      <p>This Saturday was different. The porch light flickered. A tiny bugle blew from behind the flowerpots. The air went fizzy, like a shaken soda.</p></div>
+      <svg viewBox="0 0 64 44" aria-hidden="true"><path d="M8 40 L20 4 L28 26 L40 2 L46 30 L58 12" fill="none" stroke="#e5402b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="panel">
+      <div><div class="sfx">TROMP. TROMP.</div>
+      <p>When Max looked up, the grass was as tall as a house. He was two inches high. And the whole Tan Army was marching up the trail.</p></div>
+      <svg viewBox="0 0 64 44" aria-hidden="true"><g fill="#c9a66b"><ellipse cx="12" cy="40" rx="8" ry="3"/><rect x="9" y="26" width="6" height="11"/><circle cx="12" cy="22" r="4"/><ellipse cx="32" cy="40" rx="8" ry="3"/><rect x="29" y="26" width="6" height="11"/><circle cx="32" cy="22" r="4"/><ellipse cx="52" cy="40" rx="8" ry="3"/><rect x="49" y="26" width="6" height="11"/><circle cx="52" cy="22" r="4"/></g></svg>
+    </div>
+    <div class="panel">
+      <div><div class="sfx green">"HOLD THE PORCH!"</div>
+      <p>A green general grabbed Max by the sleeve. "Kid! They're coming up the trail. Put our men where they can shoot. Whatever you do, hold the porch!"</p></div>
+      <svg viewBox="0 0 64 44" aria-hidden="true"><ellipse cx="32" cy="38" rx="14" ry="4" fill="#3f6b2b"/><rect x="27" y="18" width="10" height="16" fill="#3f6b2b"/><circle cx="32" cy="12" r="6" fill="#3f6b2b"/><rect x="24" y="7" width="16" height="3" fill="#3f6b2b"/><path d="M22 24 L8 14" stroke="#3f6b2b" stroke-width="3" stroke-linecap="round"/></svg>
+    </div>
+  </div>
+
+  <div class="howto">
+    <b>How to play</b>
+    Tap a soldier, then tap the grass to place him. Tan men march up the dirt trail toward the porch. Ten get through and it's over. Tap a placed soldier to see his stats, then upgrade or sell him. Pause any time, and run the fight at 1x up to 5x. Save up for the Heavy Tank if you can hold out that long.
+  </div>
+
+  <div class="startbar">
+    <button class="bigbtn" id="startBtn">Hold the porch</button>
+  </div>
+</div>
+
+<!-- ===================== GAME ===================== -->
+<div id="game" class="screen hidden">
+  <div class="hud">
+    <span class="money" id="hMoney">$120</span>
+    <span id="hWave">Wave 0</span>
+    <span id="hScore">0 pts</span>
+    <span class="lives" id="hLives">&#9829; 10</span>
+  </div>
+  <div class="field" id="field">
+    <canvas id="c"></canvas>
+    <div class="toast" id="toast"></div>
+  </div>
+  <div class="bar" id="bar"></div>
+</div>
+
+<!-- ===================== GAME OVER ===================== -->
+<div id="over" class="overlay hidden">
+  <div class="card">
+    <h2>The Tan Army took the porch.</h2>
+    <p id="ovWave">You held out for 0 waves.</p>
+    <div class="score" id="ovScore">0</div>
+    <div class="best" id="ovBest">Best: 0</div>
+    <button class="bigbtn" id="againBtn">Try again</button>
+    <button class="linkbtn" id="storyBtn">Back to the story</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  // ---------- Board ----------
+  const COLS=9, ROWS=13, CELL=40, W=COLS*CELL, H=ROWS*CELL;
+  const WP=[[-1,1],[7,1],[7,4],[1,4],[1,7],[7,7],[7,10],[2,10],[2,13]];
+  const wp=WP.map(([c,r])=>({x:c*CELL+CELL/2,y:r*CELL+CELL/2}));
+  const segLen=[]; let totalLen=0;
+  for(let i=0;i<wp.length-1;i++){const d=Math.hypot(wp[i+1].x-wp[i].x,wp[i+1].y-wp[i].y);segLen.push(d);totalLen+=d;}
+  const pathSet=new Set();
+  for(let i=0;i<WP.length-1;i++){
+    const [c0,r0]=WP[i],[c1,r1]=WP[i+1]; const dc=Math.sign(c1-c0),dr=Math.sign(r1-r0);
+    let c=c0,r=r0;
+    for(;;){ if(c>=0&&c<COLS&&r>=0&&r<ROWS)pathSet.add(c+','+r); if(c===c1&&r===r1)break; c+=dc;r+=dr; }
+  }
+  const isPath=(c,r)=>pathSet.has(c+','+r);
+  // fixed lawn decorations on grass cells
+  const flowers=[[0,0],[4,2],[8,3],[3,5],[8,5],[0,8],[5,8],[8,12],[6,12],[0,12]].map(([c,r])=>({x:c*CELL+10+((c*7+r*3)%20),y:r*CELL+10+((c*5+r*11)%20),k:(c+r)%3}));
+
+  // ---------- Definitions ----------
+  const TOWERS={
+    rifle:  {name:'Rifleman',cost:40, range:85, dmg:8,  cd:0.42, up:[30,55]},
+    bazooka:{name:'Bazooka', cost:90, range:105,dmg:24, cd:1.3,  splash:38, up:[60,95]},
+    tank:   {name:'Tank',    cost:170,range:125,dmg:65, cd:1.9,  up:[110,170]},
+    heavy:  {name:'Heavy Tank',cost:1000,range:170,dmg:280,cd:1.5, splash:52, up:[650,950]},
+  };
+  const ENEMIES={
+    grunt: {hp:30, speed:38,reward:4, r:9},
+    runner:{hp:18, speed:72,reward:5, r:8},
+    tank:  {hp:150,speed:24,reward:14,r:12},
+    boss:  {hp:650,speed:20,reward:45,r:16},
+  };
+
+  // ---------- State ----------
+  let S, best=0, lastHud=0;
+  function reset(){
+    S={money:120,lives:10,wave:0,score:0,towers:[],enemies:[],shots:[],fx:[],texts:[],
+       spawnQ:[],spawnT:0,waveActive:false,countdown:0,sel:null,selTower:null,speed:1,paused:false,over:false,time:0};
+  }
+  reset();
+  (async function loadBest(){ try{ if(window.storage){ const r=await window.storage.get('gvt-best'); if(r&&r.value)best=+r.value||0; } }catch(e){} })();
+  async function saveBest(){ try{ if(window.storage) await window.storage.set('gvt-best',String(best)); }catch(e){} }
+
+  // ---------- DOM ----------
+  const $=id=>document.getElementById(id);
+  const canvas=$('c'), ctx=canvas.getContext('2d'), field=$('field'), bar=$('bar'), toastEl=$('toast');
+  let toastT=null;
+  function toast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>toastEl.classList.remove('show'),1400); }
+
+  let lastFit='';
+  function fit(){
+    const fw=field.clientWidth, fh=field.clientHeight;
+    if(!fw||!fh)return;
+    const key=fw+'x'+fh;
+    if(key===lastFit)return;
+    lastFit=key;
+    const s=Math.min(fw/W, fh/H);
+    const dpr=Math.min(window.devicePixelRatio||1,3);
+    canvas.style.width=(W*s)+'px'; canvas.style.height=(H*s)+'px';
+    canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize',fit);
+
+  // ---------- Waves ----------
+  function buildWave(n){
+    const list=[];
+    const grunts=5+Math.floor(n*1.5);
+    for(let i=0;i<grunts;i++)list.push('grunt');
+    if(n>=3)for(let i=0;i<Math.floor(n/2);i++)list.push('runner');
+    if(n>=5)for(let i=0;i<Math.floor((n-3)/2);i++)list.push('tank');
+    // interleave so the wave isn't all one type in a row
+    list.sort((a,b)=>Math.sin(a.length*3.1+b.length*1.7+n)-0.5);
+    for(let i=list.length-1;i>0;i--){const j=(i*7+n*13)%(i+1);[list[i],list[j]]=[list[j],list[i]];}
+    if(n%5===0)list.push('boss');
+    return list;
+  }
+  const hpMult=n=>1+0.2*(n-1)+0.035*(n-1)*(n-1);
+  function startWave(early){
+    if(S.over)return;
+    if(early&&S.countdown>0){const b=Math.round(S.countdown)*2; if(b>0){S.money+=b; toast('Early bonus +$'+b);}}
+    S.wave++; S.spawnQ=buildWave(S.wave); S.spawnT=0; S.waveActive=true; S.countdown=0;
+    renderBar();
+  }
+  function spawn(type){
+    const d=ENEMIES[type];
+    S.enemies.push({type,x:wp[0].x,y:wp[0].y,seg:0,prog:0,hp:d.hp*hpMult(S.wave),maxHp:d.hp*hpMult(S.wave),speed:d.speed,reward:d.reward,r:d.r,dead:false,wob:Math.random()*6.28});
+  }
+
+  // ---------- Towers ----------
+  function statsFor(type,level){
+    const d=TOWERS[type]; const L=level-1;
+    return {dmg:d.dmg*Math.pow(1.5,L), range:d.range+10*L, cd:d.cd*Math.pow(0.9,L), splash:d.splash?d.splash+6*L:0};
+  }
+  function towerStats(t){ return statsFor(t.type,t.level); }
+  function place(type,c,r){
+    const d=TOWERS[type];
+    S.money-=d.cost;
+    S.towers.push({type,c,r,x:c*CELL+CELL/2,y:r*CELL+CELL/2,level:1,cd:0,spent:d.cost,face:-1});
+    S.fx.push({x:c*CELL+CELL/2,y:r*CELL+CELL/2,r:6,max:22,t:0,col:'rgba(255,255,255,.8)'});
+  }
+  function upgrade(t){
+    const d=TOWERS[t.type]; if(t.level>=3)return;
+    const cost=d.up[t.level-1]; if(S.money<cost){toast('Not enough plastic bucks');return;}
+    const before=towerStats(t);
+    S.money-=cost; t.spent+=cost; t.level++;
+    const after=towerStats(t);
+    const gain=Math.round((after.dmg/after.cd)/(before.dmg/before.cd)*100-100);
+    toast(d.name+' level '+t.level+', +'+gain+'% damage per second');
+    S.fx.push({x:t.x,y:t.y,r:6,max:26,t:0,col:'rgba(143,211,244,.9)'});
+    renderBar();
+  }
+  function sell(t){
+    const v=Math.round(t.spent*0.6); S.money+=v; S.towers=S.towers.filter(x=>x!==t); S.selTower=null;
+    toast('Sold for $'+v); renderBar();
+  }
+
+  // ---------- Combat ----------
+  function hit(e,dmg){
+    if(e.dead)return; e.hp-=dmg;
+    if(e.hp<=0){ e.dead=true; S.money+=e.reward; S.score+=e.reward*10;
+      S.texts.push({x:e.x,y:e.y-12,t:0,s:'+$'+e.reward});
+      S.fx.push({x:e.x,y:e.y,r:4,max:e.r+10,t:0,col:'rgba(210,176,120,.9)'}); }
+  }
+  function fire(t){
+    const st=towerStats(t);
+    let target=null,bestP=-1;
+    for(const e of S.enemies){ if(e.dead)continue; const d=Math.hypot(e.x-t.x,e.y-t.y); if(d<=st.range&&e.prog>bestP){bestP=e.prog;target=e;} }
+    if(!target)return false;
+    t.face=Math.atan2(target.y-t.y,target.x-t.x);
+    if(t.type==='rifle'){ hit(target,st.dmg); S.shots.push({kind:'tracer',x1:t.x,y1:t.y-6,x2:target.x,y2:target.y,t:0.07}); }
+    else{ const sp=t.type==='bazooka'?230:t.type==='tank'?320:360;
+      S.shots.push({kind:'shell',x:t.x,y:t.y-6,target,tx:target.x,ty:target.y,dmg:st.dmg,splash:st.splash,speed:sp,big:t.type!=='bazooka',huge:t.type==='heavy'}); }
+    return true;
+  }
+
+  // ---------- Update ----------
+  function update(dt){
+    if(S.over)return;
+    S.time+=dt;
+    if(S.waveActive&&S.spawnQ.length){ S.spawnT-=dt; if(S.spawnT<=0){ spawn(S.spawnQ.shift()); S.spawnT=Math.max(0.35,1.1-S.wave*0.04);} }
+    for(const e of S.enemies){
+      if(e.dead)continue;
+      let move=e.speed*dt;
+      while(move>0&&e.seg<wp.length-1){
+        const a=wp[e.seg],b=wp[e.seg+1]; const dx=b.x-e.x,dy=b.y-e.y; const d=Math.hypot(dx,dy);
+        if(d<=move){ e.x=b.x;e.y=b.y;move-=d;e.prog+=d;e.seg++; }
+        else{ e.x+=dx/d*move;e.y+=dy/d*move;e.prog+=move;move=0; }
+      }
+      if(e.seg>=wp.length-1){ e.dead=true; S.lives--; S.fx.push({x:e.x,y:e.y-10,r:8,max:30,t:0,col:'rgba(229,64,43,.8)'});
+        if(S.lives<=0){ S.lives=0; gameOver(); return; } }
+    }
+    for(const t of S.towers){ t.cd-=dt; if(t.cd<=0){ if(fire(t))t.cd=towerStats(t).cd; else t.cd=0.05; } }
+    for(const s of S.shots){
+      if(s.kind==='tracer'){ s.t-=dt; if(s.t<=0)s.done=true; continue; }
+      if(s.target&&!s.target.dead){s.tx=s.target.x;s.ty=s.target.y;}
+      const dx=s.tx-s.x,dy=s.ty-s.y,d=Math.hypot(dx,dy),mv=s.speed*dt;
+      if(d<=mv){ s.x=s.tx;s.y=s.ty;s.done=true;
+        if(s.splash){ for(const e of S.enemies){ if(!e.dead&&Math.hypot(e.x-s.x,e.y-s.y)<=s.splash+e.r*0.5)hit(e,s.dmg); }
+          S.fx.push({x:s.x,y:s.y,r:6,max:s.splash,t:0,col:'rgba(255,170,60,.75)'}); }
+        else{ if(s.target&&!s.target.dead)hit(s.target,s.dmg); S.fx.push({x:s.x,y:s.y,r:4,max:16,t:0,col:'rgba(255,220,120,.8)'}); }
+      } else { s.x+=dx/d*mv; s.y+=dy/d*mv; }
+    }
+    for(const f of S.fx)f.t+=dt*4;
+    for(const x of S.texts)x.t+=dt;
+    S.enemies=S.enemies.filter(e=>!e.dead);
+    S.shots=S.shots.filter(s=>!s.done);
+    S.fx=S.fx.filter(f=>f.t<1);
+    S.texts=S.texts.filter(x=>x.t<0.9);
+    if(S.waveActive&&!S.spawnQ.length&&!S.enemies.length){
+      S.waveActive=false; const b=15+S.wave*4; S.money+=b; S.score+=S.wave*100; S.countdown=10;
+      toast('Wave '+S.wave+' held! +$'+b); renderBar();
+    }
+    if(!S.waveActive&&S.countdown>0){ S.countdown-=dt; if(S.countdown<=0)startWave(false); }
+  }
+  function gameOver(){
+    S.over=true;
+    if(S.score>best){best=S.score;saveBest();}
+    $('ovWave').textContent=S.wave<=1?'The very first wave got you. Ouch.':'You held out for '+S.wave+' waves.';
+    $('ovScore').textContent=S.score.toLocaleString()+' pts';
+    $('ovBest').textContent='Best: '+best.toLocaleString()+' pts';
+    $('over').classList.remove('hidden');
+  }
+
+  // ---------- Draw ----------
+  function drawMan(x,y,col,dark,s,kind,face){
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.fillStyle=dark; ctx.beginPath(); ctx.ellipse(0,10,11,4.5,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=col;
+    ctx.fillRect(-4.5,2,3.5,8); ctx.fillRect(1,2,3.5,8);
+    ctx.fillRect(-5,-6,10,10);
+    ctx.beginPath(); ctx.arc(0,-10,4,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(0,-11,5.5,Math.PI,0); ctx.fill(); ctx.fillRect(-6.5,-11.5,13,2.5);
+    ctx.strokeStyle=col; ctx.lineCap='round';
+    const dir=face==null?-1:Math.cos(face)<0?-1:1;
+    if(kind==='bazooka'){ ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(-7*dir,-1); ctx.lineTo(10*dir,-8); ctx.stroke(); }
+    else{ ctx.lineWidth=2.2; ctx.beginPath(); ctx.moveTo(-6*dir,-2); ctx.lineTo(9*dir,-5); ctx.stroke(); }
+    ctx.restore();
+  }
+  function drawTank(x,y,col,dark,s,face){
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.fillStyle=dark; ctx.fillRect(-13,-8,26,16);
+    ctx.fillStyle=col; ctx.fillRect(-11,-6,22,12);
+    ctx.fillStyle=dark; for(let i=-10;i<11;i+=4){ctx.fillRect(i,-8,2,2);ctx.fillRect(i,6,2,2);}
+    ctx.rotate(face==null?Math.PI:face);
+    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(0,0,5.5,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle=dark; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(14,0); ctx.stroke();
+    ctx.restore();
+  }
+  function drawHeavyTank(x,y,col,dark,s,face){
+    ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+    ctx.fillStyle=dark; ctx.fillRect(-16,-11,32,22);
+    ctx.fillStyle=col; ctx.fillRect(-13,-8,26,16);
+    ctx.fillStyle=dark; for(let i=-15;i<15;i+=4){ctx.fillRect(i,-11,2,3);ctx.fillRect(i,8,2,3);}
+    ctx.rotate(face==null?Math.PI:face);
+    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(0,0,7.5,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle=dark; ctx.lineWidth=3.5; ctx.lineCap='butt';
+    ctx.beginPath(); ctx.moveTo(0,-3.5); ctx.lineTo(19,-3.5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,3.5); ctx.lineTo(19,3.5); ctx.stroke();
+    ctx.restore();
+  }
+  function draw(){
+    // lawn
+    for(let r=0;r<ROWS;r++){ ctx.fillStyle=r%2?'#5d9b3f':'#64a545'; ctx.fillRect(0,r*CELL,W,CELL); }
+    // faint grid on buildable cells
+    ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.lineWidth=1;
+    for(let c=0;c<COLS;c++)for(let r=0;r<ROWS;r++){ if(!isPath(c,r))ctx.strokeRect(c*CELL+.5,r*CELL+.5,CELL-1,CELL-1); }
+    // trail
+    ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.strokeStyle='#7f5a38'; ctx.lineWidth=30; pathLine(); ctx.stroke();
+    ctx.strokeStyle='#a5754a'; ctx.lineWidth=24; pathLine(); ctx.stroke();
+    ctx.strokeStyle='rgba(255,230,180,.25)'; ctx.lineWidth=4; ctx.setLineDash([6,10]); pathLine(); ctx.stroke(); ctx.setLineDash([]);
+    // porch at the trail's end
+    ctx.fillStyle='#8a7357'; ctx.fillRect(CELL*1,H-16,CELL*3,16);
+    ctx.fillStyle='#a58a66'; for(let i=0;i<3;i++)ctx.fillRect(CELL*1+i*CELL+2,H-14,CELL-4,12);
+    ctx.fillStyle='rgba(0,0,0,.35)'; ctx.font='bold 11px '+getComputedStyle(document.body).fontFamily;
+    ctx.textAlign='center'; ctx.fillText('the porch',CELL*2.5,H-4);
+    ctx.fillText('the fence',CELL*1.5,CELL*0.5+4);
+    // flowers
+    for(const f of flowers){
+      ctx.strokeStyle='#3d7a2a'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(f.x,f.y+8); ctx.lineTo(f.x,f.y); ctx.stroke();
+      ctx.fillStyle=f.k===0?'#fff':f.k===1?'#ffd23a':'#ff8fb1'; ctx.beginPath(); ctx.arc(f.x,f.y,3,0,Math.PI*2); ctx.fill();
+    }
+    // selected tower range
+    if(S.selTower){ const st=towerStats(S.selTower); ctx.fillStyle='rgba(255,255,255,.14)'; ctx.strokeStyle='rgba(255,255,255,.6)'; ctx.lineWidth=2; ctx.setLineDash([5,5]);
+      ctx.beginPath(); ctx.arc(S.selTower.x,S.selTower.y,st.range,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.setLineDash([]); }
+    // towers
+    for(const t of S.towers){
+      if(t.type==='heavy')drawHeavyTank(t.x,t.y,'#3f6b2b','#22401a',1,t.face);
+      else if(t.type==='tank')drawTank(t.x,t.y,'#4b7a33','#2f5122',1,t.face);
+      else drawMan(t.x,t.y,'#4b7a33','#2f5122',1.05,t.type,t.face);
+      if(t.level>1){ ctx.fillStyle='#ffd23a'; for(let i=0;i<t.level-1;i++){ ctx.beginPath(); ctx.arc(t.x-10+i*8,t.y+16,2.5,0,Math.PI*2); ctx.fill(); } }
+    }
+    // enemies
+    for(const e of S.enemies){
+      const wob=Math.sin(S.time*10+e.wob)*1.2;
+      if(e.type==='tank'||e.type==='boss'){ const sc=e.type==='boss'?1.5:1; drawTank(e.x,e.y,'#d2b078','#a37e3f',sc,Math.atan2(wp[e.seg+1].y-e.y,wp[e.seg+1].x-e.x)); }
+      else drawMan(e.x,e.y+wob,'#d2b078','#a37e3f',e.type==='runner'?0.85:1,'rifle',Math.atan2(0,wp[e.seg+1].x-e.x||1));
+      if(e.hp<e.maxHp){ const w=e.r*2.4; ctx.fillStyle='rgba(0,0,0,.5)'; ctx.fillRect(e.x-w/2,e.y-e.r-14,w,4);
+        ctx.fillStyle=e.hp/e.maxHp>0.4?'#6fdc4f':'#e5402b'; ctx.fillRect(e.x-w/2,e.y-e.r-14,w*Math.max(0,e.hp/e.maxHp),4); }
+    }
+    // shots
+    for(const s of S.shots){
+      if(s.kind==='tracer'){ ctx.strokeStyle='rgba(255,245,180,.9)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(s.x1,s.y1); ctx.lineTo(s.x2,s.y2); ctx.stroke(); }
+      else{ ctx.fillStyle=s.big?'#333':'#222'; ctx.beginPath(); ctx.arc(s.x,s.y,s.huge?5.5:s.big?4:3,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='rgba(255,150,40,.7)'; ctx.beginPath(); ctx.arc(s.x,s.y,2,0,Math.PI*2); ctx.fill(); }
+    }
+    // effects
+    for(const f of S.fx){ ctx.globalAlpha=1-f.t; ctx.fillStyle=f.col; ctx.beginPath(); ctx.arc(f.x,f.y,f.r+(f.max-f.r)*f.t,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; }
+    for(const x of S.texts){ ctx.globalAlpha=1-x.t; ctx.fillStyle='#fff'; ctx.strokeStyle='rgba(0,0,0,.6)'; ctx.lineWidth=3; ctx.font='bold 13px '+getComputedStyle(document.body).fontFamily; ctx.textAlign='center';
+      ctx.strokeText(x.s,x.x,x.y-x.t*22); ctx.fillText(x.s,x.x,x.y-x.t*22); ctx.globalAlpha=1; }
+    // pre-game hint
+    if(S.wave===0&&!S.waveActive){ ctx.fillStyle='rgba(29,26,23,.7)'; ctx.fillRect(W/2-120,H/2-24,240,48);
+      ctx.fillStyle='#fff'; ctx.font='bold 14px '+getComputedStyle(document.body).fontFamily; ctx.textAlign='center';
+      ctx.fillText(S.towers.length?'Ready? Tap Send wave 1':'Tap a soldier, then tap the grass',W/2,H/2-2);
+      ctx.fillStyle='#d2b078'; ctx.fillText('Tan marches in from the fence',W/2,H/2+16); }
+    // paused
+    if(S.paused&&!S.over){
+      const ff=getComputedStyle(document.body).fontFamily;
+      ctx.fillStyle='rgba(29,26,23,.6)'; ctx.fillRect(0,0,W,H);
+      ctx.textAlign='center';
+      ctx.fillStyle='#fff'; ctx.font='bold 30px '+ff; ctx.fillText('PAUSED',W/2,H/2-2);
+      ctx.font='bold 14px '+ff; ctx.fillStyle='#d2b078';
+      ctx.fillText('Everybody hold still',W/2,H/2+22); }
+  }
+  function pathLine(){ ctx.beginPath(); ctx.moveTo(wp[0].x-CELL,wp[0].y); for(const p of wp)ctx.lineTo(p.x,p.y); ctx.lineTo(wp[wp.length-1].x,wp[wp.length-1].y+CELL); }
+
+  // ---------- Bar / HUD ----------
+  const MAXSPEED=5;
+  // Rows comparing the tower as it stands now against the same tower one level up.
+  function statRows(type,level){
+    const a=statsFor(type,level), b=level<3?statsFor(type,level+1):null;
+    const rows=[
+      ['Damage per shot',Math.round(a.dmg),b?Math.round(b.dmg):null],
+      ['Shots per second',(1/a.cd).toFixed(2),b?(1/b.cd).toFixed(2):null],
+      ['Range',Math.round(a.range),b?Math.round(b.range):null],
+    ];
+    if(a.splash)rows.push(['Blast radius',Math.round(a.splash),b?Math.round(b.splash):null]);
+    rows.push(['Damage per second',Math.round(a.dmg/a.cd),b?Math.round(b.dmg/b.cd):null]);
+    return rows;
+  }
+  function previewHtml(t){
+    const d=TOWERS[t.type], maxed=t.level>=3;
+    const head=maxed
+      ? `${d.name} &middot; Level 3 (max)`
+      : `${d.name} &middot; Level ${t.level} <span class="lv">&rarr; ${t.level+1}</span>`;
+    const rows=statRows(t.type,t.level).map(([k,a,b])=>
+      `<div class="sp-k">${k}</div><div class="sp-a">${a}</div>`+
+      `<div class="sp-ar">${b==null?'':'&rarr;'}</div><div class="sp-b">${b==null?'':b}</div>`).join('');
+    return `<div class="sp"><div class="sp-h">${head}</div><div class="sp-g">${rows}</div>`+
+      `${maxed?'<div class="sp-note">This one is as good as he gets.</div>':''}</div>`;
+  }
+  function controlsHtml(){
+    return `<div class="row">
+      <button class="wavebtn" id="waveBtn">Send wave</button>
+      <button class="pausebtn ${S.paused?'on':''}" id="pauseBtn">${S.paused?'Resume':'Pause'}</button>
+      <button class="speedbtn ${S.speed>1?'on':''}" id="speedBtn">${S.speed}x</button></div>`;
+  }
+  function renderBar(){
+    if(S.selTower){
+      const t=S.selTower, d=TOWERS[t.type], up=t.level<3?d.up[t.level-1]:null;
+      bar.innerHTML=previewHtml(t)+`<div class="row">
+        <button class="actbtn up" id="upBtn" ${up==null?'disabled':''}>${up==null?'Maxed out':'Upgrade<br>$'+up}</button>
+        <button class="actbtn sell" id="sellBtn">Sell<br>$${Math.round(t.spent*0.6)}</button>
+        <button class="actbtn" id="doneBtn">Done</button></div>`+controlsHtml();
+      $('upBtn').onclick=()=>upgrade(t);
+      $('sellBtn').onclick=()=>sell(t);
+      $('doneBtn').onclick=()=>{S.selTower=null;renderBar();};
+    } else {
+      bar.innerHTML=`<div class="row shop">
+        ${Object.keys(TOWERS).map(k=>`<button class="tbtn ${S.sel===k?'sel':''}" data-t="${k}">${TOWERS[k].name}<span class="cost">$${TOWERS[k].cost}</span></button>`).join('')}
+        </div>`+controlsHtml();
+      bar.querySelectorAll('.tbtn').forEach(b=>b.onclick=()=>{ S.sel=S.sel===b.dataset.t?null:b.dataset.t; renderBar(); });
+    }
+    $('waveBtn').onclick=()=>{ if(!S.waveActive)startWave(true); };
+    $('pauseBtn').onclick=togglePause;
+    $('speedBtn').onclick=()=>{ S.speed=S.speed>=MAXSPEED?1:S.speed+1; renderBar(); };
+    updateHud(true);
+  }
+  function togglePause(){
+    if(S.over)return;
+    S.paused=!S.paused; renderBar();
+    toast(S.paused?'Paused':'Back to it');
+  }
+  function updateHud(force){
+    $('hMoney').textContent='$'+S.money;
+    $('hWave').textContent='Wave '+S.wave;
+    $('hScore').textContent=S.score.toLocaleString()+' pts';
+    $('hLives').innerHTML='&#9829; '+S.lives;
+    bar.querySelectorAll('.tbtn').forEach(b=>b.classList.toggle('poor',S.money<TOWERS[b.dataset.t].cost));
+    const ub=$('upBtn');
+    if(ub&&S.selTower&&S.selTower.level<3)ub.classList.toggle('poor',S.money<TOWERS[S.selTower.type].up[S.selTower.level-1]);
+    const wb=$('waveBtn'); if(!wb)return;
+    if(S.waveActive){ wb.textContent='Wave '+S.wave+' incoming ('+(S.spawnQ.length+S.enemies.length)+' left)'; wb.classList.remove('go'); }
+    else if(S.countdown>0){ wb.textContent='Next wave in '+Math.ceil(S.countdown)+'s, tap to send early'; wb.classList.add('go'); }
+    else { wb.textContent='Send wave '+(S.wave+1); wb.classList.add('go'); }
+  }
+
+  // ---------- Input ----------
+  canvas.addEventListener('pointerdown',e=>{
+    e.preventDefault(); if(S.over)return;
+    const rct=canvas.getBoundingClientRect();
+    const x=(e.clientX-rct.left)/rct.width*W, y=(e.clientY-rct.top)/rct.height*H;
+    const c=Math.floor(x/CELL), r=Math.floor(y/CELL);
+    if(c<0||c>=COLS||r<0||r>=ROWS)return;
+    const t=S.towers.find(t=>t.c===c&&t.r===r);
+    if(t){ S.selTower=t; renderBar(); return; }
+    if(S.selTower){ S.selTower=null; renderBar(); return; }
+    if(!S.sel){ toast('Pick a soldier below first'); return; }
+    if(isPath(c,r)){ toast("Can't build on the trail"); return; }
+    if(r===ROWS-1&&c>=1&&c<=3){ toast("That's the porch"); return; }
+    const d=TOWERS[S.sel];
+    if(S.money<d.cost){ toast('Not enough plastic bucks'); return; }
+    place(S.sel,c,r); updateHud(true);
+  },{passive:false});
+
+  window.addEventListener('keydown',e=>{
+    if(!running||S.over)return;
+    if(e.code==='Space'||e.key==='p'||e.key==='P'){ e.preventDefault(); togglePause(); return; }
+    const n=+e.key;
+    if(n>=1&&n<=MAXSPEED){ S.speed=n; renderBar(); }
+  });
+
+  // ---------- Loop ----------
+  let last=0, running=false;
+  function frame(ts){
+    if(!running)return;
+    fit();
+    const dt=Math.min(0.05,(ts-last)/1000||0); last=ts;
+    if(!S.paused)for(let i=0;i<S.speed;i++)update(dt);
+    draw();
+    if(ts-lastHud>120){ lastHud=ts; updateHud(false); }
+    requestAnimationFrame(frame);
+  }
+  function startGame(){
+    reset(); $('over').classList.add('hidden'); $('intro').classList.add('hidden'); $('game').classList.remove('hidden');
+    requestAnimationFrame(()=>{ fit(); renderBar(); if(!running){running=true;last=performance.now();requestAnimationFrame(frame);} });
+  }
+  $('startBtn').onclick=startGame;
+  $('againBtn').onclick=startGame;
+  $('storyBtn').onclick=()=>{ running=false; $('over').classList.add('hidden'); $('game').classList.add('hidden'); $('intro').classList.remove('hidden'); $('intro').scrollTop=0; };
+})();
+</script>
+</body>
+</html>

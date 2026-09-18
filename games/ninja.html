@@ -497,14 +497,15 @@ if (window.visualViewport) window.visualViewport.addEventListener('resize', resi
 function difficulty() {
   const L = level - 1;
   return {
-    boulderGap: Math.max(0.5, 2.4 - L * 0.17),
-    boulderSpeed: (320 + L * 40) * S,
-    rollerGap: Math.max(1.2, 4.6 - L * 0.3),
-    rollerSpeed: (170 + L * 24) * S,
-    oniGap: Math.max(0.75, 3.2 - L * 0.22),
-    oniSpeed: (60 + L * 10) * S,
-    oniHoming: (50 + L * 14) * S,
-    lanternGap: Math.max(1.8, 3.4 - L * 0.12)
+    boulderGap: Math.max(0.55, 4.2 - L * 0.32),
+    boulderSpeed: (230 + L * 34) * S,
+    boulderWarn: Math.max(0.6, 1.15 - L * 0.05),
+    rollerGap: Math.max(1.3, 7.5 - L * 0.55),
+    rollerSpeed: (135 + L * 22) * S,
+    oniGap: Math.max(0.8, 5.2 - L * 0.38),
+    oniSpeed: (42 + L * 9) * S,
+    oniHoming: (32 + L * 12) * S,
+    lanternGap: Math.max(1.8, 3.2 - L * 0.1)
   };
 }
 
@@ -519,7 +520,7 @@ function reset() {
   elapsed = 0; level = 1; score = 0; slices = 0; combo = 0; bestCombo = 0; comboT = 0;
   shake = 0; flash = 0; overDelay = 0;
   boulders = []; rollers = []; onis = []; lanterns = []; particles = []; texts = [];
-  timers = { boulder: 1.6, roller: 3.2, oni: 2.4, lantern: 4 };
+  timers = { boulder: 3.5, roller: 7, oni: 5, lantern: 2 };
   ninja.x = W / 2; ninja.targetX = W / 2; ninja.y = GROUND; ninja.vy = 0;
   ninja.grounded = true; ninja.facing = 1; ninja.hp = 3; ninja.inv = 0;
   ninja.slashT = 0; ninja.slashCd = 0; ninja.runT = 0; ninja.squash = 0;
@@ -591,7 +592,7 @@ function slash() {
 function hurt() {
   if (ninja.inv > 0 || state !== 'play') return;
   ninja.hp -= 1;
-  ninja.inv = 1.3;
+  ninja.inv = 1.6;
   combo = 0;
   comboT = 0;
   shake = 0.35;
@@ -707,7 +708,7 @@ function spawnBoulder() {
   const verts = [];
   const n = 8;
   for (let i = 0; i < n; i++) verts.push(rand(0.75, 1.05));
-  boulders.push({ x: rand(r + 10, W - r - 10), y: -r * 2, r, vy: 0, warn: 0.75, rot: rand(0, TAU), spin: rand(-3, 3), verts });
+  boulders.push({ x: rand(r + 10, W - r - 10), y: -r * 2, r, vy: 0, warn: difficulty().boulderWarn, rot: rand(0, TAU), spin: rand(-3, 3), verts });
 }
 
 function spawnRoller() {
@@ -829,11 +830,11 @@ function updateNinja(dt) {
 function updateSpawns(dt) {
   const d = difficulty();
   timers.boulder -= dt;
-  if (timers.boulder <= 0) { spawnBoulder(); timers.boulder = d.boulderGap * rand(0.7, 1.3); if (level >= 6 && Math.random() < 0.35) spawnBoulder(); }
+  if (timers.boulder <= 0) { spawnBoulder(); timers.boulder = d.boulderGap * rand(0.7, 1.3); if (level >= 8 && Math.random() < 0.35) spawnBoulder(); }
   timers.roller -= dt;
   if (timers.roller <= 0) { spawnRoller(); timers.roller = d.rollerGap * rand(0.75, 1.3); }
   timers.oni -= dt;
-  if (timers.oni <= 0) { spawnOni(); timers.oni = d.oniGap * rand(0.7, 1.3); if (level >= 4 && Math.random() < 0.3) spawnOni(); }
+  if (timers.oni <= 0) { spawnOni(); timers.oni = d.oniGap * rand(0.7, 1.3); if (level >= 6 && Math.random() < 0.3) spawnOni(); }
   timers.lantern -= dt;
   if (timers.lantern <= 0) { spawnLantern(); timers.lantern = d.lanternGap * rand(0.8, 1.4); }
 }
@@ -845,11 +846,11 @@ function updateEntities(dt) {
   for (let i = boulders.length - 1; i >= 0; i--) {
     const b = boulders[i];
     if (b.warn > 0) { b.warn -= dt; continue; }
-    b.vy = Math.min(b.vy + 1400 * S * dt, d.boulderSpeed * 1.6);
+    b.vy = Math.min(b.vy + 1200 * S * dt, d.boulderSpeed * 1.5);
     if (b.vy < d.boulderSpeed * 0.6) b.vy = d.boulderSpeed * 0.6;
     b.y += b.vy * dt;
     b.rot += b.spin * dt;
-    if (circleHitsBox(b.x, b.y, b.r * 0.85, box)) hurt();
+    if (circleHitsBox(b.x, b.y, b.r * 0.75, box)) hurt();
     if (b.y + b.r >= GROUND) {
       burst(b.x, GROUND - b.r * 0.5, 14, '#8a8aa6', 220);
       sfx.shatter();
@@ -862,7 +863,7 @@ function updateEntities(dt) {
     const r = rollers[i];
     r.x += r.vx * dt;
     r.rot += (r.vx / r.r) * dt;
-    if (circleHitsBox(r.x, r.y, r.r * 0.9, box)) hurt();
+    if (circleHitsBox(r.x, r.y, r.r * 0.8, box)) hurt();
     if ((r.vx > 0 && r.x > W + r.r * 3) || (r.vx < 0 && r.x < -r.r * 3)) rollers.splice(i, 1);
   }
 
@@ -883,7 +884,7 @@ function updateEntities(dt) {
       onis.splice(i, 1);
       continue;
     }
-    if (circleHitsBox(o.x, o.y, o.r * 0.8, box)) {
+    if (circleHitsBox(o.x, o.y, o.r * 0.7, box)) {
       hurt();
       burst(o.x, o.y, 12, '#c084ff', 180);
       onis.splice(i, 1);

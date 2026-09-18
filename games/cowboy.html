@@ -363,7 +363,8 @@ let lastT = 0;
 let elapsed = 0, heat = 1, dist = 0, copsSanded = 0, bonus = 0;
 let shake = 0, flash = 0, overDelay = 0, toastTimer = 0, mutterTimer = 0;
 let weeds = [], cops = [], cars = [], clouds = [], props = [], particles = [], texts = [];
-let timers = { weed: 0, cop: 0, car: 0, prop: 0 };
+let timers = { weed: 0, cop: 0, car: 0, prop: 0, sign: 0 };
+let signIndex = 0;
 let best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0;
 let muted = localStorage.getItem(MUTE_KEY) === '1';
 
@@ -378,16 +379,38 @@ const MUTTERS = [
   "I ain't done nothin'!", "Y'all seen my horse?", "The birds are cops too",
   "Not today, Johnny Law!", "I'm just out for a walk", "My teeth itch",
   "Can't catch what can't sit still", "Route 66 is MY road", "Who took my boots?",
-  "I got a permit for this"
+  "I got a permit for this", "This is methed up.", "This is methed up.", "Elk City's got nothin' on me"
 ];
-const COP_LINES = ["Stop right there!", "Freeze, partner!", "Sir, please", "Dispatch, he's twitchin'", "Not the sand!"];
+const TIERS = {
+  officer: {
+    homing: 1, speed: 1.08, pts: 100,
+    lines: ["Stop right there!", "Freeze, partner!", "Sir, please", "Dispatch, he's twitchin'", "Not the sand!"],
+    sanded: ["AAGH! MY EYES!", "I can't see!", "Sand! Why sand?!", "Ow ow ow"]
+  },
+  sheriff: {
+    homing: 1.7, speed: 1.16, pts: 150,
+    lines: ["Not in my county!", "Boy, you best stop", "I know your mama", "Git back here!"],
+    sanded: ["My good eye!", "Dang it all!", "Consarn it!", "Right in the eyeballs!"]
+  },
+  swat: {
+    homing: 2.5, speed: 1.3, pts: 250,
+    lines: ["SUSPECT SIGHTED", "GO GO GO", "Tango is twitching", "Weapons hot"],
+    sanded: ["Goggles compromised!", "MAN DOWN", "Sand in the visor!", "Fall back!"]
+  }
+};
+function pickTier() {
+  const r = Math.random();
+  if (heat >= 7) return r < 0.4 ? 'swat' : r < 0.75 ? 'sheriff' : 'officer';
+  if (heat >= 4) return r < 0.5 ? 'sheriff' : 'officer';
+  return 'officer';
+}
 const OVER_LINES = [
   "Cuffed outside a Tulsa QuikTrip.", "Tackled mid twitch.", "Ran clean out of pocket sand.",
   "Caught explaining himself to a cactus.", "The tumbleweeds got him."
 ];
 const HEAT_FLAVOR = [
-  'More cops on the road', 'Tumbleweed season', 'Cruisers dispatched', 'County wide manhunt',
-  'Helicopter is up', 'They called the state troopers', 'Every cop in Oklahoma', 'Absolute lawlessness',
+  'More cops on the road', 'Cruisers dispatched', 'The sheriff rides out', 'County wide manhunt',
+  'Helicopter is up', 'SWAT deployed', 'Every cop in Oklahoma', 'Absolute lawlessness',
   'Legend of Route 66', 'Unstoppable'
 ];
 
@@ -477,8 +500,8 @@ function resize() {
   canvas.height = Math.round(H * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   S = clamp(Math.min(H / 800, W / 400), 0.6, 1.5);
-  ROAD_L = W * 0.1;
-  ROAD_R = W * 0.9;
+  ROAD_L = W * 0.14;
+  ROAD_R = W * 0.86;
   PLAYER_Y = H - Math.max(150, H * 0.24);
   cowboy.w = 40 * S;
   cowboy.h = 66 * S;
@@ -506,7 +529,8 @@ function reset() {
   elapsed = 0; heat = 1; dist = 0; copsSanded = 0; bonus = 0;
   shake = 0; flash = 0; overDelay = 0; mutterTimer = rand(4, 7);
   weeds = []; cops = []; cars = []; clouds = []; props = []; particles = []; texts = [];
-  timers = { weed: 3, cop: 5.5, car: 14, prop: 0.2 };
+  timers = { weed: 3, cop: 5.5, car: 14, prop: 0.2, sign: 5 };
+  signIndex = 0;
   cowboy.x = W / 2; cowboy.targetX = W / 2; cowboy.teeth = 3; cowboy.inv = 0;
   cowboy.sand = 3; cowboy.sandRegen = 0; cowboy.throwT = 0; cowboy.throwCd = 0;
   cowboy.say = ''; cowboy.sayT = 0; cowboy.runT = 0;
@@ -646,8 +670,15 @@ function pointerEnd(e) {
 }
 canvas.addEventListener('pointerup', pointerEnd);
 canvas.addEventListener('pointercancel', pointerEnd);
-document.addEventListener('touchmove', e => { if (e.target === canvas) e.preventDefault(); }, { passive: false });
-document.addEventListener('gesturestart', e => e.preventDefault());
+// iOS Safari ignores user-scalable=no. Cancelling the raw touch and gesture
+// events on the canvas is what actually stops double tap zoom and pinch zoom.
+['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(type => {
+  canvas.addEventListener(type, e => e.preventDefault(), { passive: false });
+});
+['gesturestart', 'gesturechange', 'gestureend'].forEach(type => {
+  document.addEventListener(type, e => e.preventDefault(), { passive: false });
+});
+document.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
 canvas.addEventListener('contextmenu', e => e.preventDefault());
 
 window.addEventListener('keydown', e => {
@@ -681,24 +712,48 @@ function laneX(size) {
   return x;
 }
 let nextId = 1;
+function makeTwigs() {
+  const twigs = [];
+  for (let i = 0; i < 24; i++) {
+    twigs.push({
+      a: rand(0, TAU), len: rand(0.55, 1.0), bend: rand(-1.3, 1.3), start: rand(0, 0.4),
+      dark: Math.random() < 0.45, fork: Math.random() < 0.6 ? rand(0.45, 0.85) : 0, forkA: rand(-1.2, 1.2)
+    });
+  }
+  return twigs;
+}
 function spawnWeed() {
   const r = rand(18, 28) * S;
-  weeds.push({ id: nextId++, x: laneX(r), y: -r * 2, r, rot: 0, drift: rand(-40, 40) * S, bob: rand(0, TAU) });
+  const drift = rand(-40, 40) * S;
+  weeds.push({ id: nextId++, x: laneX(r), y: -r * 2, r, rot: 0, drift, bob: rand(0, TAU), twigs: makeTwigs() });
 }
 function spawnCop() {
   const r = 22 * S;
-  cops.push({ id: nextId++, x: laneX(r * 1.5), y: -60 * S, r, vx: 0, blind: false, spin: 0, runT: rand(0, TAU), say: Math.random() < 0.4 ? pick(COP_LINES) : '', sayT: 1.4, donut: Math.random() < 0.5 });
+  const tier = pickTier();
+  cops.push({ id: nextId++, tier, x: laneX(r * 1.5), y: -60 * S, r, vx: 0, blind: false, spin: 0, runT: rand(0, TAU), say: Math.random() < 0.45 ? pick(TIERS[tier].lines) : '', sayT: 1.4, donut: tier === 'officer' && Math.random() < 0.5 });
 }
 function spawnCar() {
   const w = 54 * S, h = 92 * S;
   cars.push({ id: nextId++, x: laneX(w), y: -h, w, h, vx: 0, blind: false, rot: 0, lightT: 0 });
   sfx.siren();
 }
+function shoulderX(left, jitter) {
+  const c = left ? ROAD_L / 2 : ROAD_R + (W - ROAD_R) / 2;
+  return c + rand(-jitter, jitter) * S;
+}
 function spawnProp() {
   const left = Math.random() < 0.5;
-  const type = pick(['cactus', 'cactus', 'rock', 'sign', 'skull', 'cactus', 'route66']);
-  const x = left ? rand(8 * S, ROAD_L - 22 * S) : rand(ROAD_R + 22 * S, W - 8 * S);
-  props.push({ x, y: -60 * S, type, s: rand(0.8, 1.2) });
+  const type = pick(['cactus', 'cactus', 'cactus', 'cactus', 'rock', 'rock', 'skull', 'cow', 'route66', 'sign']);
+  const isSign = type === 'sign' || type === 'route66';
+  props.push({
+    x: shoulderX(left, isSign ? 2 : 10), y: -70 * S, type, s: rand(0.85, 1.15), f: left ? 1 : -1,
+    v: Math.random(), moo: type === 'cow' && Math.random() < 0.35, sayT: 0, said: false, tail: rand(0, TAU)
+  });
+}
+function spawnSign() {
+  const type = ['elkcity', 'bird'][signIndex % 2];
+  signIndex += 1;
+  props.push({ x: shoulderX(Math.random() < 0.5, 2), y: -80 * S, type, s: 1, f: 1, v: 0, moo: false, sayT: 0, said: false, tail: 0 });
 }
 
 // ---------- Collision ----------
@@ -811,6 +866,8 @@ function updateSpawns(dt, d) {
   if (timers.car <= 0 && d.carGap !== Infinity) { spawnCar(); timers.car = d.carGap * rand(0.8, 1.3); }
   timers.prop -= dt;
   if (timers.prop <= 0) { spawnProp(); timers.prop = rand(0.5, 1.4) * (300 / (d.speed / S)); }
+  timers.sign -= dt;
+  if (timers.sign <= 0) { spawnSign(); timers.sign = rand(8, 13); }
 }
 
 function updateEntities(dt, d) {
@@ -819,7 +876,10 @@ function updateEntities(dt, d) {
   for (let i = props.length - 1; i >= 0; i--) {
     const p = props[i];
     p.y += d.speed * dt;
-    if (p.y > H + 80 * S) props.splice(i, 1);
+    p.tail += dt * 3;
+    if (p.sayT > 0) p.sayT -= dt;
+    if (p.moo && !p.said && p.y > PLAYER_Y - 160 * S) { p.said = true; p.sayT = 1.3; }
+    if (p.y > H + 90 * S) props.splice(i, 1);
   }
 
   for (let i = clouds.length - 1; i >= 0; i--) {
@@ -866,10 +926,12 @@ function updateEntities(dt, d) {
       c.y += d.speed * 1.05 * dt;
       c.x += Math.sin(c.spin) * 40 * S * dt;
     } else {
-      const want = clamp((cowboy.x - c.x) * 1.5, -d.copHoming * 2, d.copHoming * 2);
-      c.vx += clamp(want - c.vx, -d.copHoming * 4 * dt, d.copHoming * 4 * dt);
+      const T = TIERS[c.tier];
+      const homing = d.copHoming * T.homing;
+      const want = clamp((cowboy.x - c.x) * 1.5, -homing * 2, homing * 2);
+      c.vx += clamp(want - c.vx, -homing * 4 * dt, homing * 4 * dt);
       c.x += c.vx * dt;
-      c.y += d.speed * 1.08 * dt;
+      c.y += d.speed * T.speed * dt;
       c.x = clamp(c.x, ROAD_L + c.r, ROAD_R - c.r);
       if (circleHitsBox(c.x, c.y - c.r * 0.3, c.r * 0.75, box)) {
         hurt('cop');
@@ -902,13 +964,14 @@ function updateEntities(dt, d) {
 
 function blindCop(c) {
   c.blind = true;
-  c.say = pick(["AAGH! MY EYES!", "I can't see!", "Sand! Why sand?!", "Ow ow ow"]);
+  const T = TIERS[c.tier];
+  c.say = pick(T.sanded);
   c.sayT = 1.4;
   copsSanded += 1;
-  bonus += 100;
+  bonus += T.pts;
   sfx.sanded();
   burst(c.x, c.y - c.r, 14, '#e0b06a', 160);
-  texts.push({ x: c.x, y: c.y - c.r * 2, text: 'SANDED +100', life: 0.9, max: 0.9, c: '#f2c94c' });
+  texts.push({ x: c.x, y: c.y - c.r * 2, text: 'SANDED +' + T.pts, life: 0.9, max: 0.9, c: '#f2c94c' });
 }
 function blindCar(c) {
   c.blind = true;
@@ -968,6 +1031,7 @@ function draw(t) {
 
   // speech bubbles drawn last so they sit on top
   for (const c of cops) if (c.say && c.sayT > 0) drawBubble(c.x, c.y - c.r * 2.3, c.say, false);
+  for (const p of props) if (p.sayT > 0) drawBubble(p.x, p.y - 40 * S, 'Moo.', false);
   if (cowboy.say && state === 'play') drawBubble(cowboy.x, cowboy.y - cowboy.h - 8 * S, cowboy.say, cowboy.say === 'POCKET SAND!');
   ctx.restore();
 
@@ -1020,6 +1084,71 @@ function drawRoad() {
   }
 }
 
+function drawSignBoard(w, h, y, fill, border, lines, textColor, font) {
+  ctx.fillStyle = '#6b4a2a';
+  ctx.fillRect(-2, y + h - 4, 4, 34 - (y + h - 4));
+  ctx.fillStyle = border;
+  ctx.fillRect(-w / 2 - 2, y - 2, w + 4, h + 4);
+  ctx.fillStyle = fill;
+  ctx.fillRect(-w / 2, y, w, h);
+  ctx.fillStyle = textColor;
+  ctx.font = font;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const step = h / (lines.length + 0.2);
+  lines.forEach((ln, i) => ctx.fillText(ln, 0, y + step * (i + 0.7)));
+}
+
+function drawCow(p, t) {
+  const f = p.f;
+  const holstein = p.v < 0.6;
+  const body = holstein ? '#f4efe6' : '#8a5a3a';
+  const spot = holstein ? '#2b1a0e' : '#6b4025';
+  ctx.scale(f, 1);
+  // shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.2)';
+  ctx.beginPath(); ctx.ellipse(0, 2, 26, 6, 0, 0, TAU); ctx.fill();
+  // legs
+  ctx.fillStyle = body;
+  for (const lx of [-16, -8, 8, 16]) ctx.fillRect(lx - 2.5, -12, 5, 14);
+  ctx.fillStyle = '#2b1a0e';
+  for (const lx of [-16, -8, 8, 16]) ctx.fillRect(lx - 2.5, 0, 5, 3);
+  // udder
+  ctx.fillStyle = '#e8a1c4';
+  ctx.beginPath(); ctx.ellipse(-8, -10, 6, 4, 0, 0, TAU); ctx.fill();
+  // body
+  ctx.fillStyle = body;
+  ctx.beginPath(); ctx.ellipse(0, -22, 24, 13, 0, 0, TAU); ctx.fill();
+  // spots
+  ctx.fillStyle = spot;
+  const sp = [[-10, -26, 7, 5], [6, -18, 8, 5], [12, -28, 5, 4]];
+  sp.forEach(([sx, sy, rx, ry], i) => {
+    if ((p.v * 10 + i) % 3 < 2) { ctx.beginPath(); ctx.ellipse(sx, sy, rx, ry, 0.4, 0, TAU); ctx.fill(); }
+  });
+  // tail
+  ctx.strokeStyle = spot;
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  const sw = Math.sin(p.tail) * 6;
+  ctx.beginPath(); ctx.moveTo(-22, -26); ctx.quadraticCurveTo(-30, -18 + sw, -28 + sw * 0.5, -8); ctx.stroke();
+  // head
+  const bob = Math.sin(p.tail * 0.7) * 1.5;
+  ctx.fillStyle = body;
+  ctx.beginPath(); ctx.ellipse(24, -24 + bob, 9, 8, 0, 0, TAU); ctx.fill();
+  ctx.fillStyle = holstein ? '#e8b8a8' : '#c98a6a';
+  ctx.beginPath(); ctx.ellipse(29, -20 + bob, 6, 4.5, 0, 0, TAU); ctx.fill();
+  ctx.fillStyle = '#2b1a0e';
+  ctx.beginPath(); ctx.arc(27, -21 + bob, 1, 0, TAU); ctx.fill();
+  ctx.beginPath(); ctx.arc(31, -21 + bob, 1, 0, TAU); ctx.fill();
+  ctx.beginPath(); ctx.arc(23, -27 + bob, 1.6, 0, TAU); ctx.fill();
+  // ears and horns
+  ctx.fillStyle = body;
+  ctx.beginPath(); ctx.ellipse(18, -29 + bob, 4, 2.5, -0.5, 0, TAU); ctx.fill();
+  ctx.fillStyle = '#e8e0d0';
+  ctx.beginPath(); ctx.moveTo(20, -31 + bob); ctx.lineTo(16, -37 + bob); ctx.lineTo(23, -33 + bob); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(28, -31 + bob); ctx.lineTo(32, -37 + bob); ctx.lineTo(25, -33 + bob); ctx.fill();
+}
+
 function drawProp(p, t) {
   ctx.save();
   ctx.translate(p.x, p.y);
@@ -1039,23 +1168,35 @@ function drawProp(p, t) {
     ctx.fillStyle = 'rgba(0,0,0,0.2)';
     ctx.beginPath(); ctx.moveTo(-14, 6); ctx.lineTo(12, 8); ctx.lineTo(4, 2); ctx.closePath(); ctx.fill();
   } else if (p.type === 'skull') {
+    // cow skull with horns
+    ctx.strokeStyle = '#e6dcc2';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-8, -12); ctx.quadraticCurveTo(-22, -16, -22, -30); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(8, -12); ctx.quadraticCurveTo(22, -16, 22, -30); ctx.stroke();
     ctx.fillStyle = '#f1e9d2';
-    ctx.beginPath(); ctx.arc(0, -4, 9, 0, TAU); ctx.fill();
-    ctx.fillRect(-6, 2, 12, 6);
+    ctx.beginPath(); ctx.ellipse(0, -10, 11, 9, 0, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-8, -6); ctx.lineTo(8, -6); ctx.lineTo(5, 10); ctx.lineTo(-5, 10); ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#4a2e18';
-    ctx.beginPath(); ctx.arc(-3.5, -5, 2.5, 0, TAU); ctx.fill();
-    ctx.beginPath(); ctx.arc(3.5, -5, 2.5, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-5, -10, 3, 3.5, 0, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(5, -10, 3, 3.5, 0, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-2, 4, 1.4, 3, 0, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(2, 4, 1.4, 3, 0, 0, TAU); ctx.fill();
     ctx.fillStyle = '#c9b48c';
-    ctx.beginPath(); ctx.moveTo(-16, 4); ctx.lineTo(-10, -2); ctx.lineTo(-8, 4); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-18, 12); ctx.lineTo(-12, 6); ctx.lineTo(-10, 12); ctx.fill();
+  } else if (p.type === 'cow') {
+    drawCow(p, t);
   } else if (p.type === 'sign') {
-    ctx.fillStyle = '#6b4a2a';
-    ctx.fillRect(-2, -30, 4, 34);
-    ctx.fillStyle = '#3d7a47';
-    ctx.fillRect(-22, -42, 44, 18);
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 8px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('TULSA 12', 0, -30);
+    drawSignBoard(52, 20, -46, '#3d7a47', '#f1e9d2', ['TULSA 12'], '#fff', 'bold 9px sans-serif');
+  } else if (p.type === 'elkcity') {
+    drawSignBoard(60, 28, -60, '#2f6b3a', '#f1e9d2', ['ELK CITY', 'OKLAHOMA'], '#fff', 'bold 9px sans-serif');
+  } else if (p.type === 'bird') {
+    drawSignBoard(60, 28, -60, '#5a3a1e', '#f1e9d2', ['BIRD', 'SANCTUARY'], '#f1e9d2', 'bold 8.5px sans-serif');
+    // little bird on top of the sign
+    ctx.strokeStyle = '#f1e9d2';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(-4, -66, 4, Math.PI, 0); ctx.stroke();
+    ctx.beginPath(); ctx.arc(4, -66, 4, Math.PI, 0); ctx.stroke();
   } else if (p.type === 'route66') {
     ctx.fillStyle = '#6b4a2a';
     ctx.fillRect(-2, -30, 4, 34);
@@ -1064,6 +1205,7 @@ function drawProp(p, t) {
     ctx.fillStyle = '#2b1a0e';
     ctx.font = 'bold 10px sans-serif';
     ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
     ctx.fillText('66', 0, -34);
   }
   ctx.restore();
@@ -1072,26 +1214,50 @@ function drawProp(p, t) {
 function drawWeed(w) {
   ctx.save();
   const bob = Math.abs(Math.sin(w.bob)) * 10 * S;
-  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.fillStyle = 'rgba(0,0,0,0.22)';
   ctx.beginPath(); ctx.ellipse(w.x, w.y + w.r * 0.9, w.r * 0.9, w.r * 0.3, 0, 0, TAU); ctx.fill();
   ctx.translate(w.x, w.y - bob);
-  ctx.rotate(w.rot);
-  ctx.strokeStyle = '#a8813f';
-  ctx.lineWidth = 2 * S;
-  for (let i = 0; i < 9; i++) {
-    const a = (i / 9) * TAU;
-    ctx.beginPath();
-    ctx.arc(Math.cos(a) * w.r * 0.35, Math.sin(a) * w.r * 0.35, w.r * 0.6, a, a + 4);
-    ctx.stroke();
+  ctx.rotate(w.rot * Math.sign(w.drift || 1));
+  ctx.lineCap = 'round';
+  // dense heart of the ball
+  ctx.fillStyle = 'rgba(150, 110, 55, 0.35)';
+  ctx.beginPath(); ctx.arc(0, 0, w.r * 0.8, 0, TAU); ctx.fill();
+  ctx.fillStyle = 'rgba(110, 80, 40, 0.35)';
+  ctx.beginPath(); ctx.arc(w.r * 0.1, w.r * 0.1, w.r * 0.45, 0, TAU); ctx.fill();
+  // curling twigs
+  for (const tw of w.twigs) {
+    ctx.strokeStyle = tw.dark ? '#6f4f24' : '#d2a95c';
+    ctx.lineWidth = (tw.dark ? 1.8 : 1.3) * S;
+    const x0 = Math.cos(tw.a) * w.r * tw.start, y0 = Math.sin(tw.a) * w.r * tw.start;
+    const x1 = Math.cos(tw.a) * w.r * tw.len, y1 = Math.sin(tw.a) * w.r * tw.len;
+    const cx = Math.cos(tw.a + tw.bend) * w.r * tw.len * 0.65, cy = Math.sin(tw.a + tw.bend) * w.r * tw.len * 0.65;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(cx, cy, x1, y1); ctx.stroke();
+    if (tw.fork) {
+      const fx = x0 + (x1 - x0) * tw.fork, fy = y0 + (y1 - y0) * tw.fork;
+      const fa = tw.a + tw.forkA;
+      ctx.beginPath(); ctx.moveTo(fx, fy); ctx.lineTo(fx + Math.cos(fa) * w.r * 0.32, fy + Math.sin(fa) * w.r * 0.32); ctx.stroke();
+    }
   }
-  ctx.strokeStyle = '#d3a860';
-  ctx.lineWidth = 1.5 * S;
-  ctx.beginPath(); ctx.arc(0, 0, w.r * 0.85, 0, TAU); ctx.stroke();
-  ctx.beginPath(); ctx.arc(0, 0, w.r * 0.5, 1, 5); ctx.stroke();
+  // wispy outer strands catching the light
+  ctx.strokeStyle = 'rgba(240, 210, 140, 0.8)';
+  ctx.lineWidth = 1.2 * S;
+  for (let i = 0; i < 5; i++) {
+    const a = (i / 5) * TAU;
+    ctx.beginPath(); ctx.arc(0, 0, w.r * 0.95, a, a + 0.9); ctx.stroke();
+  }
+  ctx.strokeStyle = 'rgba(90, 60, 25, 0.7)';
+  for (let i = 0; i < 4; i++) {
+    const a = (i / 4) * TAU + 0.6;
+    ctx.beginPath(); ctx.arc(0, 0, w.r * 0.7, a, a + 1.1); ctx.stroke();
+  }
   ctx.restore();
 }
 
 function drawCop(c, t) {
+  const T = c.tier;
+  const col = T === 'swat' ? { body: '#23262b', legs: '#141518', arm: '#23262b', hat: '#1a1c20', trim: '#3a3f47' }
+    : T === 'sheriff' ? { body: '#c9a56a', legs: '#6b4a2a', arm: '#c9a56a', hat: '#5a3a1e', trim: '#8a5a2b' }
+    : { body: '#2f4fa3', legs: '#1f2a5a', arm: '#2f4fa3', hat: '#1f2a5a', trim: '#1f2a5a' };
   ctx.save();
   ctx.fillStyle = 'rgba(0,0,0,0.25)';
   ctx.beginPath(); ctx.ellipse(c.x, c.y + c.r * 0.9, c.r, c.r * 0.3, 0, 0, TAU); ctx.fill();
@@ -1100,20 +1266,42 @@ function drawCop(c, t) {
   const r = c.r;
   const run = Math.sin(c.runT) * r * 0.35;
   // legs
-  ctx.strokeStyle = '#1f2a5a';
+  ctx.strokeStyle = col.legs;
   ctx.lineWidth = 7 * S;
   ctx.lineCap = 'round';
   ctx.beginPath(); ctx.moveTo(-r * 0.35, r * 0.1); ctx.lineTo(-r * 0.4 + run, r * 0.9); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(r * 0.35, r * 0.1); ctx.lineTo(r * 0.4 - run, r * 0.9); ctx.stroke();
-  // belly body
-  ctx.fillStyle = '#2f4fa3';
-  ctx.beginPath(); ctx.ellipse(0, -r * 0.35, r * 0.95, r * 0.75, 0, 0, TAU); ctx.fill();
-  ctx.fillStyle = '#1f2a5a';
-  ctx.fillRect(-r * 0.95, r * 0.05, r * 1.9, 5 * S);
-  ctx.fillStyle = '#f2c94c';
-  ctx.beginPath(); ctx.arc(-r * 0.4, -r * 0.5, 4 * S, 0, TAU); ctx.fill();
+  // body
+  ctx.fillStyle = col.body;
+  if (T === 'swat') {
+    roundRect(-r * 0.85, -r * 1.05, r * 1.7, r * 1.2, 6 * S); ctx.fill();
+    ctx.fillStyle = col.trim;
+    roundRect(-r * 0.6, -r * 0.95, r * 1.2, r * 0.9, 4 * S); ctx.fill();
+    ctx.fillStyle = '#e8e2d0';
+    ctx.font = `bold ${Math.round(7 * S)}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText('SWAT', 0, -r * 0.4);
+  } else {
+    ctx.beginPath(); ctx.ellipse(0, -r * 0.35, r * 0.95, r * 0.75, 0, 0, TAU); ctx.fill();
+    ctx.fillStyle = col.trim;
+    ctx.fillRect(-r * 0.95, r * 0.05, r * 1.9, 5 * S);
+    // badge
+    ctx.fillStyle = '#f2c94c';
+    if (T === 'sheriff') {
+      ctx.beginPath();
+      for (let i = 0; i < 10; i++) {
+        const a = -Math.PI / 2 + (i / 10) * TAU;
+        const rr = i % 2 ? 2.6 * S : 5.5 * S;
+        const px = -r * 0.4 + Math.cos(a) * rr, py = -r * 0.5 + Math.sin(a) * rr;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath(); ctx.fill();
+    } else {
+      ctx.beginPath(); ctx.arc(-r * 0.4, -r * 0.5, 4 * S, 0, TAU); ctx.fill();
+    }
+  }
   // arms
-  ctx.strokeStyle = '#2f4fa3';
+  ctx.strokeStyle = col.arm;
   ctx.lineWidth = 6 * S;
   if (c.blind) {
     ctx.beginPath(); ctx.moveTo(-r * 0.8, -r * 0.5); ctx.lineTo(-r * 0.5, -r * 1.3); ctx.stroke();
@@ -1127,14 +1315,33 @@ function drawCop(c, t) {
       ctx.fillStyle = '#4a4650';
       ctx.beginPath(); ctx.arc(r * 1.2 - run * 0.5, r * 0.15, 2 * S, 0, TAU); ctx.fill();
     }
+    if (T === 'swat') {
+      // riot shield held out front
+      ctx.fillStyle = 'rgba(160, 200, 230, 0.55)';
+      roundRect(-r * 0.55, -r * 0.5, r * 1.1, r * 0.9, 4 * S); ctx.fill();
+      ctx.strokeStyle = '#8fb3cc';
+      ctx.lineWidth = 2 * S;
+      roundRect(-r * 0.55, -r * 0.5, r * 1.1, r * 0.9, 4 * S); ctx.stroke();
+    }
   }
   // head
-  ctx.fillStyle = '#f1c9a5';
-  ctx.beginPath(); ctx.arc(0, -r * 1.25, r * 0.5, 0, TAU); ctx.fill();
-  // mustache
-  ctx.fillStyle = '#4a2e18';
-  ctx.fillRect(-r * 0.3, -r * 1.12, r * 0.6, 4 * S);
-  // sunglasses or X eyes
+  if (T === 'swat') {
+    ctx.fillStyle = '#1a1c20';
+    ctx.beginPath(); ctx.arc(0, -r * 1.25, r * 0.5, 0, TAU); ctx.fill();
+  } else {
+    ctx.fillStyle = '#f1c9a5';
+    ctx.beginPath(); ctx.arc(0, -r * 1.25, r * 0.5, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#4a2e18';
+    if (T === 'sheriff') {
+      // big handlebar mustache
+      ctx.fillRect(-r * 0.42, -r * 1.12, r * 0.84, 5 * S);
+      ctx.beginPath(); ctx.arc(-r * 0.42, -r * 1.16, 3 * S, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.arc(r * 0.42, -r * 1.16, 3 * S, 0, TAU); ctx.fill();
+    } else {
+      ctx.fillRect(-r * 0.3, -r * 1.12, r * 0.6, 4 * S);
+    }
+  }
+  // eyes
   if (c.blind) {
     ctx.strokeStyle = '#c4302b';
     ctx.lineWidth = 2 * S;
@@ -1147,18 +1354,43 @@ function drawCop(c, t) {
       const a = c.spin + i * 2.1;
       ctx.beginPath(); ctx.arc(Math.cos(a) * r * 0.8, -r * 1.75 + Math.sin(a) * r * 0.25, 3 * S, 0, TAU); ctx.fill();
     }
+  } else if (T === 'swat') {
+    // goggles
+    ctx.fillStyle = '#7fd0ff';
+    roundRect(-r * 0.45, -r * 1.42, r * 0.9, r * 0.26, 3 * S); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillRect(-r * 0.38, -r * 1.4, r * 0.25, 2 * S);
+  } else if (T === 'sheriff') {
+    // squinting eyes
+    ctx.fillStyle = '#111';
+    ctx.fillRect(-r * 0.32, -r * 1.36, r * 0.2, 2.5 * S);
+    ctx.fillRect(r * 0.12, -r * 1.36, r * 0.2, 2.5 * S);
   } else {
     ctx.fillStyle = '#111';
     ctx.fillRect(-r * 0.45, -r * 1.42, r * 0.4, r * 0.22);
     ctx.fillRect(r * 0.05, -r * 1.42, r * 0.4, r * 0.22);
     ctx.fillRect(-r * 0.05, -r * 1.36, r * 0.1, 2 * S);
   }
-  // cap
-  ctx.fillStyle = '#1f2a5a';
-  ctx.beginPath(); ctx.arc(0, -r * 1.5, r * 0.52, Math.PI, 0); ctx.fill();
-  ctx.fillRect(-r * 0.6, -r * 1.55, r * 1.2, 5 * S);
-  ctx.fillStyle = '#f2c94c';
-  ctx.fillRect(-3 * S, -r * 1.72, 6 * S, 5 * S);
+  // headwear
+  ctx.fillStyle = col.hat;
+  if (T === 'sheriff') {
+    ctx.beginPath(); ctx.ellipse(0, -r * 1.55, r * 0.95, r * 0.16, 0, 0, TAU); ctx.fill();
+    roundRect(-r * 0.42, -r * 1.95, r * 0.84, r * 0.45, 5 * S); ctx.fill();
+    ctx.fillStyle = '#c9a56a';
+    ctx.fillRect(-r * 0.42, -r * 1.62, r * 0.84, 3 * S);
+  } else if (T === 'swat') {
+    ctx.beginPath(); ctx.arc(0, -r * 1.35, r * 0.58, Math.PI, 0); ctx.fill();
+    ctx.fillRect(-r * 0.58, -r * 1.38, r * 1.16, 5 * S);
+    ctx.fillStyle = '#e8e2d0';
+    ctx.font = `bold ${Math.round(6 * S)}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText('POLICE', 0, -r * 1.5);
+  } else {
+    ctx.beginPath(); ctx.arc(0, -r * 1.5, r * 0.52, Math.PI, 0); ctx.fill();
+    ctx.fillRect(-r * 0.6, -r * 1.55, r * 1.2, 5 * S);
+    ctx.fillStyle = '#f2c94c';
+    ctx.fillRect(-3 * S, -r * 1.72, 6 * S, 5 * S);
+  }
   ctx.restore();
 }
 

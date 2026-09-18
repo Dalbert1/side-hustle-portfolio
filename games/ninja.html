@@ -666,8 +666,15 @@ function pointerEnd(e) {
 canvas.addEventListener('pointerup', pointerEnd);
 canvas.addEventListener('pointercancel', pointerEnd);
 
-document.addEventListener('touchmove', e => { if (e.target === canvas) e.preventDefault(); }, { passive: false });
-document.addEventListener('gesturestart', e => e.preventDefault());
+// iOS Safari ignores user-scalable=no. Cancelling the raw touch and gesture
+// events on the canvas is what actually stops double tap zoom and pinch zoom.
+['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(type => {
+  canvas.addEventListener(type, e => e.preventDefault(), { passive: false });
+});
+['gesturestart', 'gesturechange', 'gestureend'].forEach(type => {
+  document.addEventListener(type, e => e.preventDefault(), { passive: false });
+});
+document.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
 canvas.addEventListener('contextmenu', e => e.preventDefault());
 
 window.addEventListener('keydown', e => {

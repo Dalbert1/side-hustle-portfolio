@@ -55,7 +55,7 @@ jobs:
 
       # ── Not deployed (source kept in repo, intentionally left off GitHub Pages):
       #    partyplug, tulsahomehelp, heelerconstruction, haughhoney, handyrandys,
-      #    resume-web-app, austinalbert, ww3electricboogaloo ──
+      #    resume-web-app, austinalbert, ww3electricboogaloo, games/battleship.html ──
 
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
@@ -65,7 +65,7 @@ jobs:
           cp -r recipebox/dist _site/recipebox
           mkdir -p _site/dugoutcounter
           cp dugoutcounter/index.html _site/dugoutcounter/index.html
-          cp games/*.html _site/games/
+          cp games/ninja.html games/cowboy.html games/snake.html _site/games/
           cp index.html _site/index.html
 
       - uses: actions/configure-pages@v4

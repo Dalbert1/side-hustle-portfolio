@@ -24,7 +24,7 @@ Complete documentation for developing, deploying, and maintaining this monorepo.
 
 This is a monorepo hosting multiple Tulsa-focused MVP web applications deployed to GitHub Pages as a unified portfolio. Each subproject is an independent React app with its own dependencies, build config, and optional Supabase backend.
 
-**Live URL pattern:** `https://<username>.github.io/side-hustle-portfolio/<project>/`
+**Live URL pattern:** `https://<username>.github.io/side-projects/<project>/`
 
 **Active projects:**
 - `partyplug/` - **918 Party Co.** - Event services marketplace (bounce houses, DJs, caterers, etc.)
@@ -53,7 +53,7 @@ This is a monorepo hosting multiple Tulsa-focused MVP web applications deployed 
 ## Repository Structure
 
 ```
-side-hustle-portfolio/
+side-projects/
   .github/
     workflows/
       deploy.yml              # GitHub Actions workflow - builds all projects and deploys
@@ -102,8 +102,8 @@ side-hustle-portfolio/
 ### Clone and install
 
 ```bash
-git clone https://github.com/Dalbert1/side-hustle-portfolio.git
-cd side-hustle-portfolio
+git clone https://github.com/Dalbert1/side-projects.git
+cd side-projects
 ```
 
 Each subproject manages its own dependencies. Install per-project:
@@ -120,7 +120,7 @@ cd heelerconstruction && npm install && cd ..
 ```bash
 cd partyplug
 npm run dev
-# Opens at http://localhost:5173/side-hustle-portfolio/partyplug/
+# Opens at http://localhost:5173/side-projects/partyplug/
 ```
 
 Available scripts (same for all projects):
@@ -347,7 +347,7 @@ Each project's `vite.config.js` sets a `base` path matching the deployment subdi
 // partyplug/vite.config.js
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/side-hustle-portfolio/partyplug/',
+  base: '/side-projects/partyplug/',
 })
 ```
 
@@ -383,7 +383,7 @@ You can trigger a deploy manually from the Actions tab > "Deploy to GitHub Pages
 
    export default defineConfig({
      plugins: [react(), tailwindcss()],
-     base: '/side-hustle-portfolio/myproject/',
+     base: '/side-projects/myproject/',
    })
    ```
 

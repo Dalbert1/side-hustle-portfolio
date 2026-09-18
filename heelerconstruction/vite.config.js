@@ -4,5 +4,5 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/side-hustle-portfolio/heelerconstruction/',
+  base: '/side-projects/heelerconstruction/',
 })

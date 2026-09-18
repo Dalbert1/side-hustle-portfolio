@@ -285,12 +285,8 @@
         <div><b>HOLD + DRAG</b><span>Your ninja runs to wherever your thumb is. Slide left and right to dodge.</span></div>
       </div>
       <div class="rule">
-        <div class="icon">&#8679;</div>
-        <div><b>TAP ONCE</b><span>Jump. Clear the spiked rollers coming along the ground.</span></div>
-      </div>
-      <div class="rule">
         <div class="icon">&#9876;</div>
-        <div><b>TAP TWICE</b><span>Sword slash. Slice the oni spirits before they reach you.</span></div>
+        <div><b>TAP</b><span>Jump and swing your sword in one flick. Clear the rollers, slice the oni spirits. Tap again mid air for a second swing.</span></div>
       </div>
     </div>
 
@@ -301,7 +297,7 @@
 
     <div class="best-line">BEST <b id="start-best">0</b></div>
     <button class="btn" id="start-btn">START</button>
-    <div class="kbd">Keyboard: A / D move, SPACE jump, J slash</div>
+    <div class="kbd">Keyboard: A / D move, SPACE to jump and slash</div>
     <a class="back" href="../">Back to portfolio</a>
   </div>
 
@@ -450,7 +446,7 @@ function resize() {
   canvas.height = Math.round(H * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   S = clamp(Math.min(H / 800, W / 400), 0.6, 1.5);
-  GROUND = H - Math.max(72, H * 0.13);
+  GROUND = H - Math.max(140, H * 0.22);
   ninja.w = 34 * S;
   ninja.h = 54 * S;
   ninja.x = clamp(ninja.x || W / 2, ninja.w, W - ninja.w);
@@ -625,17 +621,9 @@ function burst(x, y, n, color, speed) {
 // ---------- Input ----------
 let moverId = null;
 const pointers = new Map();
-let lastTap = 0;
-
-function handleTap() {
-  const t = now();
-  if (t - lastTap < 330) {
-    lastTap = 0;
-    slash();
-  } else {
-    lastTap = t;
-    jump();
-  }
+function flick() {
+  jump();
+  slash();
 }
 
 canvas.addEventListener('pointerdown', e => {
@@ -648,7 +636,7 @@ canvas.addEventListener('pointerdown', e => {
     moverId = e.pointerId;
     ninja.targetX = e.clientX;
   }
-  if (e.pointerType === 'mouse') handleTap();
+  if (e.pointerType === 'mouse') flick();
 });
 
 canvas.addEventListener('pointermove', e => {
@@ -673,7 +661,7 @@ function pointerEnd(e) {
     for (const [id, other] of pointers) { moverId = id; ninja.targetX = other.x; break; }
   }
   if (state !== 'play') return;
-  if (p.type !== 'mouse' && !p.moved && now() - p.t < 280) handleTap();
+  if (p.type !== 'mouse' && !p.moved && now() - p.t < 280) flick();
 }
 canvas.addEventListener('pointerup', pointerEnd);
 canvas.addEventListener('pointercancel', pointerEnd);
@@ -687,8 +675,7 @@ window.addEventListener('keydown', e => {
   const k = e.key.toLowerCase();
   if (k === 'a' || k === 'arrowleft') keys.left = true;
   if (k === 'd' || k === 'arrowright') keys.right = true;
-  if (k === ' ' || k === 'w' || k === 'arrowup') { e.preventDefault(); if (state === 'play') jump(); }
-  if (k === 'j' || k === 'x' || k === 'shift' || k === 'k') { if (state === 'play') slash(); }
+  if (k === ' ' || k === 'w' || k === 'arrowup' || k === 'j' || k === 'x') { e.preventDefault(); if (state === 'play') flick(); }
   if (k === 'enter' && state !== 'play') startGame();
 });
 window.addEventListener('keyup', e => {

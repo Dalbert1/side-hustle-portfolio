@@ -105,7 +105,7 @@
     inset: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
@@ -117,6 +117,8 @@
     overflow-y: auto;
   }
   .overlay.hidden { opacity: 0; pointer-events: none; }
+  .overlay > .title { margin-top: auto; }
+  .overlay > .back { margin-bottom: auto; }
 
   .title {
     font-family: 'Press Start 2P', monospace;
@@ -367,7 +369,7 @@ let muted = localStorage.getItem(MUTE_KEY) === '1';
 
 const ninja = {
   x: 0, y: 0, w: 34, h: 54, vy: 0, grounded: true, facing: 1, targetX: 0,
-  hp: 3, inv: 0, slashT: 0, slashCd: 0, runT: 0, moving: false, squash: 0
+  hp: 3, inv: 0, slashT: 0, slashCd: 0, runT: 0, moving: false, squash: 0, vx: 0
 };
 
 const keys = { left: false, right: false };
@@ -517,7 +519,7 @@ function reset() {
   shake = 0; flash = 0; overDelay = 0;
   boulders = []; rollers = []; onis = []; lanterns = []; particles = []; texts = [];
   timers = { boulder: 3.5, roller: 7, oni: 5, lantern: 2 };
-  ninja.x = W / 2; ninja.targetX = W / 2; ninja.y = GROUND; ninja.vy = 0;
+  ninja.x = W / 2; ninja.targetX = W / 2; ninja.y = GROUND; ninja.vy = 0; ninja.vx = 0;
   ninja.grounded = true; ninja.facing = 1; ninja.hp = 3; ninja.inv = 0;
   ninja.slashT = 0; ninja.slashCd = 0; ninja.runT = 0; ninja.squash = 0;
   ui.hearts.forEach(h => h.classList.remove('lost'));
@@ -788,16 +790,16 @@ function updateNinja(dt) {
   const maxV = 640 * S;
   if (keys.left !== keys.right) ninja.targetX = ninja.x + (keys.right ? 1 : -1) * maxV * dt * 1.5;
   ninja.targetX = clamp(ninja.targetX, ninja.w * 0.6, W - ninja.w * 0.6);
+  // Ease toward the thumb instead of snapping, so tiny thumb wobbles do not
+  // flip the sprite back and forth.
   const dx = ninja.targetX - ninja.x;
-  if (Math.abs(dx) > 1.5) {
-    const step = Math.sign(dx) * Math.min(Math.abs(dx), maxV * dt);
-    ninja.x += step;
-    ninja.facing = dx > 0 ? 1 : -1;
-    ninja.moving = true;
-    ninja.runT += dt * 14;
-  } else {
-    ninja.moving = false;
-  }
+  const desired = clamp(dx * 14, -maxV, maxV);
+  ninja.vx += (desired - ninja.vx) * Math.min(1, dt * 16);
+  if (Math.abs(dx) < 1 && Math.abs(ninja.vx) < 20 * S) ninja.vx = 0;
+  ninja.x += ninja.vx * dt;
+  ninja.moving = Math.abs(ninja.vx) > 40 * S;
+  if (Math.abs(ninja.vx) > 60 * S) ninja.facing = ninja.vx > 0 ? 1 : -1;
+  if (ninja.moving) ninja.runT += dt * 14;
   ninja.x = clamp(ninja.x, ninja.w * 0.6, W - ninja.w * 0.6);
 
   ninja.vy += 2400 * S * dt;

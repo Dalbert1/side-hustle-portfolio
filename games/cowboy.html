@@ -102,7 +102,7 @@
     inset: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
     background: rgba(30, 16, 8, 0.86);
@@ -115,6 +115,7 @@
   .overlay.hidden { opacity: 0; pointer-events: none; }
 
   .poster {
+    margin: auto 0;
     width: min(370px, 100%);
     background: var(--paper);
     color: var(--ink);
@@ -164,7 +165,14 @@
     border-top: 2px dashed #8a5a2b;
     margin: 14px 0;
   }
-  .rules { display: grid; gap: 10px; text-align: left; }
+  .section-title {
+    font-family: 'Rye', serif;
+    font-size: 15px;
+    letter-spacing: 4px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .rules { display: grid; gap: 8px; text-align: left; }
   .rule {
     display: grid;
     grid-template-columns: 46px 1fr;
@@ -174,9 +182,9 @@
     border: 1px solid rgba(43, 26, 14, 0.2);
     padding: 8px 10px;
   }
-  .rule .icon { font-size: 26px; text-align: center; }
+  .rule .icon { font-size: 24px; text-align: center; }
   .rule b { display: block; font-size: 14px; letter-spacing: 1px; }
-  .rule span { font-size: 12px; line-height: 1.35; color: #4a2e18; }
+  .rule span { font-size: 11.5px; line-height: 1.3; color: #4a2e18; }
   .blurb { font-size: 12px; line-height: 1.5; color: #4a2e18; margin-top: 12px; }
   .blurb em { font-style: normal; color: var(--red); font-weight: bold; }
   .reward { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin: 14px 0 12px; }
@@ -287,6 +295,7 @@
       <div class="name">CRACKHEAD COWBOY</div>
       <div class="crime">Public twitching. Evading the law. Sand related assault.</div>
       <hr class="divider">
+      <div class="section-title">CONTROLS</div>
       <div class="rules">
         <div class="rule">
           <div class="icon">&#9757;</div>
@@ -295,6 +304,10 @@
         <div class="rule">
           <div class="icon">&#129704;</div>
           <div><b>TAP</b><span>Throw pocket sand. Blinds any cop in front of you. Three handfuls, they refill on their own.</span></div>
+        </div>
+        <div class="rule">
+          <div class="icon">&#129463;</div>
+          <div><b>BAGGIES</b><span>Run over the little baggies on the road to grow a tooth back. At full teeth they are just bonus bounty.</span></div>
         </div>
       </div>
       <div class="blurb">
@@ -362,8 +375,8 @@ let paused = false;
 let lastT = 0;
 let elapsed = 0, heat = 1, dist = 0, copsSanded = 0, bonus = 0;
 let shake = 0, flash = 0, overDelay = 0, toastTimer = 0, mutterTimer = 0;
-let weeds = [], cops = [], cars = [], clouds = [], props = [], particles = [], texts = [];
-let timers = { weed: 0, cop: 0, car: 0, prop: 0, sign: 0 };
+let weeds = [], cops = [], cars = [], clouds = [], props = [], particles = [], texts = [], baggies = [];
+let timers = { weed: 0, cop: 0, car: 0, prop: 0, sign: 0, baggie: 0 };
 let signIndex = 0;
 let best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0;
 let muted = localStorage.getItem(MUTE_KEY) === '1';
@@ -371,7 +384,7 @@ let muted = localStorage.getItem(MUTE_KEY) === '1';
 const cowboy = {
   x: 0, y: 0, w: 40, h: 66, targetX: 0, facing: 1, moving: false, runT: 0,
   teeth: 3, inv: 0, sand: 3, sandRegen: 0, throwT: 0, throwCd: 0,
-  say: '', sayT: 0, jx: 0, jy: 0, jitterT: 0
+  say: '', sayT: 0, jx: 0, jy: 0, jitterT: 0, vx: 0, lean: 0
 };
 const keys = { left: false, right: false };
 
@@ -456,6 +469,7 @@ function noise(dur, vol, freq) {
 }
 const sfx = {
   throw: () => noise(0.25, 0.14, 1800),
+  pickup: () => { [660, 880, 1320].forEach((f, i) => tone(f, 0.12, 'triangle', 0.07, 0, i * 0.07)); },
   sanded: () => { tone(600, 0.1, 'square', 0.06, 900); tone(900, 0.14, 'square', 0.05, 1300, 0.08); },
   hit: () => { tone(160, 0.3, 'sawtooth', 0.12, 60); noise(0.15, 0.1, 500); },
   tooth: () => tone(1800, 0.12, 'triangle', 0.05, 900),
@@ -528,10 +542,10 @@ function difficulty() {
 function reset() {
   elapsed = 0; heat = 1; dist = 0; copsSanded = 0; bonus = 0;
   shake = 0; flash = 0; overDelay = 0; mutterTimer = rand(4, 7);
-  weeds = []; cops = []; cars = []; clouds = []; props = []; particles = []; texts = [];
-  timers = { weed: 3, cop: 5.5, car: 14, prop: 0.2, sign: 5 };
+  weeds = []; cops = []; cars = []; clouds = []; props = []; particles = []; texts = []; baggies = [];
+  timers = { weed: 3, cop: 5.5, car: 14, prop: 0.2, sign: 5, baggie: 12 };
   signIndex = 0;
-  cowboy.x = W / 2; cowboy.targetX = W / 2; cowboy.teeth = 3; cowboy.inv = 0;
+  cowboy.x = W / 2; cowboy.targetX = W / 2; cowboy.vx = 0; cowboy.lean = 0; cowboy.teeth = 3; cowboy.inv = 0;
   cowboy.sand = 3; cowboy.sandRegen = 0; cowboy.throwT = 0; cowboy.throwCd = 0;
   cowboy.say = ''; cowboy.sayT = 0; cowboy.runT = 0;
   ui.teeth.forEach(t => t.classList.remove('lost'));
@@ -741,6 +755,24 @@ function shoulderX(left, jitter) {
   const c = left ? ROAD_L / 2 : ROAD_R + (W - ROAD_R) / 2;
   return c + rand(-jitter, jitter) * S;
 }
+function spawnBaggie() {
+  const r = 13 * S;
+  baggies.push({ x: rand(ROAD_L + r * 2, ROAD_R - r * 2), y: -r * 2, r, bob: rand(0, TAU) });
+}
+function pickupBaggie(b) {
+  sfx.pickup();
+  burst(b.x, b.y, 16, '#ffffff', 150);
+  if (cowboy.teeth < 3) {
+    cowboy.teeth += 1;
+    ui.teeth.forEach((t, i) => t.classList.toggle('lost', i >= cowboy.teeth));
+    texts.push({ x: b.x, y: b.y - 20 * S, text: 'TOOTH BACK!', life: 1, max: 1, c: '#fffbe6' });
+    speak(pick(["Ooh, a pick me up!", "Tooth's growin' back!", "Don't mind if I do", "Breakfast!"]), 1.2);
+  } else {
+    bonus += 50;
+    texts.push({ x: b.x, y: b.y - 20 * S, text: 'STASH +$50', life: 1, max: 1, c: '#f2c94c' });
+    speak(pick(["Savin' this for later", "Mine now", "Finders keepers"]), 1);
+  }
+}
 function spawnProp() {
   const left = Math.random() < 0.5;
   const type = pick(['cactus', 'cactus', 'cactus', 'cactus', 'rock', 'rock', 'skull', 'cow', 'route66', 'sign']);
@@ -822,12 +854,17 @@ function updateCowboy(dt) {
   if (keys.left !== keys.right) cowboy.targetX = cowboy.x + (keys.right ? 1 : -1) * maxV * dt * 1.5;
   const minX = ROAD_L + cowboy.w * 0.4, maxX = ROAD_R - cowboy.w * 0.4;
   cowboy.targetX = clamp(cowboy.targetX, minX, maxX);
+  // Ease toward the thumb instead of snapping, so tiny thumb wobbles do not
+  // flip his facing and lean back and forth.
   const dx = cowboy.targetX - cowboy.x;
-  if (Math.abs(dx) > 1.5) {
-    cowboy.x += Math.sign(dx) * Math.min(Math.abs(dx), maxV * dt);
-    cowboy.facing = dx > 0 ? 1 : -1;
-    cowboy.moving = true;
-  } else cowboy.moving = false;
+  const desired = clamp(dx * 14, -maxV, maxV);
+  cowboy.vx += (desired - cowboy.vx) * Math.min(1, dt * 16);
+  if (Math.abs(dx) < 1 && Math.abs(cowboy.vx) < 20 * S) cowboy.vx = 0;
+  cowboy.x += cowboy.vx * dt;
+  cowboy.moving = Math.abs(cowboy.vx) > 40 * S;
+  if (Math.abs(cowboy.vx) > 60 * S) cowboy.facing = cowboy.vx > 0 ? 1 : -1;
+  const wantLean = clamp(cowboy.vx / maxV, -1, 1) * 0.12;
+  cowboy.lean += (wantLean - cowboy.lean) * Math.min(1, dt * 10);
   cowboy.x = clamp(cowboy.x, minX, maxX);
   cowboy.runT += dt * 16;
 
@@ -868,6 +905,8 @@ function updateSpawns(dt, d) {
   if (timers.prop <= 0) { spawnProp(); timers.prop = rand(0.5, 1.4) * (300 / (d.speed / S)); }
   timers.sign -= dt;
   if (timers.sign <= 0) { spawnSign(); timers.sign = rand(8, 13); }
+  timers.baggie -= dt;
+  if (timers.baggie <= 0) { spawnBaggie(); timers.baggie = cowboy.teeth < 3 ? rand(11, 16) : rand(16, 24); }
 }
 
 function updateEntities(dt, d) {
@@ -898,6 +937,14 @@ function updateEntities(dt, d) {
         blindCar(car);
       }
     }
+  }
+
+  for (let i = baggies.length - 1; i >= 0; i--) {
+    const b = baggies[i];
+    b.bob += dt * 4;
+    b.y += d.speed * dt;
+    if (circleHitsBox(b.x, b.y, b.r, box)) { pickupBaggie(b); baggies.splice(i, 1); continue; }
+    if (b.y - b.r * 2 > H) baggies.splice(i, 1);
   }
 
   for (let i = weeds.length - 1; i >= 0; i--) {
@@ -997,6 +1044,7 @@ function draw(t) {
   drawDesert();
   drawRoad();
   for (const p of props) drawProp(p, t);
+  for (const b of baggies) drawBaggie(b);
   for (const w of weeds) drawWeed(w);
   for (const c of cars) drawCar(c);
   for (const c of cops) drawCop(c, t);
@@ -1208,6 +1256,42 @@ function drawProp(p, t) {
     ctx.textBaseline = 'alphabetic';
     ctx.fillText('66', 0, -34);
   }
+  ctx.restore();
+}
+
+function drawBaggie(b) {
+  ctx.save();
+  const r = b.r;
+  const bob = Math.sin(b.bob) * 2 * S;
+  ctx.translate(b.x, b.y + bob);
+  // soft glow so it reads on the dark asphalt
+  const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 2.4);
+  g.addColorStop(0, 'rgba(255,255,255,0.35)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(0, 0, r * 2.4, 0, TAU); ctx.fill();
+  ctx.rotate(Math.sin(b.bob * 0.5) * 0.15);
+  // clear plastic baggie
+  ctx.fillStyle = 'rgba(200, 225, 245, 0.55)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+  ctx.lineWidth = 1.5 * S;
+  roundRect(-r * 0.8, -r, r * 1.6, r * 2, 3 * S); ctx.fill(); ctx.stroke();
+  // white powder settled in the bottom
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.moveTo(-r * 0.75, r * 0.95);
+  ctx.lineTo(r * 0.75, r * 0.95);
+  ctx.lineTo(r * 0.7, r * 0.2);
+  ctx.quadraticCurveTo(0, -r * 0.35, -r * 0.7, r * 0.25);
+  ctx.closePath(); ctx.fill();
+  // zip seal and a fold at the top
+  ctx.fillStyle = 'rgba(80, 130, 180, 0.9)';
+  ctx.fillRect(-r * 0.8, -r * 0.85, r * 1.6, 2.5 * S);
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.fillRect(-r * 0.8, -r * 1.15, r * 1.6, r * 0.3);
+  // shine
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillRect(-r * 0.6, -r * 0.5, 2 * S, r * 0.9);
   ctx.restore();
 }
 
@@ -1459,8 +1543,7 @@ function drawCowboy(t) {
   if (blink) ctx.globalAlpha = 0.35;
   const w = cowboy.w, h = cowboy.h;
   const run = Math.sin(cowboy.runT) * w * 0.35;
-  const lean = cowboy.moving ? cowboy.facing * 0.08 : 0;
-  ctx.rotate(lean);
+  ctx.rotate(cowboy.lean);
 
   // boots + skinny legs
   ctx.strokeStyle = '#3b6bb8';

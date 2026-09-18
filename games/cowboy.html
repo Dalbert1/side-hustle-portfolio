@@ -311,7 +311,7 @@
         </div>
       </div>
       <div class="blurb">
-        Tearing down Route 66 outside Tulsa with the whole county on your tail.
+        Tearing down Route 66 outside Elk City with all of Beckham County on your tail.
         Tumbleweeds cannot be sanded. <em>The heat rises every 10 seconds.</em>
       </div>
       <div class="reward">Best bounty <b id="start-best">$0</b></div>
@@ -392,7 +392,8 @@ const MUTTERS = [
   "I ain't done nothin'!", "Y'all seen my horse?", "The birds are cops too",
   "Not today, Johnny Law!", "I'm just out for a walk", "My teeth itch",
   "Can't catch what can't sit still", "Route 66 is MY road", "Who took my boots?",
-  "I got a permit for this", "This is methed up.", "This is methed up.", "Elk City's got nothin' on me"
+  "I got a permit for this", "This is methed up.", "This is methed up.", "Elk City's got nothin' on me",
+  "Sayre can't hold me neither", "Clinton's for tourists", "Hammon knows what I did"
 ];
 const TIERS = {
   officer: {
@@ -402,7 +403,7 @@ const TIERS = {
   },
   sheriff: {
     homing: 1.7, speed: 1.16, pts: 150,
-    lines: ["Not in my county!", "Boy, you best stop", "I know your mama", "Git back here!"],
+    lines: ["Not in Beckham County!", "Boy, you best stop", "I know your mama", "Git back here!"],
     sanded: ["My good eye!", "Dang it all!", "Consarn it!", "Right in the eyeballs!"]
   },
   swat: {
@@ -418,9 +419,11 @@ function pickTier() {
   return 'officer';
 }
 const OVER_LINES = [
-  "Cuffed outside a Tulsa QuikTrip.", "Tackled mid twitch.", "Ran clean out of pocket sand.",
-  "Caught explaining himself to a cactus.", "The tumbleweeds got him."
+  "Cuffed outside the Elk City Walmart.", "Tackled mid twitch.", "Ran clean out of pocket sand.",
+  "Caught explaining himself to a cactus.", "The tumbleweeds got him.", "Found asleep in a Hammon ditch.",
+  "Cornered at a Sayre truck stop.", "Chased into Foss Lake.", "Booked in Clinton before sunup."
 ];
+const MILE_SIGNS = [['ELK CITY', '6 MI'], ['SAYRE', '22 MI'], ['CLINTON', '28 MI'], ['HAMMON', '24 MI'], ['CANUTE', '8 MI'], ['FOSS LAKE', '14 MI'], ['CARTER', '12 MI'], ['BURNS FLAT', '18 MI']];
 const HEAT_FLAVOR = [
   'More cops on the road', 'Cruisers dispatched', 'The sheriff rides out', 'County wide manhunt',
   'Helicopter is up', 'SWAT deployed', 'Every cop in Oklahoma', 'Absolute lawlessness',
@@ -779,7 +782,8 @@ function spawnProp() {
   const isSign = type === 'sign' || type === 'route66';
   props.push({
     x: shoulderX(left, isSign ? 2 : 10), y: -70 * S, type, s: rand(0.85, 1.15), f: left ? 1 : -1,
-    v: Math.random(), moo: type === 'cow' && Math.random() < 0.35, sayT: 0, said: false, tail: rand(0, TAU)
+    v: Math.random(), moo: type === 'cow' && Math.random() < 0.35, sayT: 0, said: false, tail: rand(0, TAU),
+    text: type === 'sign' ? pick(MILE_SIGNS) : null
   });
 }
 function spawnSign() {
@@ -1235,7 +1239,7 @@ function drawProp(p, t) {
   } else if (p.type === 'cow') {
     drawCow(p, t);
   } else if (p.type === 'sign') {
-    drawSignBoard(52, 20, -46, '#3d7a47', '#f1e9d2', ['TULSA 12'], '#fff', 'bold 9px sans-serif');
+    drawSignBoard(60, 28, -54, '#3d7a47', '#f1e9d2', p.text || ['ELK CITY', '6 MI'], '#fff', 'bold 9px sans-serif');
   } else if (p.type === 'elkcity') {
     drawSignBoard(60, 28, -60, '#2f6b3a', '#f1e9d2', ['ELK CITY', 'OKLAHOMA'], '#fff', 'bold 9px sans-serif');
   } else if (p.type === 'bird') {

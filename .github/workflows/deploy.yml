@@ -27,48 +27,6 @@ jobs:
         with:
           node-version: 20
 
-      # ── Build PartyPlug ──
-      - name: Install PartyPlug deps
-        run: npm ci
-        working-directory: partyplug
-
-      - name: Build PartyPlug
-        run: npm run build
-        working-directory: partyplug
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-
-      # ── Build TulsaHomeHelp ──
-      - name: Install TulsaHomeHelp deps
-        run: npm ci
-        working-directory: tulsahomehelp
-
-      - name: Build TulsaHomeHelp
-        run: npm run build
-        working-directory: tulsahomehelp
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-
-      # ── Build HeelerConstruction ──
-      - name: Install HeelerConstruction deps
-        run: npm ci
-        working-directory: heelerconstruction
-
-      - name: Build HeelerConstruction
-        run: npm run build
-        working-directory: heelerconstruction
-
-      # ── Build HaughHoney ──
-      - name: Install HaughHoney deps
-        run: npm ci
-        working-directory: haughhoney
-
-      - name: Build HaughHoney
-        run: npm run build
-        working-directory: haughhoney
-
       # ── Build OSRS Activity Helper ──
       - name: Install OSRS Activity Helper deps
         run: npm ci
@@ -80,24 +38,6 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-
-      # ── Build Resume Web App ──
-      - name: Install Resume deps
-        run: npm ci
-        working-directory: resume-web-app/frontend
-
-      - name: Build Resume
-        run: npm run build
-        working-directory: resume-web-app/frontend
-
-      # ── Build Handy Randy's ──
-      - name: Install HandyRandys deps
-        run: npm ci
-        working-directory: handyrandys
-
-      - name: Build HandyRandys
-        run: npm run build
-        working-directory: handyrandys
 
       # ── Build Recipe Box ──
       - name: Install RecipeBox deps
@@ -111,32 +51,18 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
-      # ── Build Austin Albert ──
-      - name: Install AustinAlbert deps
-        run: npm ci
-        working-directory: austinalbert
+      # ── Dugout Counter and the mini games are single HTML files, no build needed ──
 
-      - name: Build AustinAlbert
-        run: npm run build
-        working-directory: austinalbert
-
-      # ── WW3 and Dugout Counter are single HTML files, no build needed ──
+      # ── Not deployed (source kept in repo, intentionally left off GitHub Pages):
+      #    partyplug, tulsahomehelp, heelerconstruction, haughhoney, handyrandys,
+      #    resume-web-app, austinalbert, ww3electricboogaloo ──
 
       # ── Merge all builds into one deploy folder ──
       - name: Assemble site
         run: |
           mkdir -p _site/games
-          cp -r partyplug/dist _site/partyplug
-          cp -r tulsahomehelp/dist _site/tulsahomehelp
-          cp -r heelerconstruction/dist _site/heelerconstruction
-          cp -r haughhoney/dist _site/haughhoney
           cp -r osrs-inv-tracker/dist _site/osrs-inv-tracker
-          cp -r resume-web-app/frontend/dist _site/resume
-          cp -r handyrandys/dist _site/handyrandys
           cp -r recipebox/dist _site/recipebox
-          cp -r austinalbert/dist _site/austinalbert
-          mkdir -p _site/ww3
-          cp ww3electricboogaloo/index.html _site/ww3/index.html
           mkdir -p _site/dugoutcounter
           cp dugoutcounter/index.html _site/dugoutcounter/index.html
           cp games/*.html _site/games/
